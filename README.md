@@ -38,3 +38,13 @@ $ sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
 
 If `sudo docker run hello-world` works, installation succeeded.
+
+## Download paper PDF
+
+### Parse CVF page
+
+Pleae run following command from inside of "core" container (This command generates `papers.json` under data directory).
+
+```bash
+$ poetry run python3 src/scripts/parse_cvf_page.py 
+```

@@ -7,5 +7,6 @@ __pycache__
 .pytest_cache
 .venv
 !data/README.md
+!data/papers.json
 !models/README.md
 !outputs/README.md
