@@ -39,12 +39,22 @@ $ sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 If `sudo docker run hello-world` works, installation succeeded.
 
-## Download paper PDF
+## Download all CVPR 2023 papers
 
-### Parse CVF page
+### (Optional) Parse CVF page
 
-Pleae run following command from inside of "core" container (This command generates `papers.json` under data directory).
+NOTE: JSON file created by this step is already included in repo. So this step is optional.
+
+Pleae run following command from inside of "core" container (This command generates `papers.json` under data directory). This process will take 10-20 minutes.
 
 ```bash
 $ poetry run python3 src/scripts/parse_cvf_page.py 
+```
+
+### Download PDF
+
+Pleae run following command from inside of "core" container.
+
+```bash
+$ poetry run python3 src/scripts/download_papers.py 
 ```
