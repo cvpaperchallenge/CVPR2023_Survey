@@ -202,7 +202,7 @@ if __name__ == "__main__":
         section_id = each_section["section_id"]
         section_text = each_section["section_text"]
         if section_text != "":
-            metadata = {"section_id": "{section_id}", "section": "{section_title}"}
+            metadata = {"section_id": f"{section_id}", "section": f"{section_title}"}
             for each_section_text in text_splitter.split_text(section_text):
                 documents_for_search.append(
                     Document(page_content=each_section_text, metadata=metadata)
@@ -212,8 +212,8 @@ if __name__ == "__main__":
             subsection_id = each_subsection["subsection_id"]
             subsection_text = each_subsection["subsection_text"]
             metadata = {
-                "section_id": "{section_id}.{subsection_id}",
-                "section": "{section_title}/{subsection_title}"
+                "section_id": f"{section_id}.{subsection_id}",
+                "section": f"{section_title}/{subsection_title}",
             }
             for each_subsection_text in text_splitter.split_text(subsection_text):
                 documents_for_search.append(
