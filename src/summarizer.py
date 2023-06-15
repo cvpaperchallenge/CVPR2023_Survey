@@ -30,7 +30,7 @@ class BasePaperSummarizer(ABC):
     def __init__(
         self,
         llm_model: BaseLanguageModel,
-        vectorstore: VectorStore,
+        vectorstore: dict[str, VectorStore],
         prompt_template_dir_path: pathlib.Path,
     ) -> None:
         self.llm_model = llm_model
@@ -77,8 +77,12 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         prompt_template: Final = self.template_env.get_template(
             "outline_ja.jinja2"
         ).render()
-        outline_prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
-        outline_chain = LLMChain(llm=self.llm_model, prompt=outline_prompt, verbose=True)
+        outline_prompt = PromptTemplate(
+            template=prompt_template, input_variables=["text"]
+        )
+        outline_chain = LLMChain(
+            llm=self.llm_model, prompt=outline_prompt, verbose=True
+        )
         combine_document_chain = StuffDocumentsChain(
             llm_chain=outline_chain,
             document_variable_name="text",

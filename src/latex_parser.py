@@ -1,7 +1,8 @@
 import re
+from typing import Any
 
 
-def parse_latex_text(latex_document: str) -> dict[str, str]:
+def parse_latex_text(latex_document: str) -> dict[str, Any]:
     # Extract title
     text_1 = latex_document.split("\\title{")[-1]
     raw_title, text_2 = text_1.split("\\author{")
