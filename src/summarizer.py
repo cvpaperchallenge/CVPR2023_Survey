@@ -1,16 +1,26 @@
 import logging
 import pathlib
 from abc import ABC
-from typing import Dict, Final, List
+from typing import Dict, Final, List, Any
+from langchain.base_language import BaseLanguageModel
+from langchain.vectorstores.base import VectorStore
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains.combine_documents.stuff import StuffDocumentsChain
 from jinja2 import Template, Environment, FileSystemLoader
+from pydantic import BaseModel, Field
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+
+class FormatOchiai(BaseModel):
+    # outline: str = Field(description="どんなもの？")
+    contribution: str = Field(description="先行研究と比べてどこがすごい？")
+    method: str = Field(description="技術や手法のキモはどこ？")
+    evaluation: str = Field(description="どうやって有効だと検証した？")
+    discussion: str = Field(description="議論はある？")
 
 
 class BasePaperSummarizer(ABC):
@@ -18,15 +28,15 @@ class BasePaperSummarizer(ABC):
     """
     def __init__(
         self,
-        llm_model,
-        vectorstore,
+        llm_model: BaseLanguageModel,
+        vectorstore: VectorStore,
         prompt_template_dir_path: pathlib.Path,
     ) -> None:
         self.llm_model=llm_model
         self.vectorstore=vectorstore
         self.template_env = Environment(loader=FileSystemLoader(str(prompt_template_dir_path)))
 
-    def summarize(self):
+    def summarize(self) -> Any:
         raise NotImplementedError
 
 
@@ -44,20 +54,56 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         )
         pass
 
-    def summarize(self):
+    def summarize(self) -> FormatOchiai:
         """"""
-        pass
-        # call all _summarize_* methods here.
+        # outline = self._summarize_outline()
+        contribution = self._summarize_contribution()
+        method = self._summarize_method()
+        evaluation = self._summarize_evaluation()
+        discussion = self._summarize_discussion()
+        return FormatOchiai(
+            # outline=outline,
+            contribution=contribution,
+            method=method,
+            evaluation=evaluation,
+            discussion=discussion,
+        )
 
-    def _summarize_outline(self):
+    def _summarize_outline(self) -> str:
         """`どんなもの？`"""
         pass
 
-    def _summarize_contribution(self):
-        """`先行研究と比べてどこがすごい？`"""
-        pass
 
-    def _summarize_method(self):
+    def _summarize_contribution(self) -> str:
+        """`先行研究と比べてどこがすごい？`"""
+        contribution_query: Final = "The contribution of this study"
+        problem_query: Final = "The problems with previous studies"
+        contribution = self._run_combine_document_chain(
+            query=contribution_query,
+            prompt_template_filename="contribution_ja.jinja2",
+            prompt_input_variable="contribution_text",
+        )
+        problem = self._run_combine_document_chain(
+            query=problem_query,
+            prompt_template_filename="problem_ja.jinja2",
+            prompt_input_variable="problem_text",
+        )
+
+        combine_template: Final = self.template_env.get_template("combination_ja.jinja2").render()
+        overall_prompt = PromptTemplate(
+            input_variables=["contribution", "problem"],
+            template=combine_template,
+        )
+        overall_chain = LLMChain(llm=self.llm_model, prompt=overall_prompt, verbose=True)
+        return overall_chain.run(
+            {
+                "contribution": contribution,
+                "problem": problem,
+            }
+        )
+
+
+    def _summarize_method(self) -> str:
         """`技術や手法のキモはどこ？`"""
         query: Final = "The proposed method and dataset in this study"
 
@@ -68,13 +114,27 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         )
 
 
-    def _summarize_evaluation(self):
+    def _summarize_evaluation(self) -> str:
         """`どうやって有効だと検証した？`"""
-        pass
+        query: Final = "The experiments conducted in this study and their evaluation"
 
-    def _summarize_discussion(self):
+        return self._run_combine_document_chain(
+            query=query,
+            prompt_template_filename="evaluation_ja.jinja2",
+            prompt_input_variable="text",
+        )
+
+
+    def _summarize_discussion(self) -> str:
         """`議論はある？`"""
-        pass
+        query: Final = "The authors' analysis and future prospects based on the results of the evaluation of this study"
+
+        return self._run_combine_document_chain(
+            query=query,
+            prompt_template_filename="discussion_ja.jinja2",
+            prompt_input_variable="text",
+        )
+
 
     def _run_combine_document_chain(
         self,
@@ -84,7 +144,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         search_type: str = "similarity",
         search_kwargs: Dict = {"k": 5},
         verbose: bool = True,
-    ):
+    ) -> str:
         """
         """
         prompt_template: Final = self.template_env.get_template(prompt_template_filename).render()
@@ -168,5 +228,5 @@ if __name__== "__main__":
         prompt_template_dir_path=pathlib.Path("./src/prompts")
     )
 
-    result = summarizer._summarize_method()
+    result = summarizer.summarize()
     print(result)
