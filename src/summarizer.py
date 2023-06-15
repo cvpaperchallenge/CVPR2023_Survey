@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 class FormatOchiai(BaseModel):
-    # outline: str = Field(description="どんなもの？")
+    outline: str = Field(description="どんなもの？")
     contribution: str = Field(description="先行研究と比べてどこがすごい？")
     method: str = Field(description="技術や手法のキモはどこ？")
     evaluation: str = Field(description="どうやって有効だと検証した？")
@@ -47,7 +47,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
     def __init__(
         self,
         llm_model: BaseLanguageModel,
-        vectorstore: VectorStore,
+        vectorstore: dict[str, VectorStore],
         prompt_template_dir_path: pathlib.Path,
     ) -> None:
         super().__init__(
@@ -59,13 +59,13 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
 
     def summarize(self) -> FormatOchiai:
         """"""
-        # outline = self._summarize_outline()
+        outline = self._summarize_outline()
         contribution = self._summarize_contribution()
         method = self._summarize_method()
         evaluation = self._summarize_evaluation()
         discussion = self._summarize_discussion()
         return FormatOchiai(
-            # outline=outline,
+            outline=outline,
             contribution=contribution,
             method=method,
             evaluation=evaluation,
@@ -74,7 +74,35 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
 
     def _summarize_outline(self) -> str:
         """`どんなもの？`"""
-        pass
+        prompt_template: Final = self.template_env.get_template(
+            "outline_ja.jinja2"
+        ).render()
+        outline_prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
+        outline_chain = LLMChain(llm=self.llm_model, prompt=outline_prompt, verbose=True)
+        combine_document_chain = StuffDocumentsChain(
+            llm_chain=outline_chain,
+            document_variable_name="text",
+            verbose=True,
+        )
+
+        retriever = self.vectorstore["wo_abstract"].as_retriever(
+            serch_type="similarity",
+            search_kwargs={"k": 1},
+        )
+
+        selected_documents = []
+        # Get top-k relevant documents
+        proposed_method: Final = retriever.get_relevant_documents("Proposed method")
+        experiments: Final = retriever.get_relevant_documents("Experiments")
+        resutls: Final = retriever.get_relevant_documents("Results")
+
+        abstract_docstore_id = self.vectorstore["all"].index_to_docstore_id[0]
+        abstract_document = self.vectorstore["all"].docstore._dict[abstract_docstore_id]
+        selected_documents.append(abstract_document)
+        selected_documents.extend(proposed_method)
+        selected_documents.extend(experiments)
+        selected_documents.extend(resutls)
+        return combine_document_chain.run(selected_documents)
 
     def _summarize_contribution(self) -> str:
         """`先行研究と比べてどこがすごい？`"""
@@ -162,7 +190,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             verbose=verbose,
         )
 
-        retriever = self.vectorstore.as_retriever(
+        retriever = self.vectorstore["all"].as_retriever(
             serch_type=search_type,
             search_kwargs=search_kwargs,
         )
@@ -227,12 +255,16 @@ if __name__ == "__main__":
         documents=documents,
         embedding=embeddings,
     )
+    vectorstore_for_search = FAISS.from_documents(
+        documents=documents_for_search,
+        embedding=embeddings,
+    )
 
     llm_model = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.9)
 
     summarizer = OchiaiFormatPaperSummarizer(
         llm_model=llm_model,
-        vectorstore=vectorstore,
+        vectorstore={"all": vectorstore, "wo_abstract": vectorstore_for_search},
         prompt_template_dir_path=pathlib.Path("./src/prompts"),
     )
 
