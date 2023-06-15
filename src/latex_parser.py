@@ -1,21 +1,21 @@
 import re
 
 def parse_latex_text(latex_document):
-    # titleを取得
+    # Extract title
     text_1 = latex_document.split("\\title{")[-1]
     raw_title, text_2 = text_1.split("\\author{")
     title = raw_title.rsplit("}", 1)[0]
     title_dict = {"content": title, "metadata": "title"}
 
-    # authorを取得
+    # Extract author
     raw_author, text_3 = text_2.split("\\begin{abstract}")
     author = raw_author.rsplit("}", 1)[0]
     author_dict = {"content": author, "metadata": "author"}
 
-    # abstractを取得
+    # Extract abstract
     abstract, text_4 = text_3.split("\n\\end{abstract}")
 
-    # sectionを取得
+    # Split sections
     raw_section_list = text_4.lstrip("\n").split("\\section{")
     section_list = []
     section_id = 1
@@ -32,27 +32,27 @@ def parse_latex_text(latex_document):
         section_list.append(section_dict)
         section_id += 1
 
-    # subsectionを取得
+    # Split subsections
     for each_section_dict in section_list:
         raw_subsection_list =  each_section_dict["section_text"].split("\\subsection{")
-        # subsectionを持たないsectionをはじく
+        # Go into next section if there is no subsection
         if len(raw_subsection_list) == 1:
             each_section_dict["subsection_list"] = []
             continue
         subsection_list = []
         subsection_id = 0
         for each_subsection in raw_subsection_list:
-            # \section{}の後にすぐ\subsection{}が来る場合は、最初は空文字なので飛ばし、section_textは消す
+            # If there is no text between \section{} and \subsection{}, skip it
             if len(each_subsection) == 0:
                 subsection_id += 1
                 each_section_dict["section_text"] = ""
                 continue
-            # \section{}の後に文章があってから\subsection{}が来る場合は、section_textを更新
+            # If there is text between \section{} and \subsection{}, update section_text
             if subsection_id == 0 and len(each_subsection) != 0:
                 each_section_dict["section_text"] = each_subsection
                 subsection_id += 1
                 continue
-        
+
             subsection_title, raw_subsection_text = each_subsection.split("}\n", 1)
             subsection_text = raw_subsection_text.lstrip("\n")
             subsection_text = simple_figure_table_remover(subsection_text)
@@ -63,9 +63,9 @@ def parse_latex_text(latex_document):
             }
             subsection_list.append(subsection_dict)
             subsection_id += 1
-            
+
         each_section_dict["subsection_list"] = subsection_list
-    
+
     parsed_document = {
         "title": title,
         "author": author,
