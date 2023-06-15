@@ -1,14 +1,15 @@
 import logging
 import pathlib
 from abc import ABC
-from typing import Dict, Final, List, Any
+from typing import Any, Dict, Final
+
+from jinja2 import Environment, FileSystemLoader
 from langchain.base_language import BaseLanguageModel
-from langchain.vectorstores.base import VectorStore
 from langchain.chains import LLMChain
+from langchain.chains.combine_documents.stuff import StuffDocumentsChain
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
-from langchain.chains.combine_documents.stuff import StuffDocumentsChain
-from jinja2 import Template, Environment, FileSystemLoader
+from langchain.vectorstores.base import VectorStore
 from pydantic import BaseModel, Field
 
 logger: Final = logging.getLogger(__name__)
@@ -24,17 +25,19 @@ class FormatOchiai(BaseModel):
 
 
 class BasePaperSummarizer(ABC):
-    """
-    """
+    """ """
+
     def __init__(
         self,
         llm_model: BaseLanguageModel,
         vectorstore: VectorStore,
         prompt_template_dir_path: pathlib.Path,
     ) -> None:
-        self.llm_model=llm_model
-        self.vectorstore=vectorstore
-        self.template_env = Environment(loader=FileSystemLoader(str(prompt_template_dir_path)))
+        self.llm_model = llm_model
+        self.vectorstore = vectorstore
+        self.template_env = Environment(
+            loader=FileSystemLoader(str(prompt_template_dir_path))
+        )
 
     def summarize(self) -> Any:
         raise NotImplementedError
@@ -43,8 +46,8 @@ class BasePaperSummarizer(ABC):
 class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
     def __init__(
         self,
-        llm_model,
-        vectorstore,
+        llm_model: BaseLanguageModel,
+        vectorstore: VectorStore,
         prompt_template_dir_path: pathlib.Path,
     ) -> None:
         super().__init__(
@@ -73,7 +76,6 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         """`どんなもの？`"""
         pass
 
-
     def _summarize_contribution(self) -> str:
         """`先行研究と比べてどこがすごい？`"""
         contribution_query: Final = "The contribution of this study"
@@ -89,19 +91,22 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             prompt_input_variable="problem_text",
         )
 
-        combine_template: Final = self.template_env.get_template("combination_ja.jinja2").render()
+        combine_template: Final = self.template_env.get_template(
+            "combination_ja.jinja2"
+        ).render()
         overall_prompt = PromptTemplate(
             input_variables=["contribution", "problem"],
             template=combine_template,
         )
-        overall_chain = LLMChain(llm=self.llm_model, prompt=overall_prompt, verbose=True)
+        overall_chain = LLMChain(
+            llm=self.llm_model, prompt=overall_prompt, verbose=True
+        )
         return overall_chain.run(
             {
                 "contribution": contribution,
                 "problem": problem,
             }
         )
-
 
     def _summarize_method(self) -> str:
         """`技術や手法のキモはどこ？`"""
@@ -113,7 +118,6 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             prompt_input_variable="text",
         )
 
-
     def _summarize_evaluation(self) -> str:
         """`どうやって有効だと検証した？`"""
         query: Final = "The experiments conducted in this study and their evaluation"
@@ -123,7 +127,6 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             prompt_template_filename="evaluation_ja.jinja2",
             prompt_input_variable="text",
         )
-
 
     def _summarize_discussion(self) -> str:
         """`議論はある？`"""
@@ -135,7 +138,6 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             prompt_input_variable="text",
         )
 
-
     def _run_combine_document_chain(
         self,
         query: str,
@@ -145,10 +147,13 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         search_kwargs: Dict = {"k": 5},
         verbose: bool = True,
     ) -> str:
-        """
-        """
-        prompt_template: Final = self.template_env.get_template(prompt_template_filename).render()
-        prompt: Final = PromptTemplate(template=prompt_template, input_variables=[prompt_input_variable])
+        """ """
+        prompt_template: Final = self.template_env.get_template(
+            prompt_template_filename
+        ).render()
+        prompt: Final = PromptTemplate(
+            template=prompt_template, input_variables=[prompt_input_variable]
+        )
 
         chain: Final = LLMChain(llm=self.llm_model, prompt=prompt, verbose=verbose)
         combine_document_chain: Final = StuffDocumentsChain(
@@ -165,27 +170,30 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         return combine_document_chain.run(result)
 
 
-if __name__== "__main__":
+if __name__ == "__main__":
+    from langchain.docstore.document import Document
     from langchain.document_loaders import TextLoader
-    from src.latex_parser import parse_latex_text
+    from langchain.embeddings.openai import OpenAIEmbeddings
     from langchain.text_splitter import TokenTextSplitter
     from langchain.vectorstores import FAISS
-    from langchain.embeddings.openai import OpenAIEmbeddings
-    from langchain.docstore.document import Document
+
+    from src.latex_parser import parse_latex_text
 
     txt_path = pathlib.Path("./tests/data/visual_atoms.txt")
     raw_papers = TextLoader(file_path=txt_path).load()
     parsed_paper = parse_latex_text(raw_papers[0].page_content)
 
     text_splitter = TokenTextSplitter.from_tiktoken_encoder(
-        model_name="gpt-3.5-turbo", # "text-embedding-ada-002"
-        chunk_size = 200,
-        chunk_overlap = 40
+        model_name="gpt-3.5-turbo",  # "text-embedding-ada-002"
+        chunk_size=200,
+        chunk_overlap=40,
     )
 
     documents = []
     documents_for_search = []
-    abstract_document = Document(page_content=parsed_paper["abstract"], metadata={"section": "abstract"})
+    abstract_document = Document(
+        page_content=parsed_paper["abstract"], metadata={"section": "abstract"}
+    )
     documents.append(abstract_document)
     for each_section in parsed_paper["section"]:
         section_title = each_section["section_title"]
@@ -225,7 +233,7 @@ if __name__== "__main__":
     summarizer = OchiaiFormatPaperSummarizer(
         llm_model=llm_model,
         vectorstore=vectorstore,
-        prompt_template_dir_path=pathlib.Path("./src/prompts")
+        prompt_template_dir_path=pathlib.Path("./src/prompts"),
     )
 
     result = summarizer.summarize()
