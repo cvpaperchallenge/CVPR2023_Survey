@@ -1,5 +1,8 @@
 import re
-from typing import Any
+from typing import Any, Dict, List, Optional
+
+from langchain.docstore.document import Document
+from langchain.text_splitter import TextSplitter
 
 
 def parse_latex_text(latex_document: str) -> dict[str, Any]:
@@ -82,3 +85,48 @@ def simple_figure_table_remover(text: str) -> str:
     )
     wo_fig_table_text = re.sub(r"!\[\]\((.*?)\)\n", "", wo_table_text, flags=re.DOTALL)
     return wo_fig_table_text
+
+
+def structure_latex_documents(
+    parsed_paper: Dict,
+    text_splitter: TextSplitter,
+    abstract_text: Optional[str] = None,
+) -> List[Document]:
+    # If full abstract is provided, use it instead of parsed one.
+    documents = [
+        Document(
+            page_content=abstract_text if abstract_text else parsed_paper["abstract"],
+            metadata={"section": "abstract"},
+        )
+    ]
+
+    # Loop over section.
+    for each_section in parsed_paper["section"]:
+        section_title = each_section["section_title"]
+        if section_title == "References":
+            continue
+
+        section_id = each_section["section_id"]
+        section_text = each_section["section_text"]
+        if not section_text:
+            metadata = {"section_id": f"{section_id}", "section": f"{section_title}"}
+            for each_section_text in text_splitter.split_text(section_text):
+                documents.append(
+                    Document(page_content=each_section_text, metadata=metadata)
+                )
+
+        # Loop over subsection.
+        for each_subsection in each_section["subsection_list"]:
+            subsection_title = each_subsection["subsection_title"]
+            subsection_id = each_subsection["subsection_id"]
+            subsection_text = each_subsection["subsection_text"]
+            metadata = {
+                "section_id": f"{section_id}.{subsection_id}",
+                "section": f"{section_title}/{subsection_title}",
+            }
+            for each_subsection_text in text_splitter.split_text(subsection_text):
+                documents.append(
+                    Document(page_content=each_subsection_text, metadata=metadata)
+                )
+
+    return documents

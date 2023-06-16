@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import os
 from typing import Any
 
 from langchain.docstore.document import Document
@@ -9,6 +8,13 @@ from langchain.document_loaders import MathpixPDFLoader
 
 
 class CustomMathpixLoader(MathpixPDFLoader):
+    """Loader for mathpix.
+
+    NOTE: This class extends `MathpixPDFLoader` class implemented in
+    langchain to support request paramters.
+
+    """
+
     def __init__(
         self,
         file_path: str,
@@ -48,29 +54,3 @@ class CustomMathpixLoader(MathpixPDFLoader):
         else:
             output = contents
         return output
-
-
-if __name__ == "__main__":
-    # Get only text files under /data folder iteratively
-    current_path = os.getcwd()
-    for dirpath, dirnames, filenames in os.walk(os.path.join(current_path, "data")):
-        for filename in filenames:
-            print(filename)
-            if filename.endswith(".pdf"):
-                save_name = filename.split(".")[0] + "_mathpix.txt"
-                save_path = os.path.join(dirpath, save_name)
-
-                txt_path = os.path.join(dirpath, filename)
-                loader = CustomMathpixLoader(
-                    file_path=txt_path,
-                    other_request_parameters={
-                        "math_inline_delimiters": ["$", "$"],
-                        "math_display_delimiters": ["$$", "$$"],
-                    },
-                    output_langchain_document=False,
-                )
-                raw_documents = loader.load()
-
-                # Save the result to a txt file
-                with open(save_path, "w") as f:
-                    f.write(raw_documents)
