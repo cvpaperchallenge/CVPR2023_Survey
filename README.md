@@ -15,7 +15,7 @@
 
 ## Prerequisites installation
 
-Here, we show example prerequisites installation codes for Ubuntu. If prerequisites  are already installed your environment, please skip this section. If you want to install in another environment, please follow the officail documentations.
+Here, we show example prerequisites installation codes for Ubuntu. If prerequisites  are already installed in your environment, please skip this section. If you want to install it in another environment, please follow the official documentation.
 
 - Docker and Docker Compose: [Install Docker Engine](https://docs.docker.com/engine/install/)
 - NVIDIA Container Toolkit (nvidia-docker2): [Installation Guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker)
@@ -37,15 +37,15 @@ $ sudo apt update
 $ sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
 
-If `sudo docker run hello-world` works, installation succeeded.
+If `sudo docker run hello-world` works, the installation succeeded.
 
 ## Download all CVPR 2023 papers
 
 ### (Optional) Parse CVF page
 
-NOTE: JSON file created by this step is already included in repo. So this step is optional.
+NOTE: JSON file created by this step is already included in the repo. So this step is optional.
 
-Pleae run following command from inside of "core" container (This command generates `papers.json` under data directory). This process will take 10-20 minutes.
+Please run the following command inside the "core" container (This command generates `papers.json` under the data directory). This process will take 10-20 minutes.
 
 ```bash
 $ poetry run python3 src/scripts/parse_cvf_page.py 
@@ -53,7 +53,7 @@ $ poetry run python3 src/scripts/parse_cvf_page.py
 
 ### Download PDF
 
-Please run following command from inside of "core" container.
+Please run the following command from inside the "core" container.
 
 ```bash
 $ poetry run python3 src/scripts/download_papers.py 
@@ -63,30 +63,30 @@ $ poetry run python3 src/scripts/download_papers.py
 
 ### Setup environmental variables
 
-We use following APIs to generate summaries:
+We use the following APIs to generate summaries:
 
 - Mathpix API: To convert PDF into Latex format text.
 - OpenAI API: To use LLM (GPT).
 
-To use above APIs, we need to set following environmental variables:
+To use the above APIs, we need to set the following environmental variables:
 
 - MATHPIX_API_ID
 - MATHPIX_API_KEY
 - OPENAI_API_KEY
 
-So please run following command to create `envs.env` file and replace sample values by actual ones.
+So please run the following command to create an `envs.env` file and replace sample values with actual ones.
 
 ```bash
 % cp environments/envs.env.sample environments/envs.env
 ```
 
-Values written in `envs.env` file are automatically loaded by docker and stored as environmental variable in the container.
+Values written in the `envs.env` file are automatically loaded by docker and stored as environmental variables in the container.
 
 ### Convert PDF to Latex format text
 
-Here convert PDF to Latex format by using [Mathpix](https://mathpix.com/) API. This makes it possible to extract original structure of papers.
+Here convert PDF to Latex format using [Mathpix](https://mathpix.com/) API. This makes it possible to extract the original structure of papers.
 
-Please run following command from inside of "core" container.
+Please run the following command from inside the "core" container.
 
 ```bash
 $ poetry run python3 src/scripts/convert_to_latex.py
@@ -94,7 +94,7 @@ $ poetry run python3 src/scripts/convert_to_latex.py
 
 ### Generate summaries
 
-Now we are ready to generate summaries by using LLM (GPT). Please run following command from inside of "core" container.
+Now we are ready to generate summaries by using LLM (GPT). Please run the following command from inside the "core" container.
 
 ```bash
 % poetry run python3 src/scripts/generate_summaries.py
