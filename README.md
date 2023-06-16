@@ -53,8 +53,49 @@ $ poetry run python3 src/scripts/parse_cvf_page.py
 
 ### Download PDF
 
-Pleae run following command from inside of "core" container.
+Please run following command from inside of "core" container.
 
 ```bash
 $ poetry run python3 src/scripts/download_papers.py 
+```
+
+## Generate summaries of CVPR 2023 papers
+
+### Setup environmental variables
+
+We use following APIs to generate summaries:
+
+- Mathpix API: To convert PDF into Latex format text.
+- OpenAI API: To use LLM (GPT).
+
+To use above APIs, we need to set following environmental variables:
+
+- MATHPIX_API_ID
+- MATHPIX_API_KEY
+- OPENAI_API_KEY
+
+So please run following command to create `envs.env` file and replace sample values by actual ones.
+
+```bash
+% cp environments/envs.env.sample environments/envs.env
+```
+
+Values written in `envs.env` file are automatically loaded by docker and stored as environmental variable in the container.
+
+### Convert PDF to Latex format text
+
+Here convert PDF to Latex format by using [Mathpix](https://mathpix.com/) API. This makes it possible to extract original structure of papers.
+
+Please run following command from inside of "core" container.
+
+```bash
+$ poetry run python3 src/scripts/convert_to_latex.py
+```
+
+### Generate summaries
+
+Now we are ready to generate summaries by using LLM (GPT). Please run following command from inside of "core" container.
+
+```bash
+% poetry run python3 src/scripts/generate_summaries.py
 ```
