@@ -20,7 +20,7 @@ paper_info_path: Final = pathlib.Path("./data/papers.json")
 # Check JSON file existence.
 if not paper_info_path.exists():
     error_message: Final = f"This scripts requires `{str(paper_info_path)}`. \
-        Please run `parse_cvf_page.py` frist to generate JSON file."
+        Please run `parse_cvf_page.py` first to generate JSON file."
     raise FileNotFoundError(error_message)
 
 # Load JSON and validate by Pydantic model.
