@@ -54,12 +54,14 @@ for i, paper in enumerate(papers):
     logger.info(f"[{i+1}/{len(papers)}] `{paper.title}` is sent to Mathpix API.")
     latex_text = CustomMathpixLoader(
         file_path=str(pdf_file_path),
+        output_path_for_tex=directory_path,
+        processed_file_format=["mmd", "tex.zip"],
         other_request_parameters={
             "math_inline_delimiters": ["$", "$"],
             "math_display_delimiters": ["$$", "$$"],
         },
         output_langchain_document=False,
-    ).load()
+    ).load()["mmd"]
 
     # Save latex format text.
     with mathpix_file_path.open("w") as f:
