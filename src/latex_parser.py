@@ -16,8 +16,8 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
     raw_section_list = contents_wo_abstract.lstrip("\n").split("\\section{")
     section_list = []
     section_id = 1
-    for each_section in raw_section_list:
-        if len(each_section) == 0:
+    for i, each_section in enumerate(raw_section_list):
+        if i == 0:
             continue
         section_title, raw_section_text = each_section.split("}\n", 1)
         section_text = raw_section_text.lstrip("\n")
