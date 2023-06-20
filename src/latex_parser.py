@@ -100,7 +100,7 @@ def structure_latex_documents(
 
         section_id = each_section["section_id"]
         section_text = each_section["section_text"]
-        if not section_text:
+        if section_text:
             metadata = {"section_id": f"{section_id}", "section": f"{section_title}"}
             for each_section_text in text_splitter.split_text(section_text):
                 documents.append(
