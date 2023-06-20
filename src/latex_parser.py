@@ -6,27 +6,22 @@ from langchain.text_splitter import TextSplitter
 
 
 def parse_latex_text(latex_document: str) -> dict[str, Any]:
-    # Extract title
-    text_1 = latex_document.split("\\title{")[-1]
-    raw_title, text_2 = text_1.split("\\author{")
-    title = raw_title.rsplit("}", 1)[0]
-
-    # Extract author
-    raw_author, text_3 = text_2.split("\\begin{abstract}")
-    author = raw_author.rsplit("}", 1)[0]
+    # Remove metadata contents before abstract
+    _, contents = latex_document.split("\\begin{abstract}")
 
     # Extract abstract
-    abstract, text_4 = text_3.split("\n\\end{abstract}")
+    abstract, contents_wo_abstract = contents.split("\n\\end{abstract}")
 
     # Split sections
-    raw_section_list = text_4.lstrip("\n").split("\\section{")
+    raw_section_list = contents_wo_abstract.lstrip("\n").split("\\section{")
     section_list = []
     section_id = 1
-    for each_section in raw_section_list:
-        if len(each_section) == 0:
+    for i, each_section in enumerate(raw_section_list):
+        if i == 0:
             continue
         section_title, raw_section_text = each_section.split("}\n", 1)
         section_text = raw_section_text.lstrip("\n")
+        section_text = simple_figure_table_remover(section_text)
         section_dict = {
             "section_id": section_id,
             "section_title": section_title,
@@ -58,7 +53,6 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
 
             subsection_title, raw_subsection_text = each_subsection.split("}\n", 1)
             subsection_text = raw_subsection_text.lstrip("\n")
-            subsection_text = simple_figure_table_remover(subsection_text)
             subsection_dict = {
                 "subsection_id": subsection_id,
                 "subsection_title": subsection_title,
@@ -70,8 +64,6 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
         each_section_dict["subsection_list"] = subsection_list
 
     parsed_document = {
-        "title": title,
-        "author": author,
         "abstract": abstract,
         "section": section_list,
     }
@@ -108,7 +100,7 @@ def structure_latex_documents(
 
         section_id = each_section["section_id"]
         section_text = each_section["section_text"]
-        if not section_text:
+        if section_text:
             metadata = {"section_id": f"{section_id}", "section": f"{section_title}"}
             for each_section_text in text_splitter.split_text(section_text):
                 documents.append(
