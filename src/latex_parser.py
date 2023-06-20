@@ -21,6 +21,7 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
             continue
         section_title, raw_section_text = each_section.split("}\n", 1)
         section_text = raw_section_text.lstrip("\n")
+        section_text = simple_figure_table_remover(section_text)
         section_dict = {
             "section_id": section_id,
             "section_title": section_title,
@@ -52,7 +53,6 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
 
             subsection_title, raw_subsection_text = each_subsection.split("}\n", 1)
             subsection_text = raw_subsection_text.lstrip("\n")
-            subsection_text = simple_figure_table_remover(subsection_text)
             subsection_dict = {
                 "subsection_id": subsection_id,
                 "subsection_title": subsection_title,
