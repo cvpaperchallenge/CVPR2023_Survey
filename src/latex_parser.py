@@ -6,20 +6,14 @@ from langchain.text_splitter import TextSplitter
 
 
 def parse_latex_text(latex_document: str) -> dict[str, Any]:
-    # Extract title
-    text_1 = latex_document.split("\\title{")[-1]
-    raw_title, text_2 = text_1.split("\\author{")
-    title = raw_title.rsplit("}", 1)[0]
-
-    # Extract author
-    raw_author, text_3 = text_2.split("\\begin{abstract}")
-    author = raw_author.rsplit("}", 1)[0]
+    # Remove metadata contents before abstract
+    _, contents = latex_document.split("\\begin{abstract}")
 
     # Extract abstract
-    abstract, text_4 = text_3.split("\n\\end{abstract}")
+    abstract, contents_wo_abstract = contents.split("\n\\end{abstract}")
 
     # Split sections
-    raw_section_list = text_4.lstrip("\n").split("\\section{")
+    raw_section_list = contents_wo_abstract.lstrip("\n").split("\\section{")
     section_list = []
     section_id = 1
     for each_section in raw_section_list:
@@ -70,8 +64,6 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
         each_section_dict["subsection_list"] = subsection_list
 
     parsed_document = {
-        "title": title,
-        "author": author,
         "abstract": abstract,
         "section": section_list,
     }
