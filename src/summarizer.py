@@ -57,13 +57,13 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         )
         pass
 
-    def summarize(self) -> FormatOchiai:
+    def summarize(self, verbose: bool = True) -> FormatOchiai:
         """"""
-        outline = self._summarize_outline()
-        contribution = self._summarize_contribution()
-        method = self._summarize_method()
-        evaluation = self._summarize_evaluation()
-        discussion = self._summarize_discussion()
+        outline = self._summarize_outline(verbose=verbose)
+        contribution = self._summarize_contribution(verbose=verbose)
+        method = self._summarize_method(verbose=verbose)
+        evaluation = self._summarize_evaluation(verbose=verbose)
+        discussion = self._summarize_discussion(verbose=verbose)
         return FormatOchiai(
             outline=outline,
             contribution=contribution,
@@ -72,7 +72,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             discussion=discussion,
         )
 
-    def _summarize_outline(self) -> str:
+    def _summarize_outline(self, verbose: bool = True) -> str:
         """`どんなもの？`"""
         prompt_template: Final = self.template_env.get_template(
             "outline_ja.jinja2"
@@ -81,12 +81,12 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             template=prompt_template, input_variables=["text"]
         )
         outline_chain = LLMChain(
-            llm=self.llm_model, prompt=outline_prompt, verbose=True
+            llm=self.llm_model, prompt=outline_prompt, verbose=verbose
         )
         combine_document_chain = StuffDocumentsChain(
             llm_chain=outline_chain,
             document_variable_name="text",
-            verbose=True,
+            verbose=verbose,
         )
 
         retriever = self.vectorstore["wo_abstract"].as_retriever(
@@ -108,7 +108,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         selected_documents.extend(resutls)
         return combine_document_chain.run(selected_documents)
 
-    def _summarize_contribution(self) -> str:
+    def _summarize_contribution(self, verbose: bool = True) -> str:
         """`先行研究と比べてどこがすごい？`"""
         contribution_query: Final = "The contribution of this study"
         problem_query: Final = "The problems with previous studies"
@@ -116,11 +116,13 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             query=contribution_query,
             prompt_template_filename="contribution_ja.jinja2",
             prompt_input_variable="contribution_text",
+            verbose=verbose,
         )
         problem = self._run_combine_document_chain(
             query=problem_query,
             prompt_template_filename="problem_ja.jinja2",
             prompt_input_variable="problem_text",
+            verbose=verbose,
         )
 
         combine_template: Final = self.template_env.get_template(
@@ -131,7 +133,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             template=combine_template,
         )
         overall_chain = LLMChain(
-            llm=self.llm_model, prompt=overall_prompt, verbose=True
+            llm=self.llm_model, prompt=overall_prompt, verbose=verbose
         )
         return overall_chain.run(
             {
@@ -140,7 +142,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             }
         )
 
-    def _summarize_method(self) -> str:
+    def _summarize_method(self, verbose: bool = True) -> str:
         """`技術や手法のキモはどこ？`"""
         query: Final = "The proposed method and dataset in this study"
 
@@ -148,9 +150,10 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             query=query,
             prompt_template_filename="method_ja.jinja2",
             prompt_input_variable="text",
+            verbose=verbose,
         )
 
-    def _summarize_evaluation(self) -> str:
+    def _summarize_evaluation(self, verbose: bool = True) -> str:
         """`どうやって有効だと検証した？`"""
         query: Final = "The experiments conducted in this study and their evaluation"
 
@@ -158,9 +161,10 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             query=query,
             prompt_template_filename="evaluation_ja.jinja2",
             prompt_input_variable="text",
+            verbose=verbose,
         )
 
-    def _summarize_discussion(self) -> str:
+    def _summarize_discussion(self, verbose: bool = True) -> str:
         """`議論はある？`"""
         query: Final = "The authors' analysis and future prospects based on the results of the evaluation of this study"
 
@@ -168,6 +172,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             query=query,
             prompt_template_filename="discussion_ja.jinja2",
             prompt_input_variable="text",
+            verbose=verbose,
         )
 
     def _run_combine_document_chain(
