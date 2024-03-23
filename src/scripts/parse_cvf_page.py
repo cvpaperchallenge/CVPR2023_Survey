@@ -1,6 +1,7 @@
 """
 
-This script generate json file which includes all CVPR 2023 papers info.
+This script generate json file which includes all papers information of the selected conference.
+The code estimates Computer Vision Foundation(CVF) supported conferences such as CVPR and ICCV.
 
 """
 import argparse

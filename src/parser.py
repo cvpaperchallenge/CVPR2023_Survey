@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Final, List
+from typing import Final
 
 import requests
 from bs4 import BeautifulSoup
@@ -7,16 +7,13 @@ from pydantic import BaseModel, HttpUrl
 
 
 class ConferencePath(Enum):
+    """The Enum class which stores the paths to the conference papers available on the cvf page."""
     CVPR = "/CVPR2023?day=all"
     ICCV = "/ICCV2023?day=all"
 
 
 class Paper(BaseModel):
-    """
-
-    Pydantic model which stores single paper infomation.
-
-    """
+    """Pydantic model which stores single paper infomation."""
 
     title: str
     author: str
@@ -25,12 +22,20 @@ class Paper(BaseModel):
     pdf: HttpUrl
 
 
-def get_paper_page_urls(conference_path: ConferencePath) -> List[str]:
-    """
+def get_paper_page_urls(conference_path: ConferencePath) -> list[str]:
+    """Return a list of CVF page URL.
 
-    Return a list of CVF page URL. The list includes all 2,359 papers
-    accepted by CVPR 2023.
+    Return a list of CVF page URL based on the conference path.
+    The number of accepted papers is different for each conference:
+        - CVPR 2023: 2,359 papers
+        - ICCV 2023: 2,156 papers
 
+    Args:
+        conference_path (ConferencePath): The paths to the conference papers
+            available on the cvf page.
+
+    Returns:
+        list[str]: A list of CVF page URL of each paper.
     """
 
     cvf_root_url: Final = "https://openaccess.thecvf.com"
@@ -43,10 +48,13 @@ def get_paper_page_urls(conference_path: ConferencePath) -> List[str]:
 
 
 def parse_paper_page(page_url: str) -> Paper:
-    """
+    """Parse a paper page and return Paper object.
 
-    Parse a paper page and return Paper object.
+    Args:
+        page_url (str): The URL of the paper page.
 
+    Returns:
+        Paper: The Paper object which stores the paper information.
     """
 
     html: Final = requests.get(page_url).text
