@@ -89,7 +89,7 @@ def parse_paper_page(page_url: str) -> Paper:
     conference_path: Final[str] = page_url.rsplit("/", 2)[0]
     paper_name: Final[str] = page_url.rsplit("/", 1)[1].removesuffix(".html")
     pdf: Final[str] = (
-        conference_path + paper_name + ".pdf"
+        conference_path + "/papers/" + paper_name + ".pdf"
     )
 
     return Paper(
