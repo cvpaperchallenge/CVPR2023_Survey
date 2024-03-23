@@ -6,11 +6,14 @@ The code estimates Computer Vision Foundation(CVF) supported conferences such as
 """
 import argparse
 import json
+import logging
 import pathlib
 from typing import Final
 
 from src.parser import get_paper_page_urls, parse_paper_page
 
+logger: Final = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 def extract_paper_info(output_dir: pathlib.Path, conference: str, year: int) -> None:
     """
@@ -26,7 +29,7 @@ def extract_paper_info(output_dir: pathlib.Path, conference: str, year: int) -> 
 
     papers = list()
     for i, url in enumerate(urls):
-        print(f"Processing {i+1}/{len(urls)}: {url}")
+        logger.info(f"Processing {i+1}/{len(urls)}: {url}")
         paper = parse_paper_page(url)
         papers.append(paper.dict())
 
@@ -34,7 +37,7 @@ def extract_paper_info(output_dir: pathlib.Path, conference: str, year: int) -> 
     with output_path.open("w") as f:
         json.dump(papers, f, indent=4)
 
-    print(f"Successfully parsed {len(papers)} papers.")
+    logger.info(f"Successfully parsed {len(papers)} papers.")
 
 
 if __name__ == "__main__":
