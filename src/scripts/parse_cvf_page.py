@@ -9,23 +9,20 @@ import json
 import pathlib
 from typing import Final
 
-from src.parser import ConferencePath, get_paper_page_urls, parse_paper_page
+from src.parser import get_paper_page_urls, parse_paper_page
 
 
-def extract_paper_info(output_dir: pathlib.Path, conference: str) -> None:
+def extract_paper_info(output_dir: pathlib.Path, conference: str, year: int) -> None:
     """
     Extract paper information from CVF page and save it as JSON file.
 
     Args:
         output_dir (str): Output directory to save the JSON file.
-        conference (str): Conference name where papers information is extracted.
+        conference (str): The conference name.
+        year (int): The year of the conference.
 
     """
-    if conference == "cvpr":
-        conference_path = ConferencePath.CVPR
-    elif conference == "iccv":
-        conference_path = ConferencePath.ICCV
-    urls: Final = get_paper_page_urls(conference_path)
+    urls: Final = get_paper_page_urls(conference=conference, year=year)
 
     papers = list()
     for i, url in enumerate(urls):
@@ -33,9 +30,9 @@ def extract_paper_info(output_dir: pathlib.Path, conference: str) -> None:
         paper = parse_paper_page(url)
         papers.append(paper.dict())
 
-    output_path: Final = output_dir / f"{conference}_papers.json"
+    output_path: Final = output_dir / f"{conference}{year}_papers.json"
     with output_path.open("w") as f:
-        json.dump(papers, f)
+        json.dump(papers, f, indent=4)
 
     print(f"Successfully parsed {len(papers)} papers.")
 
@@ -47,7 +44,7 @@ if __name__ == "__main__":
         "--output-dir",
         "-o",
         type=pathlib.Path,
-        default="./data",
+        default="./data/json",
         help="Output directory to save the JSON file.",
     )
     parser.add_argument(
@@ -58,6 +55,14 @@ if __name__ == "__main__":
         required=True,
         help="Conference name where papers information is extracted.",
     )
+    parser.add_argument(
+        "--year",
+        "-y",
+        type=int,
+        required=True,
+        help="The year of the conference.",
+    )
     args = parser.parse_args()
 
-    extract_paper_info(output_dir=args.output_dir, conference=args.conference)
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    extract_paper_info(output_dir=args.output_dir, conference=args.conference, year=args.year)
