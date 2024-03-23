@@ -33,6 +33,7 @@ def extract_paper_info(output_dir: pathlib.Path, conference: str, year: int) -> 
         paper = parse_paper_page(url)
         papers.append(paper.dict())
 
+    output_dir.mkdir(parents=True, exist_ok=True)
     output_path: Final = output_dir / f"{conference}{year}_papers.json"
     with output_path.open("w") as f:
         json.dump(papers, f, indent=4)
@@ -67,5 +68,4 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    args.output_dir.mkdir(parents=True, exist_ok=True)
     extract_paper_info(output_dir=args.output_dir, conference=args.conference, year=args.year)
