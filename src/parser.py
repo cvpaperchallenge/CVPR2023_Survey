@@ -1,8 +1,14 @@
+from enum import Enum
 from typing import Final, List
 
 import requests
 from bs4 import BeautifulSoup
 from pydantic import BaseModel, HttpUrl
+
+
+class ConferencePath(Enum):
+    CVPR = "/CVPR2023?day=all"
+    ICCV = "/ICCV2023?day=all"
 
 
 class Paper(BaseModel):
@@ -19,7 +25,7 @@ class Paper(BaseModel):
     pdf: HttpUrl
 
 
-def get_paper_page_urls() -> List[str]:
+def get_paper_page_urls(conference_path: ConferencePath) -> List[str]:
     """
 
     Return a list of CVF page URL. The list includes all 2,359 papers
@@ -28,7 +34,7 @@ def get_paper_page_urls() -> List[str]:
     """
 
     cvf_root_url: Final = "https://openaccess.thecvf.com"
-    cvf_all_paper_url: Final = cvf_root_url + "/CVPR2023?day=all"
+    cvf_all_paper_url: Final = cvf_root_url + conference_path.value
 
     html: Final = requests.get(cvf_all_paper_url).text
     bs: Final = BeautifulSoup(html, "html.parser")
