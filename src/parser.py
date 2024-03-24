@@ -72,7 +72,8 @@ def parse_paper_page(page_url: str) -> Paper:
     """Parse a paper page and return Paper object.
 
     Args:
-        page_url (str): The URL of the paper page.
+        page_url (str): The URL of the paper page. The page url structure is like
+            https://openaccess.thecvf.com/content/<conference_name><year>/html/<family_name>_<paper_title>_<conference_name>_<year>_paper.html
 
     Returns:
         Paper: The Paper object which stores the paper information.
@@ -85,7 +86,9 @@ def parse_paper_page(page_url: str) -> Paper:
     abstract: Final[str] = bs.select_one("#abstract").text.strip()
     cvf: Final[str] = page_url
 
+    # conference_path is like: https://openaccess.thecvf.com/content/<conference_name><year>
     conference_path: Final[str] = page_url.rsplit("/", 2)[0]
+    # paper_name is like: <family_name>_<paper_title>_<conference_name>_<year>_paper
     paper_name: Final[str] = page_url.rsplit("/", 1)[1].removesuffix(".html")
     pdf: Final[str] = (
         conference_path + "/papers/" + paper_name + ".pdf"
