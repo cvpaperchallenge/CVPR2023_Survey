@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "cvpr2023survey"
+name = "cvpr-iccv-2023-survey"
 version = "0.1.0"
-description = "CVPR 2023 survey by cvpaper.challenge."
+description = "CVPR 2023 and ICCV 2023 survey by cvpaper.challenge."
 license = "MIT"
 authors = ["cvpaper.challenge XCCV group"]
 maintainers = ["yoshihiro fukuhara <gatheluck@gmail.com>"]
