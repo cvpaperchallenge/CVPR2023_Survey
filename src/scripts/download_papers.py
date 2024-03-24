@@ -38,8 +38,6 @@ def download_paper_pdfs(output_root_dir: pathlib.Path, paper_info_path: pathlib.
 
     # Loop over all papers and save PDF under ./data/paper directory
     for i, paper in enumerate(papers):
-        response = requests.get(str(paper.pdf))
-
         # filename is like: <family_name>_<paper_title>_<conference_name>_<year>_paper.pdf
         filename = str(paper.pdf).split("/")[-1]
         core, conference_name, year, _ = filename.rsplit("_", 3)
@@ -47,11 +45,13 @@ def download_paper_pdfs(output_root_dir: pathlib.Path, paper_info_path: pathlib.
         directory_path = output_root_dir / pathlib.Path(conference_name + year) / pathlib.Path(f"{i:04}_{paper_title}")
         file_path = directory_path / filename
 
-        logger.info(f"[{i+1}/{len(papers)}] Downloading paper `{paper.title}`.")
-
         # If directory already exists, skip it.
         if directory_path.exists():
+            logger.info(f"[{i+1}/{len(papers)}] Skip downloading paper `{paper.title}` as it already exists.")
             continue
+
+        logger.info(f"[{i+1}/{len(papers)}] Downloading paper `{paper.title}`.")
+        response = requests.get(str(paper.pdf))
 
         # Create directory to save PDF.
         directory_path.mkdir(parents=True, exist_ok=True)
