@@ -11,6 +11,6 @@ services:
     env_file: ../envs.env
     tty: true
     volumes:
-        - ../../:/home/challenger/cvpr2023survey
+        - ../../:/home/challenger/cvpr-iccv-2023-survey
     ports:
         - 8000:8000
