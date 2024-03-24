@@ -4,8 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 from pydantic import BaseModel, HttpUrl
 
-cvf_root_url: Final[str] = "https://openaccess.thecvf.com"
-
 class Paper(BaseModel):
     """Pydantic model which stores single paper infomation."""
 
@@ -60,6 +58,7 @@ def get_paper_page_urls(conference: str, year: int) -> list[str]:
     Returns:
         list[str]: A list of CVF page URL of each paper.
     """
+    cvf_root_url: Final[str] = "https://openaccess.thecvf.com"
     conference_name: Final[str] = validate_conference(conference, year)
     cvf_all_paper_url: Final = cvf_root_url + f"/{conference_name}?day=all"
 
