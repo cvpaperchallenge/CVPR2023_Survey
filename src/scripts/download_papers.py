@@ -44,7 +44,7 @@ def download_paper_pdfs(output_root_dir: pathlib.Path, paper_info_path: pathlib.
         filename = str(paper.pdf).split("/")[-1]
         core, conference_name, year, _ = filename.rsplit("_", 3)
         family_name, paper_title = core.split("_", 1)
-        directory_path = output_root_dir / pathlib.Path(conference_name + year) / pathlib.Path(paper_title)
+        directory_path = output_root_dir / pathlib.Path(conference_name + year) / pathlib.Path(f"{i:04}_{paper_title}")
         file_path = directory_path / filename
 
         logger.info(f"[{i+1}/{len(papers)}] Downloading paper `{paper.title}`.")
