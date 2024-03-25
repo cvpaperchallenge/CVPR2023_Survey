@@ -13,11 +13,10 @@ import logging
 import pathlib
 from typing import Final
 
-from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders.text import TextLoader
-from langchain_openai import OpenAIEmbeddings
 from langchain.text_splitter import TokenTextSplitter
+from langchain_community.document_loaders.text import TextLoader
 from langchain_community.vectorstores.faiss import FAISS
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from src.latex_parser import parse_latex_text, structure_latex_documents
 from src.parser import Paper
@@ -27,17 +26,18 @@ logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Note: list config
-llm_model_name: str = "gpt-3.5-turbo"
+llm_model_name: str = "gpt-3.5-turbo-0125"  # "gpt-4-0125-preview"
 temperature: float = 0.9
 chunk_size: int = 200
 chunk_overlap: int = 40
 
+
 def generate_summaries_in_ochiai_format(
-        paper_root_dir: pathlib.Path,
-        paper_info_path: pathlib.Path,
-        prompt_template_dir: pathlib.Path,
-        verbose: bool = False,
-    ) -> None:
+    paper_root_dir: pathlib.Path,
+    paper_info_path: pathlib.Path,
+    prompt_template_dir: pathlib.Path,
+    verbose: bool = False,
+) -> None:
     """Generate summaries of all papers in Ochiai format.
 
     Args:
@@ -80,7 +80,9 @@ def generate_summaries_in_ochiai_format(
         # If summary already exists, continue the loop.
         summary_file_path = directory_path / (stem + "_summary.json")
         if summary_file_path.exists():
-            logger.info(f"`{str(summary_file_path)}` already exists. Continue the loop.")
+            logger.info(
+                f"`{str(summary_file_path)}` already exists. Continue the loop."
+            )
             continue
 
         # Parse Latex format text.
@@ -101,9 +103,19 @@ def generate_summaries_in_ochiai_format(
 
         embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
         # Load vector database if it exists.
-        if (directory_path / "index").exists() and (directory_path / "index_wo_abstract").exists():
-            vectorstore = FAISS.load_local(str(directory_path / "index"), embeddings=embeddings, allow_dangerous_deserialization=True)
-            vectorstore_wo_abstract = FAISS.load_local(str(directory_path / "index_wo_abstract"), embeddings=embeddings, allow_dangerous_deserialization=True)
+        if (directory_path / "index").exists() and (
+            directory_path / "index_wo_abstract"
+        ).exists():
+            vectorstore = FAISS.load_local(
+                str(directory_path / "index"),
+                embeddings=embeddings,
+                allow_dangerous_deserialization=True,
+            )
+            vectorstore_wo_abstract = FAISS.load_local(
+                str(directory_path / "index_wo_abstract"),
+                embeddings=embeddings,
+                allow_dangerous_deserialization=True,
+            )
         else:
             # Embed documents and store into vector database.
             vectorstore = FAISS.from_documents(
@@ -121,7 +133,9 @@ def generate_summaries_in_ochiai_format(
 
             # Save vector database.
             vectorstore.save_local(str(directory_path / "index"))
-            vectorstore_wo_abstract.save_local(str(directory_path / "index_wo_abstract"))
+            vectorstore_wo_abstract.save_local(
+                str(directory_path / "index_wo_abstract")
+            )
 
         # Generate summary.
         llm_model = ChatOpenAI(model_name=llm_model_name, temperature=temperature)

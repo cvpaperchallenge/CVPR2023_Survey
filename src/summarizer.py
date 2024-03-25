@@ -5,14 +5,14 @@ from typing import Any, Final
 
 from jinja2 import Environment, FileSystemLoader
 from langchain.base_language import BaseLanguageModel
-from langchain_community.chat_models.openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores.base import VectorStore
-from pydantic import BaseModel, Field
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.output_parsers import StrOutputParser
 from langchain_community.callbacks.manager import get_openai_callback
+from langchain_community.chat_models.openai import ChatOpenAI
 from langchain_core.callbacks import BaseCallbackHandler
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+from pydantic import BaseModel, Field
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -24,6 +24,7 @@ class FormatOchiai(BaseModel):
     method: str = Field(description="技術や手法のキモはどこ？")
     evaluation: str = Field(description="どうやって有効だと検証した？")
     discussion: str = Field(description="議論はある？")
+
 
 class CustomHandler(BaseCallbackHandler):
     def on_llm_start(
@@ -106,7 +107,11 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         )
         outline_chain = (
             RunnablePassthrough.assign(
-                text=(lambda inputs: "\n\n".join(doc.page_content for doc in inputs["selected_documents"]))
+                text=(
+                    lambda inputs: "\n\n".join(
+                        doc.page_content for doc in inputs["selected_documents"]
+                    )
+                )
             ).with_config(run_name="combine_documents")
             | outline_prompt
             | self.llm_model
@@ -130,7 +135,10 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         selected_documents.extend(proposed_method)
         selected_documents.extend(experiments)
         selected_documents.extend(resutls)
-        outline_sumamry = outline_chain.invoke({"selected_documents": selected_documents}, config={"callbacks": [CustomHandler()]} if self.verbose else None)
+        outline_sumamry = outline_chain.invoke(
+            {"selected_documents": selected_documents},
+            config={"callbacks": [CustomHandler()]} if self.verbose else None,
+        )
         if self.verbose:
             # Log the outline summary in blue color
             logger.info(f"\033[94mOutline Summary:\n{outline_sumamry}\033[0m")
@@ -155,13 +163,14 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         overall_prompt = PromptTemplate.from_template(
             template=combine_template,
         )
-        overall_chain = (
-            overall_prompt | self.llm_model | StrOutputParser()
+        overall_chain = overall_prompt | self.llm_model | StrOutputParser()
+        contribution_summary = overall_chain.invoke(
+            {
+                "contribution": contribution,
+                "problem": problem,
+            },
+            config={"callbacks": [CustomHandler()]} if self.verbose else None,
         )
-        contribution_summary = overall_chain.invoke({
-            "contribution": contribution,
-            "problem": problem,
-        }, config={"callbacks": [CustomHandler()]} if self.verbose else None)
 
         if self.verbose:
             # Log the contribution summary in blue color
@@ -229,25 +238,34 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
 
         combine_document_chain = (
             RunnablePassthrough.assign(
-                selected_documents=((lambda inputs: inputs["query"]) | retriever).with_config(run_name="retrieve_documents"),
+                selected_documents=(
+                    (lambda inputs: inputs["query"]) | retriever
+                ).with_config(run_name="retrieve_documents"),
             )
             | RunnablePassthrough.assign(
-                text=(lambda inputs: "\n\n".join(doc.page_content for doc in inputs["selected_documents"]))
+                text=(
+                    lambda inputs: "\n\n".join(
+                        doc.page_content for doc in inputs["selected_documents"]
+                    )
+                )
             ).with_config(run_name="combine_documents")
             | prompt
             | self.llm_model
             | StrOutputParser()
         )
 
-        return combine_document_chain.invoke({"query": query}, config={"callbacks": [CustomHandler()]} if self.verbose else None)
+        return combine_document_chain.invoke(
+            {"query": query},
+            config={"callbacks": [CustomHandler()]} if self.verbose else None,
+        )
 
 
 if __name__ == "__main__":
-    from langchain_core.documents import Document
-    from langchain_community.document_loaders.text import TextLoader
-    from langchain_openai import OpenAIEmbeddings
     from langchain.text_splitter import TokenTextSplitter
+    from langchain_community.document_loaders.text import TextLoader
     from langchain_community.vectorstores.faiss import FAISS
+    from langchain_core.documents import Document
+    from langchain_openai import OpenAIEmbeddings
 
     from src.latex_parser import parse_latex_text
 

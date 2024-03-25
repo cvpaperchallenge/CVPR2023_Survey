@@ -76,7 +76,9 @@ def simple_figure_table_remover(text: str) -> str:
         r"\\begin{tabular}(.*?)\\end{tabular}", "", text, flags=re.DOTALL
     )
     wo_fig_table_text = re.sub(r"!\[\]\((.*?)\)\n", "", wo_table_text, flags=re.DOTALL)
-    wo_fig_table_text = re.sub(r"\nFigure(.*?)\n\n", "", wo_fig_table_text, flags=re.DOTALL)
+    wo_fig_table_text = re.sub(
+        r"\nFigure(.*?)\n\n", "", wo_fig_table_text, flags=re.DOTALL
+    )
     return wo_fig_table_text
 
 

@@ -18,7 +18,10 @@ logging.basicConfig(level=logging.INFO)
 
 paper_info_path: Final = pathlib.Path("./data/papers.json")
 
-def download_paper_pdfs(output_root_dir: pathlib.Path, paper_info_path: pathlib.Path) -> None:
+
+def download_paper_pdfs(
+    output_root_dir: pathlib.Path, paper_info_path: pathlib.Path
+) -> None:
     """Download all papers PDF files.
 
     Args:
@@ -42,12 +45,18 @@ def download_paper_pdfs(output_root_dir: pathlib.Path, paper_info_path: pathlib.
         filename = str(paper.pdf).split("/")[-1]
         core, conference_name, year, _ = filename.rsplit("_", 3)
         family_name, paper_title = core.split("_", 1)
-        directory_path = output_root_dir / pathlib.Path(conference_name + year) / pathlib.Path(f"{i:04}_{paper_title}")
+        directory_path = (
+            output_root_dir
+            / pathlib.Path(conference_name + year)
+            / pathlib.Path(f"{i:04}_{paper_title}")
+        )
         file_path = directory_path / filename
 
         # If directory already exists, skip it.
         if directory_path.exists():
-            logger.info(f"[{i+1}/{len(papers)}] Skip downloading paper `{paper.title}` as it already exists.")
+            logger.info(
+                f"[{i+1}/{len(papers)}] Skip downloading paper `{paper.title}` as it already exists."
+            )
             continue
 
         logger.info(f"[{i+1}/{len(papers)}] Downloading paper `{paper.title}`.")
@@ -57,6 +66,7 @@ def download_paper_pdfs(output_root_dir: pathlib.Path, paper_info_path: pathlib.
         directory_path.mkdir(parents=True, exist_ok=True)
         with file_path.open("wb") as f:
             f.write(response.content)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -77,4 +87,6 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    download_paper_pdfs(output_root_dir=args.output_root_dir, paper_info_path=args.paper_info)
+    download_paper_pdfs(
+        output_root_dir=args.output_root_dir, paper_info_path=args.paper_info
+    )

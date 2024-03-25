@@ -13,10 +13,10 @@ import pathlib
 from typing import Final, cast
 
 from src.loader import CustomMathpixPDFLoader
-from src.parser import Paper
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
 
 def convert_pdf_to_latex(paper_root_dir: pathlib.Path) -> None:
     """Convert PDF files into Latex format text.
@@ -40,19 +40,25 @@ def convert_pdf_to_latex(paper_root_dir: pathlib.Path) -> None:
         # If mathpix file already exists, skip the conversion.
         mathpix_file_path = directory_path / (stem + "_mathpix.txt")
         if mathpix_file_path.exists():
-            logger.info(f"Skip converting `{str(pdf_file_path)}` as the Mathpix file already exists.")
+            logger.info(
+                f"Skip converting `{str(pdf_file_path)}` as the Mathpix file already exists."
+            )
             continue
 
         # Send request to Mathpix.
         logger.info(f"[{i+1}/{len(pdf_file_paths)}] `{stem}` is sent to Mathpix API.")
-        latex_text = CustomMathpixPDFLoader(
-            file_path=str(pdf_file_path),
-            processed_file_format="md",
-            extra_request_data={
-                "math_inline_delimiters": ["$", "$"],
-                "math_display_delimiters": ["$$", "$$"],
-            },
-        ).load_mmd()[0].page_content
+        latex_text = (
+            CustomMathpixPDFLoader(
+                file_path=str(pdf_file_path),
+                processed_file_format="md",
+                extra_request_data={
+                    "math_inline_delimiters": ["$", "$"],
+                    "math_display_delimiters": ["$$", "$$"],
+                },
+            )
+            .load_mmd()[0]
+            .page_content
+        )
 
         # Save latex format text.
         with mathpix_file_path.open("w") as f:
