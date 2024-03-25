@@ -35,14 +35,16 @@ chunk_overlap: int = 40
 def generate_summaries_in_ochiai_format(
         paper_root_dir: pathlib.Path,
         paper_info_path: pathlib.Path,
-        prompt_template_dir_path: pathlib.Path,
+        prompt_template_dir: pathlib.Path,
+        verbose: bool = False,
     ) -> None:
     """Generate summaries of all papers in Ochiai format.
 
     Args:
         paper_root_dir (pathlib.Path): Path to the directory containing PDF files.
         paper_info_path (pathlib.Path): Path to the JSON file which contains paper information.
-        prompt_template_dir_path (pathlib.Path): Path to the directory containing prompt templates.
+        prompt_template_dir (pathlib.Path): Path to the directory containing prompt templates.
+        verbose (bool): Print used prompts, generated summaries, and token usage.
     """
     # Check JSON file existence.
     if not paper_info_path.exists():
@@ -97,11 +99,11 @@ def generate_summaries_in_ochiai_format(
             papers[paper_id].abstract,
         )
 
-        embeddings = OpenAIEmbeddings()
+        embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
         # Load vector database if it exists.
         if (directory_path / "index").exists() and (directory_path / "index_wo_abstract").exists():
-            vectorstore = FAISS.load_local(str(directory_path / "index"), embeddings=embeddings)
-            vectorstore_wo_abstract = FAISS.load_local(str(directory_path / "index_wo_abstract"), embeddings=embeddings)
+            vectorstore = FAISS.load_local(str(directory_path / "index"), embeddings=embeddings, allow_dangerous_deserialization=True)
+            vectorstore_wo_abstract = FAISS.load_local(str(directory_path / "index_wo_abstract"), embeddings=embeddings, allow_dangerous_deserialization=True)
         else:
             # Embed documents and store into vector database.
             vectorstore = FAISS.from_documents(
@@ -129,7 +131,8 @@ def generate_summaries_in_ochiai_format(
                 "all": vectorstore,
                 "wo_abstract": vectorstore_wo_abstract,
             },
-            prompt_template_dir_path=prompt_template_dir_path,
+            prompt_template_dir=prompt_template_dir,
+            verbose=verbose,
         )
         summary = summarizer.summarize()
 
@@ -162,5 +165,17 @@ if __name__ == "__main__":
         default="./src/prompts",
         help="Path to the directory containing prompt templates.",
     )
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Print used prompts, generated summaries, and token usage.",
+    )
 
     args = parser.parse_args()
+    generate_summaries_in_ochiai_format(
+        paper_root_dir=args.input_pdf_dir,
+        paper_info_path=args.paper_info_path,
+        prompt_template_dir=args.prompt_template_dir,
+        verbose=args.verbose,
+    )
