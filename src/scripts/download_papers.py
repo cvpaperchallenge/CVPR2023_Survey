@@ -1,6 +1,6 @@
 """
 
-This script download all CVPR 2023 papers under ./data directory.
+This script download paper PDF files from urls in the JSON file.
 
 """
 import argparse

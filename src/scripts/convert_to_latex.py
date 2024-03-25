@@ -1,7 +1,7 @@
 """
 
 This script convert PDF into Latex format text. This script uses Mathpix
-API and it requires followings as environmental variables.
+API and it requires the following environment variables.
 
 - MATHPIX_API_ID
 - MATHPIX_API_KEY

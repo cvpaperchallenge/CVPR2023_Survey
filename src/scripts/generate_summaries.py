@@ -1,8 +1,7 @@
 """
 
-This script generates summaries of all CVPR 2023 papers. Each summary is
-saved under `data/papers/<family_name>_<paper_title>/` directory. This
-script requires following environmental variable.
+This script generates summaries in ochiai format. This script requires
+the following environmental variable.
 
 - OPENAI_API_KEY
 
