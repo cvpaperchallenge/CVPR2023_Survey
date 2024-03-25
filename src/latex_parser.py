@@ -1,5 +1,5 @@
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from langchain.docstore.document import Document
 from langchain.text_splitter import TextSplitter
@@ -13,7 +13,7 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
     abstract, contents_wo_abstract = contents.split("\n\\end{abstract}")
 
     # Split sections
-    raw_section_list = contents_wo_abstract.lstrip("\n").split("\\section{")
+    raw_section_list = contents_wo_abstract.lstrip("\n").split("\\section*{")
     section_list = []
     section_id = 1
     for i, each_section in enumerate(raw_section_list):
@@ -32,7 +32,7 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
 
     # Split subsections
     for each_section_dict in section_list:
-        raw_subsection_list = each_section_dict["section_text"].split("\\subsection{")
+        raw_subsection_list = each_section_dict["section_text"].split("\\subsection*{")
         # Go into next section if there is no subsection
         if len(raw_subsection_list) == 1:
             each_section_dict["subsection_list"] = []
@@ -76,14 +76,15 @@ def simple_figure_table_remover(text: str) -> str:
         r"\\begin{tabular}(.*?)\\end{tabular}", "", text, flags=re.DOTALL
     )
     wo_fig_table_text = re.sub(r"!\[\]\((.*?)\)\n", "", wo_table_text, flags=re.DOTALL)
+    wo_fig_table_text = re.sub(r"\nFigure(.*?)\n\n", "", wo_fig_table_text, flags=re.DOTALL)
     return wo_fig_table_text
 
 
 def structure_latex_documents(
-    parsed_paper: Dict,
+    parsed_paper: dict[str, Any],
     text_splitter: TextSplitter,
-    abstract_text: Optional[str] = None,
-) -> List[Document]:
+    abstract_text: str | None = None,
+) -> list[Document]:
     # If full abstract is provided, use it instead of parsed one.
     documents = [
         Document(
