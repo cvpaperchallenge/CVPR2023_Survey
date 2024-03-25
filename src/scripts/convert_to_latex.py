@@ -7,62 +7,68 @@ API and it requires followings as environmental variables.
 - MATHPIX_API_KEY
 
 """
-import json
+import argparse
 import logging
 import pathlib
 from typing import Final, cast
 
-from src.loader import CustomMathpixLoader
+from src.loader import CustomMathpixPDFLoader
 from src.parser import Paper
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+def convert_pdf_to_latex(paper_root_dir: pathlib.Path) -> None:
+    """Convert PDF files into Latex format text.
 
-# Check JSON file existence.
-paper_info_path: Final = pathlib.Path("./data/papers.json")
-if not paper_info_path.exists():
-    error_message: Final = f"This scripts requires `{str(paper_info_path)}`. \
-        Please run `parse_cvf_page.py` frist to generate JSON file."
-    raise FileNotFoundError(error_message)
+    Args:
+        paper_root_dir (pathlib.Path): Path to the directory containing PDF files.
+    """
+    # Loop over all papers.
+    pdf_file_paths = sorted(list(paper_root_dir.glob("**/*.pdf")))
+    for i, pdf_file_path in enumerate(pdf_file_paths):
+        directory_path = pdf_file_path.parent
+        stem = pdf_file_path.stem
 
-# Load JSON and validate by Pydantic model.
-with paper_info_path.open("r") as f:
-    papers: Final = [Paper.parse_obj(p) for p in json.load(f)]
+        # Check if PDF file exists or not.
+        pdf_file_path = directory_path / (stem + ".pdf")
+        if not pdf_file_path.exists():
+            raise FileNotFoundError(
+                f"`{str(pdf_file_path)}` does not exist. Please run `download_papers.py` first to download PDF file."
+            )
 
-# Loop over all papers.
-paper_root_path: Final = pathlib.Path("./data/papers/")
-for i, paper in enumerate(papers):
-    # stem is like: <family_name>_<paper_title>_CVPR_2023_paper
-    stem = str(pathlib.Path(paper.pdf).stem)
-    directory_path = paper_root_path / stem.removesuffix("_CVPR_2023_paper")
+        # If mathpix file already exists, skip the conversion.
+        mathpix_file_path = directory_path / (stem + "_mathpix.txt")
+        if mathpix_file_path.exists():
+            logger.info(f"Skip converting `{str(pdf_file_path)}` as the Mathpix file already exists.")
+            continue
 
-    # Check if PDF file exists or not.
-    pdf_file_path = directory_path / (stem + ".pdf")
-    if not pdf_file_path.exists():
-        raise FileNotFoundError(
-            f"`{str(pdf_file_path)}` does not exist. Please run `download_papers.py` frist to download PDF file."
-        )
+        # Send request to Mathpix.
+        logger.info(f"[{i+1}/{len(pdf_file_paths)}] `{stem}` is sent to Mathpix API.")
+        latex_text = CustomMathpixPDFLoader(
+            file_path=str(pdf_file_path),
+            processed_file_format="md",
+            extra_request_data={
+                "math_inline_delimiters": ["$", "$"],
+                "math_display_delimiters": ["$$", "$$"],
+            },
+        ).load_mmd()[0].page_content
 
-    # If mathpix file already exists, continue loop.
-    mathpix_file_path = directory_path / (stem + "_mathpix.txt")
-    if mathpix_file_path.exists():
-        logger.info(f"`{str(mathpix_file_path)}` already exists.")
-        continue
+        # Save latex format text.
+        with mathpix_file_path.open("w") as f:
+            f.write(cast(str, latex_text))
 
-    # Send request to Mathpix.
-    logger.info(f"[{i+1}/{len(papers)}] `{paper.title}` is sent to Mathpix API.")
-    latex_text = CustomMathpixLoader(
-        file_path=str(pdf_file_path),
-        output_path_for_tex=directory_path,
-        processed_file_format=["mmd", "tex.zip"],
-        other_request_parameters={
-            "math_inline_delimiters": ["$", "$"],
-            "math_display_delimiters": ["$$", "$$"],
-        },
-        output_langchain_document=False,
-    ).load()["mmd"]
 
-    # Save latex format text.
-    with mathpix_file_path.open("w") as f:
-        f.write(cast(str, latex_text))
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--input-pdf-dir",
+        "-i",
+        type=pathlib.Path,
+        required=True,
+        help="Path to the directory containing PDF files.",
+    )
+
+    args = parser.parse_args()
+    convert_pdf_to_latex(args.input_dir)
