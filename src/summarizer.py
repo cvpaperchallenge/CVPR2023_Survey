@@ -7,10 +7,14 @@ from jinja2 import Environment, FileSystemLoader
 from langchain.base_language import BaseLanguageModel
 from langchain.chains import LLMChain
 from langchain.chains.combine_documents.stuff import StuffDocumentsChain
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models.openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores.base import VectorStore
 from pydantic import BaseModel, Field
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.chains.retrieval import create_retrieval_chain
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -60,10 +64,15 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
     def summarize(self, verbose: bool = True) -> FormatOchiai:
         """"""
         outline = self._summarize_outline(verbose=verbose)
+        print(outline)
         contribution = self._summarize_contribution(verbose=verbose)
+        print(contribution)
         method = self._summarize_method(verbose=verbose)
+        print(method)
         evaluation = self._summarize_evaluation(verbose=verbose)
+        print(evaluation)
         discussion = self._summarize_discussion(verbose=verbose)
+        print(discussion)
         return FormatOchiai(
             outline=outline,
             contribution=contribution,
@@ -78,16 +87,24 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             "outline_ja.jinja2"
         ).render()
         outline_prompt = PromptTemplate(
-            template=prompt_template, input_variables=["text"]
+            template=prompt_template, input_variables=["text"], template_format="jinja2"
         )
-        outline_chain = LLMChain(
-            llm=self.llm_model, prompt=outline_prompt, verbose=verbose
-        )
-        combine_document_chain = StuffDocumentsChain(
-            llm_chain=outline_chain,
-            document_variable_name="text",
-            verbose=verbose,
-        )
+        outline_chain = (
+            RunnablePassthrough.assign(
+                text=(lambda inputs: "\n\n".join(doc.page_content for doc in inputs["selected_documents"]))
+            ).with_config(run_name="combine_documents")
+            | outline_prompt
+            | self.llm_model
+            | StrOutputParser()
+        ).with_config(run_name="outline_chain")
+        # outline_chain = LLMChain(
+        #     llm=self.llm_model, prompt=outline_prompt, verbose=verbose
+        # )
+        # combine_document_chain = StuffDocumentsChain(
+        #     llm_chain=outline_chain,
+        #     document_variable_name="text",
+        #     verbose=verbose,
+        # )
 
         retriever = self.vectorstore["wo_abstract"].as_retriever(
             serch_type="similarity",
@@ -106,7 +123,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         selected_documents.extend(proposed_method)
         selected_documents.extend(experiments)
         selected_documents.extend(resutls)
-        return combine_document_chain.run(selected_documents)
+        return outline_chain.invoke({"selected_documents": selected_documents})
 
     def _summarize_contribution(self, verbose: bool = True) -> str:
         """`先行研究と比べてどこがすごい？`"""
@@ -132,15 +149,22 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             input_variables=["contribution", "problem"],
             template=combine_template,
         )
-        overall_chain = LLMChain(
-            llm=self.llm_model, prompt=overall_prompt, verbose=verbose
+        overall_chain = (
+            overall_prompt | self.llm_model | StrOutputParser()
         )
-        return overall_chain.run(
-            {
-                "contribution": contribution,
-                "problem": problem,
-            }
-        )
+        return overall_chain.invoke({
+            "contribution": contribution,
+            "problem": problem,
+        })
+        # overall_chain = LLMChain(
+        #     llm=self.llm_model, prompt=overall_prompt, verbose=verbose
+        # )
+        # return overall_chain.run(
+        #     {
+        #         "contribution": contribution,
+        #         "problem": problem,
+        #     }
+        # )
 
     def _summarize_method(self, verbose: bool = True) -> str:
         """`技術や手法のキモはどこ？`"""
@@ -192,19 +216,32 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
             template=prompt_template, input_variables=[prompt_input_variable]
         )
 
-        chain: Final = LLMChain(llm=self.llm_model, prompt=prompt, verbose=verbose)
-        combine_document_chain: Final = StuffDocumentsChain(
-            llm_chain=chain,
-            document_variable_name=prompt_input_variable,
-            verbose=verbose,
-        )
+        # chain: Final = LLMChain(llm=self.llm_model, prompt=prompt, verbose=verbose)
+        # combine_document_chain: Final = StuffDocumentsChain(
+        #     llm_chain=chain,
+        #     document_variable_name=prompt_input_variable,
+        #     verbose=verbose,
+        # )
+        # result: Final = retriever.get_relevant_documents(query)
 
         retriever = self.vectorstore["all"].as_retriever(
             serch_type=search_type,
             search_kwargs=search_kwargs,
         )
-        result: Final = retriever.get_relevant_documents(query)
-        return combine_document_chain.run(result)
+
+        combine_document_chain = (
+            RunnablePassthrough.assign(
+                selected_documents=((lambda inputs: inputs["query"]) | retriever).with_config(run_name="retrieve_documents"),
+            )
+            | RunnablePassthrough.assign(
+                text=(lambda inputs: "\n\n".join(doc.page_content for doc in inputs["selected_documents"]))
+            ).with_config(run_name="combine_documents")
+            | prompt
+            | self.llm_model
+            | StrOutputParser()
+        )
+
+        return combine_document_chain.invoke({"query": query})
 
 
 if __name__ == "__main__":
