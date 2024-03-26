@@ -5,9 +5,17 @@ from langchain.docstore.document import Document
 from langchain.text_splitter import TextSplitter
 
 
-def parse_latex_text(latex_document: str) -> dict[str, Any]:
+def parse_mmd_text(raw_mmd_text: str) -> dict[str, Any]:
+    """Parse the raw Mathpix markdown(mmd) format text OCR-ed from the PDF.
+
+    Args:
+        raw_mmd_text (str): The raw mmd format text.
+
+    Returns:
+        dict[str, Any]: The parsed document of the paper.
+    """
     # Remove metadata contents before abstract
-    _, contents = latex_document.split("\\begin{abstract}")
+    _, contents = raw_mmd_text.split("\\begin{abstract}")
 
     # Extract abstract
     abstract, contents_wo_abstract = contents.split("\n\\end{abstract}")
@@ -72,6 +80,14 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
 
 
 def simple_figure_table_remover(text: str) -> str:
+    """Remove figure and table from the mmd text.
+
+    Args:
+        text (str): The source mmd text.
+
+    Returns:
+        str: The mmd text without figure and table.
+    """
     wo_table_text = re.sub(
         r"\\begin{tabular}(.*?)\\end{tabular}", "", text, flags=re.DOTALL
     )
@@ -87,6 +103,16 @@ def structure_latex_documents(
     text_splitter: TextSplitter,
     abstract_text: str | None = None,
 ) -> list[Document]:
+    """Structure the parsed paper into documents.
+
+    Args:
+        parsed_paper (dict[str, Any]): The parsed document of the paper.
+        text_splitter (TextSplitter): The text splitter object of langchain.
+        abstract_text (str | None): The full abstract text.
+
+    Returns:
+        list[Document]: A list of structured documents.
+    """
     # If full abstract is provided, use it instead of parsed one.
     documents = [
         Document(

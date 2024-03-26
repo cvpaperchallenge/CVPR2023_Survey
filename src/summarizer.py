@@ -27,16 +27,23 @@ class FormatOchiai(BaseModel):
 
 
 class CustomHandler(BaseCallbackHandler):
+    """Custom handler to log prompts during the chain."""
     def on_llm_start(
         self, serialized: dict[str, Any], prompts: list[str], **kwargs: Any
-    ) -> Any:
+    ) -> None:
+        """Run when the LLM starts running.
+
+        Args:
+            serialized (dict[str, Any]): Serialized inputs.
+            prompts (list[str]): List of prompts.
+        """
         formatted_prompts = "\n".join(prompts)
         # Log prompts in green color
         logger.info(f"\033[92mPrompt:\n{formatted_prompts}\033[0m")
 
 
 class BasePaperSummarizer(ABC):
-    """ """
+    """Base class for paper summarizer."""
 
     def __init__(
         self,
@@ -45,6 +52,14 @@ class BasePaperSummarizer(ABC):
         prompt_template_dir: pathlib.Path,
         verbose: bool,
     ) -> None:
+        """Initialize the paper summarizer.
+
+        Args:
+            llm_model (BaseLanguageModel): Language model to use for summarization.
+            vectorstore (dict[str, VectorStore]): Vector stores for document retrieval.
+            prompt_template_dir (pathlib.Path): Path to the directory containing prompt templates.
+            verbose (bool): The flag whether to log used prompts, generated summaries, and token usage.
+        """
         self.llm_model = llm_model
         self.vectorstore = vectorstore
         self.template_env = Environment(
@@ -53,10 +68,15 @@ class BasePaperSummarizer(ABC):
         self.verbose = verbose
 
     def _summarize(self) -> Any:
+        """Summarize the paper."""
         raise NotImplementedError
 
     def summarize(self) -> FormatOchiai:
-        """"""
+        """Summarize the paper in Ochiai format.
+
+        Returns:
+            FormatOchiai: Paper summary in Ochiai format.
+        """
         if self.verbose:
             with get_openai_callback() as cb:
                 summary = self._summarize()
@@ -69,6 +89,7 @@ class BasePaperSummarizer(ABC):
 
 
 class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
+    """Paper summarizer in Ochiai format."""
     def __init__(
         self,
         llm_model: BaseLanguageModel,
@@ -76,6 +97,14 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         prompt_template_dir: pathlib.Path,
         verbose: bool = False,
     ) -> None:
+        """Initialize the paper summarizer.
+
+        Args:
+            llm_model (BaseLanguageModel): Language model to use for summarization.
+            vectorstore (dict[str, VectorStore]): Vector stores for document retrieval.
+            prompt_template_dir (pathlib.Path): Path to the directory containing prompt templates.
+            verbose (bool): The flag whether to log used prompts, generated summaries, and token usage.
+        """
         super().__init__(
             llm_model=llm_model,
             vectorstore=vectorstore,
@@ -84,6 +113,11 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         )
 
     def _summarize(self) -> FormatOchiai:
+        """Summarize the paper in Ochiai format.
+
+        Returns:
+            FormatOchiai: Paper summary in Ochiai format.
+        """
         outline = self._summarize_outline()
         contribution = self._summarize_contribution()
         method = self._summarize_method()
@@ -98,7 +132,11 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         )
 
     def _summarize_outline(self) -> str:
-        """`どんなもの？`"""
+        """Summarize the outline of the paper.
+
+        Returns:
+            str: The summary of the paper outline.
+        """
         prompt_template: Final = self.template_env.get_template(
             "outline_ja.jinja2"
         ).render()
@@ -145,7 +183,11 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         return outline_sumamry
 
     def _summarize_contribution(self) -> str:
-        """`先行研究と比べてどこがすごい？`"""
+        """Summarize the contribution of the paper.
+
+        Returns:
+            str: The summary of the paper contribution.
+        """
         contribution_query: Final = "The contribution of this study"
         problem_query: Final = "The problems with previous studies"
         contribution = self._run_combine_document_chain(
@@ -178,7 +220,11 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         return contribution_summary
 
     def _summarize_method(self) -> str:
-        """`技術や手法のキモはどこ？`"""
+        """Summarize the method of the paper.
+
+        Returns:
+            str: The summary of the paper method.
+        """
         query: Final = "The proposed method and dataset in this study"
 
         method_summary = self._run_combine_document_chain(
@@ -191,7 +237,11 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         return method_summary
 
     def _summarize_evaluation(self) -> str:
-        """`どうやって有効だと検証した？`"""
+        """Summarize the evaluation of the paper.
+
+        Returns:
+            str: The summary of the paper evaluation.
+        """
         query: Final = "The experiments conducted in this study and their evaluation"
 
         evaluation_summary = self._run_combine_document_chain(
@@ -204,7 +254,11 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         return evaluation_summary
 
     def _summarize_discussion(self) -> str:
-        """`議論はある？`"""
+        """Summarize the discussion of the paper.
+
+        Returns:
+            str: The summary of the paper discussion.
+        """
         query: Final = "The authors' analysis and future prospects based on the results of the evaluation of this study"
 
         discussion_summary = self._run_combine_document_chain(
@@ -223,7 +277,25 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         search_type: str = "similarity",
         search_kwargs: dict[str, int] = {"k": 5},
     ) -> str:
-        """ """
+        """Process the text generation using the retrieved documents based on the query.
+
+        Args:
+            query (str): The query to retrieve the documents.
+            prompt_template_filename (str): The prompt template filename.
+            search_type (str): The search type.
+            search_kwargs (dict[str, int]): Keyword arguments to pass to the search function.
+                Can include things like:
+                    k: Amount of documents to return (Default: 4)
+                    score_threshold: Minimum relevance threshold
+                        for similarity_score_threshold
+                    fetch_k: Amount of documents to pass to MMR algorithm (Default: 20)
+                    lambda_mult: Diversity of results returned by MMR;
+                        1 for minimum diversity and 0 for maximum. (Default: 0.5)
+                    filter: Filter by document metadata
+
+        Returns:
+            str: The generated summary.
+        """
         prompt_template: Final = self.template_env.get_template(
             prompt_template_filename
         ).render()
@@ -274,7 +346,7 @@ if __name__ == "__main__":
     parsed_paper = parse_latex_text(raw_papers[0].page_content)
 
     text_splitter = TokenTextSplitter.from_tiktoken_encoder(
-        model_name="gpt-3.5-turbo",  # "text-embedding-ada-002"
+        model_name="gpt-3.5-turbo-0125",  # "gpt-4-0125-preview"
         chunk_size=200,
         chunk_overlap=40,
     )

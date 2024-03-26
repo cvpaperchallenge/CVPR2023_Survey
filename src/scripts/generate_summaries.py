@@ -17,7 +17,7 @@ from langchain_community.document_loaders.text import TextLoader
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-from src.latex_parser import parse_latex_text, structure_latex_documents
+from src.latex_parser import parse_mmd_text, structure_latex_documents
 from src.parser import Paper
 from src.summarizer import OchiaiFormatPaperSummarizer
 
@@ -86,7 +86,7 @@ def generate_summaries_in_ochiai_format(
 
         # Parse Latex format text.
         raw_paper = TextLoader(file_path=str(mathpix_file_path)).load()[0]
-        parsed_paper = parse_latex_text(raw_paper.page_content)
+        parsed_paper = parse_mmd_text(raw_paper.page_content)
 
         # Convert text into to structured documents
         text_splitter = TokenTextSplitter.from_tiktoken_encoder(

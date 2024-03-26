@@ -12,7 +12,6 @@ class CustomMathpixPDFLoader(MathpixPDFLoader):
     langchain to support mmd format conversion.
 
     """
-
     def __init__(
         self,
         file_path: str,
@@ -22,6 +21,16 @@ class CustomMathpixPDFLoader(MathpixPDFLoader):
         extra_request_data: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
+        """Initialize the loader.
+
+        Args:
+            file_path (str): The file path.
+            processed_file_format (str): The processed file format.
+            max_wait_time_seconds (int): The maximum wait time in seconds.
+            should_clean_pdf (bool): Whether to clean the PDF.
+            extra_request_data (dict[str, Any] | None): Extra request data.
+            **kwargs (Any): Additional keyword arguments.
+        """
         super().__init__(
             file_path,
             processed_file_format,
@@ -32,12 +41,25 @@ class CustomMathpixPDFLoader(MathpixPDFLoader):
         )
 
     def get_processed_pdf_in_mmd_format(self, pdf_id: str) -> str:
+        """Get processed PDF in mmd format.
+
+        Args:
+            pdf_id (str): The PDF ID.
+
+        Returns:
+            str: The processed PDF in mmd format.
+        """
         self.wait_for_processing(pdf_id)
         url = f"{self.url}/{pdf_id}.mmd"
         response = requests.get(url, headers=self._mathpix_headers)
         return response.content.decode("utf-8")
 
     def load_mmd(self) -> list[Document]:
+        """Load PDF files in mmd format.
+
+        Returns:
+            list[Document]: The list of documents.
+        """
         pdf_id = self.send_pdf()
         contents = self.get_processed_pdf_in_mmd_format(pdf_id)
         if self.should_clean_pdf:
