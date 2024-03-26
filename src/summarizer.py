@@ -169,7 +169,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         experiments: Final = retriever.get_relevant_documents("Experiments")
         resutls: Final = retriever.get_relevant_documents("Results")
 
-        if isinstance(self.vectorstore, FAISS):
+        if isinstance(self.vectorstore["all"], FAISS):
             abstract_docstore_id = self.vectorstore["all"].index_to_docstore_id[0]  # type: ignore
             abstract_document = self.vectorstore["all"].docstore._dict[abstract_docstore_id]  # type: ignore
         else:
