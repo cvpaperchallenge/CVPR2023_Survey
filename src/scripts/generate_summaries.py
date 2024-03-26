@@ -18,7 +18,7 @@ from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from src.cvf_page_parser import Paper
-from src.mmd_text_parser import parse_mmd_text, structure_latex_documents
+from src.mmd_text_parser import parse_mmd_text, structure_mmd_documents
 from src.summarizer import OchiaiFormatPaperSummarizer
 
 logger: Final = logging.getLogger(__name__)
@@ -73,7 +73,7 @@ def generate_summaries_in_ochiai_format(
         mathpix_file_path = directory_path / (stem + "_mathpix.txt")
         if not mathpix_file_path.exists():
             raise FileNotFoundError(
-                f"`{str(mathpix_file_path)}` does not exist. Please run `convert_to_latex.py` first to get latex format text file."
+                f"`{str(mathpix_file_path)}` does not exist. Please run `convert_to_mmd.py` first to get mmd format text file."
             )
 
         # If summary already exists, continue the loop.
@@ -84,7 +84,7 @@ def generate_summaries_in_ochiai_format(
             )
             continue
 
-        # Parse Latex format text.
+        # Parse mmd format text.
         raw_paper = TextLoader(file_path=str(mathpix_file_path)).load()[0]
         parsed_paper = parse_mmd_text(raw_paper.page_content)
 
@@ -94,7 +94,7 @@ def generate_summaries_in_ochiai_format(
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
         )
-        documents = structure_latex_documents(
+        documents = structure_mmd_documents(
             parsed_paper,
             text_splitter,
             papers[paper_id].abstract,

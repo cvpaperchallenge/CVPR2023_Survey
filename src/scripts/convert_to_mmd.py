@@ -1,7 +1,7 @@
 """
 
-This script convert PDF into Latex format text. This script uses Mathpix
-API and it requires the following environment variables.
+This script convert PDF into Mathpix markdown(mmd) format text.
+This script uses Mathpix API and it requires the following environment variables.
 
 - MATHPIX_API_ID
 - MATHPIX_API_KEY
@@ -10,7 +10,7 @@ API and it requires the following environment variables.
 import argparse
 import logging
 import pathlib
-from typing import Final, cast
+from typing import Final
 
 from src.loader import CustomMathpixPDFLoader
 
@@ -18,8 +18,8 @@ logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-def convert_pdf_to_latex(paper_root_dir: pathlib.Path) -> None:
-    """Convert PDF files into Latex format text.
+def convert_pdf_to_mmd(paper_root_dir: pathlib.Path) -> None:
+    """Convert PDF files into Mathpix markdown(mmd) format text.
 
     Args:
         paper_root_dir (pathlib.Path): Path to the directory containing PDF files.
@@ -47,7 +47,7 @@ def convert_pdf_to_latex(paper_root_dir: pathlib.Path) -> None:
 
         # Send request to Mathpix.
         logger.info(f"[{i+1}/{len(pdf_file_paths)}] `{stem}` is sent to Mathpix API.")
-        latex_text = (
+        mmd_text = (
             CustomMathpixPDFLoader(
                 file_path=str(pdf_file_path),
                 processed_file_format="md",
@@ -60,9 +60,9 @@ def convert_pdf_to_latex(paper_root_dir: pathlib.Path) -> None:
             .page_content
         )
 
-        # Save latex format text.
+        # Save mmd format text.
         with mathpix_file_path.open("w") as f:
-            f.write(latex_text)
+            f.write(mmd_text)
 
 
 if __name__ == "__main__":
@@ -77,4 +77,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    convert_pdf_to_latex(args.input_dir)
+    convert_pdf_to_mmd(args.input_dir)

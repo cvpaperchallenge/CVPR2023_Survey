@@ -98,7 +98,7 @@ def simple_figure_table_remover(text: str) -> str:
     return wo_fig_table_text
 
 
-def structure_latex_documents(
+def structure_mmd_documents(
     parsed_paper: dict[str, Any],
     text_splitter: TextSplitter,
     abstract_text: str | None = None,
