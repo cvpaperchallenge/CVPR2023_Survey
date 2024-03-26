@@ -339,11 +339,11 @@ if __name__ == "__main__":
     from langchain_core.documents import Document
     from langchain_openai import OpenAIEmbeddings
 
-    from src.latex_parser import parse_latex_text
+    from src.mmd_text_parser import parse_mmd_text
 
     txt_path = pathlib.Path("./tests/data/visual_atoms.txt")
     raw_papers = TextLoader(file_path=txt_path).load()
-    parsed_paper = parse_latex_text(raw_papers[0].page_content)
+    parsed_paper = parse_mmd_text(raw_papers[0].page_content)
 
     text_splitter = TokenTextSplitter.from_tiktoken_encoder(
         model_name="gpt-3.5-turbo-0125",  # "gpt-4-0125-preview"

@@ -17,7 +17,7 @@ from langchain_community.document_loaders.text import TextLoader
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-from src.latex_parser import parse_mmd_text, structure_latex_documents
+from src.mmd_text_parser import parse_mmd_text, structure_latex_documents
 from src.cvf_page_parser import Paper
 from src.summarizer import OchiaiFormatPaperSummarizer
 
