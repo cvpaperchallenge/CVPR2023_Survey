@@ -62,7 +62,7 @@ def convert_pdf_to_latex(paper_root_dir: pathlib.Path) -> None:
 
         # Save latex format text.
         with mathpix_file_path.open("w") as f:
-            f.write(cast(str, latex_text))
+            f.write(latex_text)
 
 
 if __name__ == "__main__":

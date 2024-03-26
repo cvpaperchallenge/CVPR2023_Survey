@@ -17,8 +17,8 @@ from langchain_community.document_loaders.text import TextLoader
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-from src.mmd_text_parser import parse_mmd_text, structure_latex_documents
 from src.cvf_page_parser import Paper
+from src.mmd_text_parser import parse_mmd_text, structure_latex_documents
 from src.summarizer import OchiaiFormatPaperSummarizer
 
 logger: Final = logging.getLogger(__name__)
@@ -137,7 +137,7 @@ def generate_summaries_in_ochiai_format(
             )
 
         # Generate summary.
-        llm_model = ChatOpenAI(model_name=llm_model_name, temperature=temperature)
+        llm_model = ChatOpenAI(model_name=llm_model_name, temperature=temperature)  # type: ignore
         summarizer = OchiaiFormatPaperSummarizer(
             llm_model=llm_model,
             vectorstore={

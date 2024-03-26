@@ -22,7 +22,7 @@ def parse_mmd_text(raw_mmd_text: str) -> dict[str, Any]:
 
     # Split sections
     raw_section_list = contents_wo_abstract.lstrip("\n").split("\\section*{")
-    section_list = []
+    section_list: list[dict[str, Any]] = []
     section_id = 1
     for i, each_section in enumerate(raw_section_list):
         if i == 0:

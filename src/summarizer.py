@@ -9,6 +9,7 @@ from langchain.prompts import PromptTemplate
 from langchain.vectorstores.base import VectorStore
 from langchain_community.callbacks.manager import get_openai_callback
 from langchain_community.chat_models.openai import ChatOpenAI
+from langchain_community.vectorstores.faiss import FAISS
 from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -28,6 +29,7 @@ class FormatOchiai(BaseModel):
 
 class CustomHandler(BaseCallbackHandler):
     """Custom handler to log prompts during the chain."""
+
     def on_llm_start(
         self, serialized: dict[str, Any], prompts: list[str], **kwargs: Any
     ) -> None:
@@ -71,18 +73,17 @@ class BasePaperSummarizer(ABC):
         """Summarize the paper."""
         raise NotImplementedError
 
-    def summarize(self) -> FormatOchiai:
-        """Summarize the paper in Ochiai format.
+    def summarize(self) -> Any:
+        """Summarize the paper.
 
         Returns:
-            FormatOchiai: Paper summary in Ochiai format.
+            Any: Paper summary.
         """
         if self.verbose:
             with get_openai_callback() as cb:
                 summary = self._summarize()
                 # Log the token usage in red color
                 logger.info(f"\033[91mToken Usage:\n{cb}\033[0m")
-                # logger.info(cb)
                 return summary
         else:
             return self._summarize()
@@ -90,6 +91,7 @@ class BasePaperSummarizer(ABC):
 
 class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
     """Paper summarizer in Ochiai format."""
+
     def __init__(
         self,
         llm_model: BaseLanguageModel,
@@ -167,8 +169,11 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         experiments: Final = retriever.get_relevant_documents("Experiments")
         resutls: Final = retriever.get_relevant_documents("Results")
 
-        abstract_docstore_id = self.vectorstore["all"].index_to_docstore_id[0]
-        abstract_document = self.vectorstore["all"].docstore._dict[abstract_docstore_id]
+        if isinstance(self.vectorstore, FAISS):
+            abstract_docstore_id = self.vectorstore["all"].index_to_docstore_id[0]  # type: ignore
+            abstract_document = self.vectorstore["all"].docstore._dict[abstract_docstore_id]  # type: ignore
+        else:
+            raise NotImplementedError("Only FAISS vectorstore is supported.")
         selected_documents.append(abstract_document)
         selected_documents.extend(proposed_method)
         selected_documents.extend(experiments)
@@ -335,14 +340,13 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
 if __name__ == "__main__":
     from langchain.text_splitter import TokenTextSplitter
     from langchain_community.document_loaders.text import TextLoader
-    from langchain_community.vectorstores.faiss import FAISS
     from langchain_core.documents import Document
     from langchain_openai import OpenAIEmbeddings
 
     from src.mmd_text_parser import parse_mmd_text
 
     txt_path = pathlib.Path("./tests/data/visual_atoms.txt")
-    raw_papers = TextLoader(file_path=txt_path).load()
+    raw_papers = TextLoader(file_path=str(txt_path)).load()
     parsed_paper = parse_mmd_text(raw_papers[0].page_content)
 
     text_splitter = TokenTextSplitter.from_tiktoken_encoder(
@@ -394,7 +398,7 @@ if __name__ == "__main__":
         embedding=embeddings,
     )
 
-    llm_model = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.9)
+    llm_model = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.9)  # type: ignore
 
     summarizer = OchiaiFormatPaperSummarizer(
         llm_model=llm_model,

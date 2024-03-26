@@ -12,6 +12,7 @@ class CustomMathpixPDFLoader(MathpixPDFLoader):
     langchain to support mmd format conversion.
 
     """
+
     def __init__(
         self,
         file_path: str,
