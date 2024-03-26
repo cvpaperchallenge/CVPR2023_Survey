@@ -12,7 +12,7 @@ from typing import Any, Final
 
 from pydantic_core import Url
 
-from src.parser import get_paper_page_urls, parse_paper_page
+from src.cvf_page_parser import get_paper_page_urls, parse_paper_page
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

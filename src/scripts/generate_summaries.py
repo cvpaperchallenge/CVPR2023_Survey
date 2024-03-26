@@ -18,7 +18,7 @@ from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from src.latex_parser import parse_mmd_text, structure_latex_documents
-from src.parser import Paper
+from src.cvf_page_parser import Paper
 from src.summarizer import OchiaiFormatPaperSummarizer
 
 logger: Final = logging.getLogger(__name__)

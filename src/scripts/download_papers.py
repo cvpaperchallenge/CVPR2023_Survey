@@ -11,7 +11,7 @@ from typing import Final
 
 import requests
 
-from src.parser import Paper
+from src.cvf_page_parser import Paper
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
