@@ -1,12 +1,11 @@
 ARG BASE_IMAGE=python:3.10.6-slim-bullseye
 FROM ${BASE_IMAGE}
 
-ARG PROJECT_NAME=cvpr2023survey
+ARG PROJECT_NAME=cvpr-iccv-2023-survey
 ARG USER_NAME=challenger
 ARG GROUP_NAME=challengers
 ARG UID=1000
 ARG GID=1000
-ARG PYTHON_VERSION=3.8
 ARG APPLICATION_DIRECTORY=/home/${USER_NAME}/${PROJECT_NAME}
 ARG RUN_POETRY_INSTALL_AT_BUILD_TIME="false"
 
@@ -19,7 +18,7 @@ RUN apt update \
     && apt install --no-install-recommends -y git curl make \
     && pip3 install poetry
 
-# Add user. Without this, following process is executed as admin. 
+# Add user. Without this, following process is executed as admin.
 RUN groupadd -g ${GID} ${GROUP_NAME} \
     && useradd -ms /bin/sh -u ${UID} -g ${GID} ${USER_NAME}
 
