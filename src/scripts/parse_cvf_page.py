@@ -8,18 +8,22 @@ import argparse
 import json
 import logging
 import pathlib
-from typing import Final, Any
+from typing import Any, Final
+
 from pydantic_core import Url
 
-from src.parser import get_paper_page_urls, parse_paper_page
+from src.cvf_page_parser import get_paper_page_urls, parse_paper_page
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+
 def url_serializer_for_json_dump(object: Any) -> str:
     if isinstance(object, Url):
         return str(object)
-    raise TypeError(f'Object of type {object.__class__.__name__} is not JSON serializable')
+    raise TypeError(
+        f"Object of type {object.__class__.__name__} is not JSON serializable"
+    )
 
 
 def extract_paper_info(output_dir: pathlib.Path, conference: str, year: int) -> None:
@@ -75,4 +79,6 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    extract_paper_info(output_dir=args.output_dir, conference=args.conference, year=args.year)
+    extract_paper_info(
+        output_dir=args.output_dir, conference=args.conference, year=args.year
+    )

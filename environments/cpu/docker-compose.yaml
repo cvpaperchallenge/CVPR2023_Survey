@@ -1,5 +1,6 @@
 version: "3.8"
 
+name: cvpr-iccv-2023-survey
 services:
   core:
     build:

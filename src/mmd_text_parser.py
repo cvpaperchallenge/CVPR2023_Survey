@@ -1,20 +1,28 @@
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from langchain.docstore.document import Document
 from langchain.text_splitter import TextSplitter
 
 
-def parse_latex_text(latex_document: str) -> dict[str, Any]:
+def parse_mmd_text(raw_mmd_text: str) -> dict[str, Any]:
+    """Parse the raw Mathpix markdown(mmd) format text OCR-ed from the PDF.
+
+    Args:
+        raw_mmd_text (str): The raw mmd format text.
+
+    Returns:
+        dict[str, Any]: The parsed document of the paper.
+    """
     # Remove metadata contents before abstract
-    _, contents = latex_document.split("\\begin{abstract}")
+    _, contents = raw_mmd_text.split("\\begin{abstract}")
 
     # Extract abstract
     abstract, contents_wo_abstract = contents.split("\n\\end{abstract}")
 
     # Split sections
-    raw_section_list = contents_wo_abstract.lstrip("\n").split("\\section{")
-    section_list = []
+    raw_section_list = contents_wo_abstract.lstrip("\n").split("\\section*{")
+    section_list: list[dict[str, Any]] = []
     section_id = 1
     for i, each_section in enumerate(raw_section_list):
         if i == 0:
@@ -32,7 +40,7 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
 
     # Split subsections
     for each_section_dict in section_list:
-        raw_subsection_list = each_section_dict["section_text"].split("\\subsection{")
+        raw_subsection_list = each_section_dict["section_text"].split("\\subsection*{")
         # Go into next section if there is no subsection
         if len(raw_subsection_list) == 1:
             each_section_dict["subsection_list"] = []
@@ -72,18 +80,39 @@ def parse_latex_text(latex_document: str) -> dict[str, Any]:
 
 
 def simple_figure_table_remover(text: str) -> str:
+    """Remove figure and table from the mmd text.
+
+    Args:
+        text (str): The source mmd text.
+
+    Returns:
+        str: The mmd text without figure and table.
+    """
     wo_table_text = re.sub(
         r"\\begin{tabular}(.*?)\\end{tabular}", "", text, flags=re.DOTALL
     )
     wo_fig_table_text = re.sub(r"!\[\]\((.*?)\)\n", "", wo_table_text, flags=re.DOTALL)
+    wo_fig_table_text = re.sub(
+        r"\nFigure(.*?)\n\n", "", wo_fig_table_text, flags=re.DOTALL
+    )
     return wo_fig_table_text
 
 
-def structure_latex_documents(
-    parsed_paper: Dict,
+def structure_mmd_documents(
+    parsed_paper: dict[str, Any],
     text_splitter: TextSplitter,
-    abstract_text: Optional[str] = None,
-) -> List[Document]:
+    abstract_text: str | None = None,
+) -> list[Document]:
+    """Structure the parsed paper into documents.
+
+    Args:
+        parsed_paper (dict[str, Any]): The parsed document of the paper.
+        text_splitter (TextSplitter): The text splitter object of langchain.
+        abstract_text (str | None): The full abstract text.
+
+    Returns:
+        list[Document]: A list of structured documents.
+    """
     # If full abstract is provided, use it instead of parsed one.
     documents = [
         Document(

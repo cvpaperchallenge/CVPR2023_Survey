@@ -1,77 +1,69 @@
-from __future__ import annotations
-
-import io
-import json
-import pathlib
-import zipfile
 from typing import Any
 
 import requests
 from langchain.docstore.document import Document
-from langchain.document_loaders import MathpixPDFLoader
+from langchain.document_loaders.pdf import MathpixPDFLoader
 
 
-class CustomMathpixLoader(MathpixPDFLoader):
-    """Loader for mathpix.
+class CustomMathpixPDFLoader(MathpixPDFLoader):
+    """Load `PDF` files using `Mathpix` service.
 
-    NOTE: This class extends `MathpixPDFLoader` class implemented in
-    langchain to support request paramters.
+    This class extends `MathpixPDFLoader` class implemented in
+    langchain to support mmd format conversion.
 
     """
 
     def __init__(
         self,
         file_path: str,
-        output_path_for_tex: pathlib.Path,
-        processed_file_format: list[str] = ["mmd", "tex.zip"],
+        processed_file_format: str = "md",
         max_wait_time_seconds: int = 500,
         should_clean_pdf: bool = False,
-        output_langchain_document: bool = True,
-        other_request_parameters: dict = {},
+        extra_request_data: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> None:
-        self.output_langchain_document = output_langchain_document
-        self.other_request_parameters = other_request_parameters
-        self.output_path_for_tex = output_path_for_tex
+        """Initialize the loader.
+
+        Args:
+            file_path (str): The file path.
+            processed_file_format (str): The processed file format.
+            max_wait_time_seconds (int): The maximum wait time in seconds.
+            should_clean_pdf (bool): Whether to clean the PDF.
+            extra_request_data (dict[str, Any] | None): Extra request data.
+            **kwargs (Any): Additional keyword arguments.
+        """
         super().__init__(
             file_path,
             processed_file_format,
             max_wait_time_seconds,
             should_clean_pdf,
+            extra_request_data,
             **kwargs,
         )
 
-    @property
-    def data(self) -> dict:
-        conversion_formats = {f: True for f in self.processed_file_format}
-        options = {
-            "conversion_formats": conversion_formats,
-            **self.other_request_parameters,
-        }
-        return {"options_json": json.dumps(options)}
+    def get_processed_pdf_in_mmd_format(self, pdf_id: str) -> str:
+        """Get processed PDF in mmd format.
 
-    def load(self) -> list[Document] | str:
+        Args:
+            pdf_id (str): The PDF ID.
+
+        Returns:
+            str: The processed PDF in mmd format.
+        """
+        self.wait_for_processing(pdf_id)
+        url = f"{self.url}/{pdf_id}.mmd"
+        response = requests.get(url, headers=self._mathpix_headers)
+        return response.content.decode("utf-8")
+
+    def load_mmd(self) -> list[Document]:
+        """Load PDF files in mmd format.
+
+        Returns:
+            list[Document]: The list of documents.
+        """
         pdf_id = self.send_pdf()
-        contents = self.get_processed_pdf(pdf_id)
+        contents = self.get_processed_pdf_in_mmd_format(pdf_id)
         if self.should_clean_pdf:
             contents = self.clean_pdf(contents)
-        if self.output_langchain_document:
-            metadata = {"source": self.source, "file_path": self.source}
-            output = [Document(page_content=contents, metadata=metadata)]
-        else:
-            output = contents
-        return output
-
-    def get_processed_pdf(self, pdf_id: str) -> dict[str, str]:
-        self.wait_for_processing(pdf_id)
-        responses = dict()
-        for conversion_formats in self.processed_file_format:
-            url = f"{self.url}/{pdf_id}.{conversion_formats}"
-            response = requests.get(url, headers=self.headers)
-            if conversion_formats == "tex.zip":
-                with zipfile.ZipFile(io.BytesIO(response.content)) as z:
-                    z.extractall(self.output_path_for_tex)
-                    responses["tex.zip"] = self.output_path_for_tex
-            else:
-                responses[conversion_formats] = response.content.decode("utf-8")
-        return responses
+        metadata = {"source": self.source, "file_path": self.source, "pdf_id": pdf_id}
+        return [Document(page_content=contents, metadata=metadata)]
