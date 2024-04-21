@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from pydantic import BaseModel, HttpUrl
 
+
 class Paper(BaseModel):
     """Pydantic model which stores single paper infomation."""
 
@@ -43,6 +44,7 @@ def validate_conference(conference: str, year: int) -> str:
             f"You specified the conference name as {conference}, \
             but our code does not support the conference."
         )
+
 
 def get_paper_page_urls(conference: str, year: int) -> list[str]:
     """Return a list of CVF page URL.
@@ -90,9 +92,7 @@ def parse_paper_page(page_url: str) -> Paper:
     conference_path: Final[str] = page_url.rsplit("/", 2)[0]
     # paper_name is like: <family_name>_<paper_title>_<conference_name>_<year>_paper
     paper_name: Final[str] = page_url.rsplit("/", 1)[1].removesuffix(".html")
-    pdf: Final[str] = (
-        conference_path + "/papers/" + paper_name + ".pdf"
-    )
+    pdf: Final[str] = conference_path + "/papers/" + paper_name + ".pdf"
 
     return Paper(
         title=title,
