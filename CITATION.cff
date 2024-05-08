@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you want to cite this repo, feel free to use this (but only if you loved it 😊)"
+title: "CVPR2023_Survey"
+abstract: "This is the repository for the CVPR 2023 survey."
+date-released: 2024-5-8
+authors:
+  - family-names: "Kubotani"
+    given-names: "Yoshiki"
+  - family-names: "Fukuhara"
+    given-names: "Yoshihiro"
+  - name: "cvpaper.challenge"
+version: 0.1.0
+doi: 10.5281/zenodo.11149777
+license: "MIT"
+url: "https://github.com/cvpaperchallenge/CVPR2023_Survey"
