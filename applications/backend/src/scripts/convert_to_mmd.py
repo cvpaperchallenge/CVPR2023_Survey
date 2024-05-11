@@ -78,4 +78,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    convert_pdf_to_mmd(args.input_dir)
+    convert_pdf_to_mmd(args.input_pdf_dir)
