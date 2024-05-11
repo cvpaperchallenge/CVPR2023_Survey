@@ -71,11 +71,13 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--paper-root-dir",
+        "-p",
         type=pathlib.Path,
         help="Path to the root directory containing PDF files.",
     )
     parser.add_argument(
         "--output-root-dir",
+        "-o",
         type=pathlib.Path,
         help="Path to the root directory for outputs.",
     )
