@@ -20,6 +20,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 class FormatOchiai(BaseModel):
+    """Ochiai format for paper summary."""
     outline: str = Field(description="どんなもの？")
     contribution: str = Field(description="先行研究と比べてどこがすごい？")
     method: str = Field(description="技術や手法のキモはどこ？")

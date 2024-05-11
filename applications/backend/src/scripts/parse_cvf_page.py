@@ -20,6 +20,11 @@ logging.basicConfig(level=logging.INFO)
 
 
 def url_serializer_for_json_dump(object: Any) -> str:
+    """Serialize Url object to string for JSON dump.
+
+    Args:
+        object (Any): Object to serialize.
+    """
     if isinstance(object, Url):
         return str(object)
     raise TypeError(

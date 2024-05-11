@@ -17,7 +17,14 @@ def create_outputs(
   paper_root_dir: pathlib.Path,
   output_root_dir: pathlib.Path,
   target: Literal["mmd", "summary"]
-):
+) -> None:
+    """Copy target files to the output directory.
+
+    Args:
+        paper_root_dir (pathlib.Path): Path to the root directory containing PDF files.
+        output_root_dir (pathlib.Path): Path to the root directory for outputs.
+        target (Literal["mmd", "summary"]): Target file type to copy.
+    """
     # Loop over all papers.
     pdf_file_paths = sorted(list(paper_root_dir.glob("**/*.pdf")))
     for _, pdf_file_path in enumerate(pdf_file_paths):
