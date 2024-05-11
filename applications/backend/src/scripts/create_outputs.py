@@ -28,12 +28,12 @@ def create_outputs(
     # Loop over all papers.
     pdf_file_paths = sorted(list(paper_root_dir.glob("**/*.pdf")))
     for _, pdf_file_path in enumerate(pdf_file_paths):
-        directory_path: Final[pathlib.Path] = pdf_file_path.parents[0]
+        directory_path: pathlib.Path = pdf_file_path.parents[0]
 
-        conference_name: Final[str] = pdf_file_path.parents[1].name
-        pdf_file_name: Final[str] = pdf_file_path.stem
+        conference_name: str = pdf_file_path.parents[1].name
+        pdf_file_name: str = pdf_file_path.stem
 
-        paper_id: Final[int] = int(directory_path.name.split("_")[0])
+        paper_id: int = int(directory_path.name.split("_")[0])
 
         target_file_path: pathlib.Path
         if target == "mmd":
@@ -53,10 +53,10 @@ def create_outputs(
         else:
             raise ValueError(f"Invalid target: {target}")
 
-        output_directory_path: Final[pathlib.Path] = output_root_dir / conference_name / target
+        output_directory_path: pathlib.Path = output_root_dir / conference_name / target
         output_directory_path.mkdir(parents=True, exist_ok=True)
-        output_file_name: Final[str] = f"{paper_id:04d}_{target_file_path.name}"
-        output_file_path: Final[pathlib.Path] = output_directory_path / output_file_name
+        output_file_name: str = f"{paper_id:04d}_{target_file_path.name}"
+        output_file_path: pathlib.Path = output_directory_path / output_file_name
 
         if output_file_path.exists():
             logger.info(f"`{str(output_file_path)}` already exists. Skip copying the file.")

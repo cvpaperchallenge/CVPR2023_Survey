@@ -31,7 +31,7 @@ class FormatOchiai(BaseModel):
 class CustomHandler(BaseCallbackHandler):
     """Custom handler to log prompts during the chain."""
 
-    def on_llm_start(
+    def on_llm_start( # noqa: D417
         self, serialized: dict[str, Any], prompts: list[str], **kwargs: Any
     ) -> None:
         """Run when the LLM starts running.
@@ -171,7 +171,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         resutls: Final = retriever.get_relevant_documents("Results")
 
         if isinstance(self.vectorstore["all"], FAISS):
-            abstract_docstore_id = self.vectorstore["all"].index_to_docstore_id[0]  # type: ignore
+            abstract_docstore_id = self.vectorstore["all"].index_to_docstore_id[0]
             abstract_document = self.vectorstore["all"].docstore._dict[abstract_docstore_id]  # type: ignore
         else:
             raise NotImplementedError("Only FAISS vectorstore is supported.")
