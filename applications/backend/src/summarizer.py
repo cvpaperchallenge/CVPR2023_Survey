@@ -1,6 +1,6 @@
 import logging
 import pathlib
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Any, Final
 
 from jinja2 import Environment, FileSystemLoader
@@ -70,6 +70,7 @@ class BasePaperSummarizer(ABC):
         )
         self.verbose = verbose
 
+    @abstractmethod
     def _summarize(self) -> Any:
         """Summarize the paper."""
         raise NotImplementedError
