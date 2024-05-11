@@ -28,8 +28,7 @@ def url_serializer_for_json_dump(object: Any) -> str:
 
 
 def extract_paper_info(output_dir: pathlib.Path, conference: str, year: int) -> None:
-    """
-    Extract paper information from CVF page and save it as JSON file.
+    """Extract paper information from CVF page and save it as JSON file.
 
     Args:
         output_dir (str): Output directory to save the JSON file.

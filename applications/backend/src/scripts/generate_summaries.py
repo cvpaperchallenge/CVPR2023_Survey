@@ -70,7 +70,7 @@ def generate_summaries_in_ochiai_format(
                 f"`{str(pdf_file_path)}` does not exist. Please run `download_papers.py` first to download PDF file."
             )
 
-        # If there is no mathpix file, send PDF to mathpix API.
+        # Check if mathpix file exists or not.
         mathpix_file_path = directory_path / (stem + "_mathpix.txt")
         if not mathpix_file_path.exists():
             raise FileNotFoundError(
