@@ -1,3 +1,4 @@
+# ruff: noqa: D200, D212
 """
 
 This script convert PDF into Mathpix markdown(mmd) format text.

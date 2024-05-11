@@ -1,3 +1,4 @@
+# ruff: noqa: D200, D212
 """
 
 This script generates summaries in ochiai format. This script requires

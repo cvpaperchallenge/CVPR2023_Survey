@@ -1,3 +1,4 @@
+# ruff: noqa: D200, D212
 """
 
 This script generate json file which includes all papers information of the selected conference.

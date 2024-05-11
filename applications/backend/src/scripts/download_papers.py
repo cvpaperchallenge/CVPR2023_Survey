@@ -1,3 +1,4 @@
+# ruff: noqa: D200, D212
 """
 
 This script download paper PDF files from urls in the JSON file.

@@ -1,3 +1,4 @@
+# ruff: noqa: D200, D212
 """
 
 This script copies target files to the output directory.
