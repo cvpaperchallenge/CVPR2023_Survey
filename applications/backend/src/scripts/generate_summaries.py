@@ -58,7 +58,7 @@ def generate_summaries_in_ochiai_format(
 
     # Loop over all papers.
     pdf_file_paths = sorted(list(paper_root_dir.glob("**/*.pdf")))
-    for i, pdf_file_path in enumerate(pdf_file_paths):
+    for _, pdf_file_path in enumerate(pdf_file_paths):
         directory_path = pdf_file_path.parent
         stem = pdf_file_path.stem
         paper_id = int(directory_path.name.split("_")[0])
