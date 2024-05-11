@@ -1,0 +1,10 @@
+data/*
+outputs/*
+__pycache__
+.coverage
+.mypy_cache
+.pytest_cache
+.venv
+!data/README.md
+!data/json
+!outputs/README.md

@@ -1,13 +1,1 @@
 envs.env
-data/*
-models/*
-outputs/*
-__pycache__
-.coverage
-.mypy_cache
-.pytest_cache
-.venv
-!data/README.md
-!data/papers.json
-!models/README.md
-!outputs/README.md
