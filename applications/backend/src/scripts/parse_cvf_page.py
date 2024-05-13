@@ -1,3 +1,4 @@
+# ruff: noqa: D200, D212
 """
 
 This script generate json file which includes all papers information of the selected conference.
@@ -19,6 +20,11 @@ logging.basicConfig(level=logging.INFO)
 
 
 def url_serializer_for_json_dump(object: Any) -> str:
+    """Serialize Url object to string for JSON dump.
+
+    Args:
+        object (Any): Object to serialize.
+    """
     if isinstance(object, Url):
         return str(object)
     raise TypeError(
@@ -27,8 +33,7 @@ def url_serializer_for_json_dump(object: Any) -> str:
 
 
 def extract_paper_info(output_dir: pathlib.Path, conference: str, year: int) -> None:
-    """
-    Extract paper information from CVF page and save it as JSON file.
+    """Extract paper information from CVF page and save it as JSON file.
 
     Args:
         output_dir (str): Output directory to save the JSON file.

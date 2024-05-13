@@ -2,16 +2,16 @@ version: "3.8"
 
 name: cvpr-iccv-2023-survey
 services:
-  core:
+  backend:
     build:
       args:
         - UID=${HOST_UID-1000}
         - GID=${HOST_GID-1000}
       context: ../../
-      dockerfile: environments/Dockerfile
+      dockerfile: environments/Dockerfile.backend
     env_file: ../envs.env
     tty: true
     volumes:
-        - ../../:/home/challenger/cvpr-iccv-2023-survey
+        - ../../applications/backend:/home/challenger/cvpr-iccv-2023-survey
     ports:
         - 8000:8000

@@ -1,3 +1,4 @@
+# ruff: noqa: D200, D212
 """
 
 This script generates summaries in ochiai format. This script requires
@@ -57,7 +58,7 @@ def generate_summaries_in_ochiai_format(
 
     # Loop over all papers.
     pdf_file_paths = sorted(list(paper_root_dir.glob("**/*.pdf")))
-    for i, pdf_file_path in enumerate(pdf_file_paths):
+    for _, pdf_file_path in enumerate(pdf_file_paths):
         directory_path = pdf_file_path.parent
         stem = pdf_file_path.stem
         paper_id = int(directory_path.name.split("_")[0])
@@ -69,7 +70,7 @@ def generate_summaries_in_ochiai_format(
                 f"`{str(pdf_file_path)}` does not exist. Please run `download_papers.py` first to download PDF file."
             )
 
-        # If there is no mathpix file, send PDF to mathpix API.
+        # Check if mathpix file exists or not.
         mathpix_file_path = directory_path / (stem + "_mathpix.txt")
         if not mathpix_file_path.exists():
             raise FileNotFoundError(

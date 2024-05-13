@@ -1,3 +1,4 @@
+# ruff: noqa: D200, D212
 """
 
 This script convert PDF into Mathpix markdown(mmd) format text.
@@ -77,4 +78,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    convert_pdf_to_mmd(args.input_dir)
+    convert_pdf_to_mmd(args.input_pdf_dir)
