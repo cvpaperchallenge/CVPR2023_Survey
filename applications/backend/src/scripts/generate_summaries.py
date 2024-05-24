@@ -135,11 +135,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "--input-pdf-dir",
+        "--input-mmd-dir",
         "-i",
         type=pathlib.Path,
         required=True,
-        help="Path to the directory containing PDF files.",
+        help="Path to the directory containing Mathpix markdown files.",
     )
     parser.add_argument(
         "--prompt-template-dir",
@@ -157,7 +157,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     generate_summaries_in_ochiai_format(
-        paper_root_dir=args.input_pdf_dir,
+        paper_root_dir=args.input_mmd_dir,
         prompt_template_dir=args.prompt_template_dir,
         verbose=args.verbose,
     )
