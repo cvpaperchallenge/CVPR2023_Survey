@@ -25,7 +25,7 @@ logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Note: list config
-llm_model_name: str = "gpt-4o" # "gpt-3.5-turbo-0125"  "gpt-4-0125-preview"
+llm_model_name: str = "gpt-4o" # "gpt-3.5-turbo-0125", "gpt-4-0125-preview"
 temperature: float = 0.9
 chunk_size: int = 200
 chunk_overlap: int = 40
@@ -70,7 +70,7 @@ def generate_summaries_in_ochiai_format(
 
         # Convert text into to structured documents
         text_splitter = TokenTextSplitter.from_tiktoken_encoder(
-            model_name=llm_model_name,
+            model_name="gpt-3.5-turbo-0125",
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
         )
