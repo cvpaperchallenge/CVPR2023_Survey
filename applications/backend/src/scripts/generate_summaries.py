@@ -18,8 +18,6 @@ from langchain_community.document_loaders.text import TextLoader
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-from src.cvf_page_parser import Paper
-# from src.mmd_text_parser import parse_mmd_text, structure_mmd_documents
 from src.paper_model import ParsedPaper
 from src.summarizer import OchiaiFormatPaperSummarizer
 
@@ -35,7 +33,6 @@ chunk_overlap: int = 40
 
 def generate_summaries_in_ochiai_format(
     paper_root_dir: pathlib.Path,
-    paper_info_path: pathlib.Path,
     prompt_template_dir: pathlib.Path,
     verbose: bool = False,
 ) -> None:
@@ -43,27 +40,15 @@ def generate_summaries_in_ochiai_format(
 
     Args:
         paper_root_dir (pathlib.Path): Path to the directory containing PDF files.
-        paper_info_path (pathlib.Path): Path to the JSON file which contains paper information.
         prompt_template_dir (pathlib.Path): Path to the directory containing prompt templates.
         verbose (bool): Print used prompts, generated summaries, and token usage.
     """
-    # Check JSON file existence.
-    if not paper_info_path.exists():
-        error_message: Final = f"The file `{str(paper_info_path)}` does not exist. \
-            Please run `parse_cvf_page.py` first to generate JSON file."
-        raise FileNotFoundError(error_message)
-
-    # Load JSON and validate by Pydantic model.
-    with paper_info_path.open("r") as f:
-        papers: Final = [Paper.model_validate(p) for p in json.load(f)]
-
     embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
     # Loop over all papers.
     mathpix_file_paths = sorted(list(paper_root_dir.glob("**/*.txt")))
     for _, mathpix_file_path in enumerate(mathpix_file_paths):
         directory_path = mathpix_file_path.parent
         stem = mathpix_file_path.stem.rsplit("_", 1)[0]
-        paper_id = int(directory_path.name.split("_")[0])
 
         # Check if mathpix file exists or not.
         if not mathpix_file_path.exists():
@@ -157,13 +142,6 @@ if __name__ == "__main__":
         help="Path to the directory containing PDF files.",
     )
     parser.add_argument(
-        "--paper-info-path",
-        "-j",
-        type=pathlib.Path,
-        required=True,
-        help="Path to the JSON file which contains paper information.",
-    )
-    parser.add_argument(
         "--prompt-template-dir",
         "-p",
         type=pathlib.Path,
@@ -180,7 +158,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     generate_summaries_in_ochiai_format(
         paper_root_dir=args.input_pdf_dir,
-        paper_info_path=args.paper_info_path,
         prompt_template_dir=args.prompt_template_dir,
         verbose=args.verbose,
     )
