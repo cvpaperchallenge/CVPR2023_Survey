@@ -57,6 +57,7 @@ def generate_summaries_in_ochiai_format(
     with paper_info_path.open("r") as f:
         papers: Final = [Paper.model_validate(p) for p in json.load(f)]
 
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
     # Loop over all papers.
     mathpix_file_paths = sorted(list(paper_root_dir.glob("**/*.txt")))
     for _, mathpix_file_path in enumerate(mathpix_file_paths):
@@ -92,7 +93,6 @@ def generate_summaries_in_ochiai_format(
             text_splitter,
         )
 
-        embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
         # Load vector database if it exists.
         if (directory_path / "index").exists() and (
             directory_path / "index_wo_abstract"
