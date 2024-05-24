@@ -27,7 +27,7 @@ logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Note: list config
-llm_model_name: str = "gpt-3.5-turbo-0125"  # "gpt-4-0125-preview"
+llm_model_name: str = "gpt-4o" # "gpt-3.5-turbo-0125"  "gpt-4-0125-preview"
 temperature: float = 0.9
 chunk_size: int = 200
 chunk_overlap: int = 40
