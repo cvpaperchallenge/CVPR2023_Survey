@@ -57,21 +57,13 @@ def generate_summaries_in_ochiai_format(
         papers: Final = [Paper.model_validate(p) for p in json.load(f)]
 
     # Loop over all papers.
-    pdf_file_paths = sorted(list(paper_root_dir.glob("**/*.pdf")))
-    for _, pdf_file_path in enumerate(pdf_file_paths):
-        directory_path = pdf_file_path.parent
-        stem = pdf_file_path.stem
+    mathpix_file_paths = sorted(list(paper_root_dir.glob("**/*.txt")))
+    for _, mathpix_file_path in enumerate(mathpix_file_paths):
+        directory_path = mathpix_file_path.parent
+        stem = mathpix_file_path.stem.rsplit("_", 1)[0]
         paper_id = int(directory_path.name.split("_")[0])
 
-        # Check if PDF file exists or not.
-        pdf_file_path = directory_path / (stem + ".pdf")
-        if not pdf_file_path.exists():
-            raise FileNotFoundError(
-                f"`{str(pdf_file_path)}` does not exist. Please run `download_papers.py` first to download PDF file."
-            )
-
         # Check if mathpix file exists or not.
-        mathpix_file_path = directory_path / (stem + "_mathpix.txt")
         if not mathpix_file_path.exists():
             raise FileNotFoundError(
                 f"`{str(mathpix_file_path)}` does not exist. Please run `convert_to_mmd.py` first to get mmd format text file."
