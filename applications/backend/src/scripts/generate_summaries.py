@@ -19,7 +19,8 @@ from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from src.cvf_page_parser import Paper
-from src.mmd_text_parser import parse_mmd_text, structure_mmd_documents
+# from src.mmd_text_parser import parse_mmd_text, structure_mmd_documents
+from src.paper_model import ParsedPaper
 from src.summarizer import OchiaiFormatPaperSummarizer
 
 logger: Final = logging.getLogger(__name__)
@@ -79,7 +80,7 @@ def generate_summaries_in_ochiai_format(
 
         # Parse mmd format text.
         raw_paper = TextLoader(file_path=str(mathpix_file_path)).load()[0]
-        parsed_paper = parse_mmd_text(raw_paper.page_content)
+        parsed_paper: ParsedPaper = ParsedPaper.parse_mmd_text(raw_paper.page_content)
 
         # Convert text into to structured documents
         text_splitter = TokenTextSplitter.from_tiktoken_encoder(
@@ -87,10 +88,8 @@ def generate_summaries_in_ochiai_format(
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
         )
-        documents = structure_mmd_documents(
-            parsed_paper,
+        documents = parsed_paper.structure_mmd_documents(
             text_splitter,
-            papers[paper_id].abstract,
         )
 
         embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
