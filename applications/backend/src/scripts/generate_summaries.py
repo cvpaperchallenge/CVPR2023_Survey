@@ -47,6 +47,8 @@ def generate_summaries_in_ochiai_format(
     # Loop over all papers.
     mathpix_file_paths = sorted(list(paper_root_dir.glob("**/*.txt")))
     for _, mathpix_file_path in enumerate(mathpix_file_paths):
+        logger.info(f"Processing `{str(mathpix_file_path)}`.")
+
         directory_path = mathpix_file_path.parent
         stem = mathpix_file_path.stem.rsplit("_", 1)[0]
 
