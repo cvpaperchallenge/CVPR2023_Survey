@@ -2,7 +2,7 @@
 import { cache, useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { FileIcon, GlobeIcon } from '@radix-ui/react-icons'
-import {Heading, Text, Flex, Link, DataList, Separator, Button} from '@radix-ui/themes'
+import {Heading, Text, Flex, Link, DataList, Separator, Button, Box} from '@radix-ui/themes'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 import { PaperDetails, FetchResult } from '../../../libs/types'
@@ -60,81 +60,80 @@ export default function PaperInfo() {
   }
 
   return (
-    <Flex direction="column" align="center" gap="7" width="100%">
-      <Flex direction="column" align="center" gap="4" width="100%">
-        <Heading size="6">{paperDetails.paperInfo.title}</Heading>
-        <Separator my="2" size="4"/>
-      </Flex>
-      <Flex direction="column" gap="9" align="center" width="80%">
+    <Flex direction="column" align="center" gap="7" width="100%" maxWidth="1000px" minWidth="350px">
+      <Heading size="5">{paperDetails.paperInfo.title}</Heading>
+      <Flex direction="column" gap="9" align="stretch" width="80%">
         <Flex direction="column" align="start" gap="4">
-          <Flex direction="column" align="center" gap="0">
+          <Flex direction="column" align="stretch" gap="0">
             <Heading size="5">基本情報</Heading>
             <Separator my="2" size="3"/>
           </Flex>
-          <DataList.Root size="2">
-            <DataList.Item>
-              <DataList.Label minWidth="88px">ID</DataList.Label>
-              <DataList.Value>{paperId}</DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Label minWidth="88px">Authors</DataList.Label>
-              <DataList.Value>{paperDetails.paperInfo.authors.join(", ")}</DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Label minWidth="88px">Abstract</DataList.Label>
-              <DataList.Value>
-                {paperDetails.paperInfo.abstract}
-              </DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Label minWidth="88px">Link</DataList.Label>
-              <DataList.Value>
-                <Flex direction="row" gap="4">
-                  <Link target="_blank" href={paperDetails.paperInfo.cvfLink}>
-                    <Button variant="soft" size="1">
-                      <GlobeIcon /> CVF
-                    </Button>
-                  </Link>
-                  <Link target="_blank" href={paperDetails.paperInfo.pdfLink}>
-                    <Button variant="soft" size="1" color="tomato">
-                      <FileIcon /> PDF
-                    </Button>
-                  </Link>
-                </Flex>
-              </DataList.Value>
-            </DataList.Item>
-          </DataList.Root>
+          <Box p="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
+            <DataList.Root size="2">
+              <DataList.Item>
+                <DataList.Label minWidth="88px">ID</DataList.Label>
+                <DataList.Value>{paperId}</DataList.Value>
+              </DataList.Item>
+              <DataList.Item>
+                <DataList.Label minWidth="88px">Authors</DataList.Label>
+                <DataList.Value>{paperDetails.paperInfo.authors.join(", ")}</DataList.Value>
+              </DataList.Item>
+              <DataList.Item>
+                <DataList.Label minWidth="88px">Abstract</DataList.Label>
+                <DataList.Value>
+                  {paperDetails.paperInfo.abstract}
+                </DataList.Value>
+              </DataList.Item>
+              <DataList.Item>
+                <DataList.Label minWidth="88px">Link</DataList.Label>
+                <DataList.Value>
+                  <Flex direction="row" gap="4">
+                    <Link target="_blank" href={paperDetails.paperInfo.cvfLink}>
+                      <Button variant="soft" size="1">
+                        <GlobeIcon /> CVF
+                      </Button>
+                    </Link>
+                    <Link target="_blank" href={paperDetails.paperInfo.pdfLink}>
+                      <Button variant="soft" size="1" color="tomato">
+                        <FileIcon /> PDF
+                      </Button>
+                    </Link>
+                  </Flex>
+                </DataList.Value>
+              </DataList.Item>
+            </DataList.Root>
+          </Box>
         </Flex>
         <Flex direction="column" align="start" gap="4">
-          <Flex direction="column" align="center" gap="0">
+          <Flex direction="column" align="stretch" gap="0">
             <Heading size="5">どんなもの？</Heading>
             <Separator my="2" size="3"/>
           </Flex>
           <Text size="3" wrap="pretty">{paperDetails.summary.outline}</Text>
         </Flex>
         <Flex direction="column" align="start" gap="4">
-          <Flex direction="column" align="center" gap="0">
+          <Flex direction="column" align="stretch" gap="0">
             <Heading size="5">先行研究と比べてどこがすごい？</Heading>
             <Separator my="2" size="3"/>
           </Flex>
           <Text size="3" wrap="pretty">{paperDetails.summary.contribution}</Text>
         </Flex>
         <Flex direction="column" align="start" gap="4">
-          <Flex direction="column" align="center" gap="0">
+          <Flex direction="column" align="stretch" gap="0">
             <Heading size="5">技術や手法のキモはどこ？</Heading>
             <Separator my="2" size="3"/>
           </Flex>
           <Text size="3" wrap="pretty">{paperDetails.summary.method}</Text>
         </Flex>
         <Flex direction="column" align="start" gap="4">
-          <Flex direction="column" align="center" gap="0">
+          <Flex direction="column" align="stretch" gap="0">
             <Heading size="5">どうやって有効だと検証した？</Heading>
             <Separator my="2" size="3"/>
           </Flex>
           <Text size="3" wrap="pretty">{paperDetails.summary.evaluation}</Text>
         </Flex>
         <Flex direction="column" align="start" gap="4">
-          <Flex direction="column" align="center" gap="0">
+          <Flex direction="column" align="stretch" gap="0">
             <Heading size="5">議論はある？</Heading>
             <Separator my="2" size="3"/>
           </Flex>

@@ -7,10 +7,12 @@ export default function PaperListLayout({
   children: React.ReactNode
 }) {
   return (
-    <section>
-      <Flex direction="column" justify="center" align="center" gap="3">
+    <Flex direction="column" align="stretch" gap="9">
+      <section>Header</section>
+      <Flex direction="column" align="center" gap="0">
         {children}
       </Flex>
-    </section>
+      <section>Footer</section>
+    </Flex>
   )
 }
