@@ -4,9 +4,13 @@ import { Paper } from '../libs/types';
 
 interface PaperListProps {
   papers: Paper[];
+  conferenceName: string;
 }
 
-export default function PaperList({ papers }: PaperListProps) {
+export default function PaperList({
+  papers,
+  conferenceName,
+}: PaperListProps) {
   const numSkeletonCard = 3
 
   if (papers.length === 0) return (

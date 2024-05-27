@@ -100,6 +100,7 @@ export default function PaperList() {
         </TextField.Root>
         <PaperListBoard
           papers={papers}
+          conferenceName={conferenceName}
           setConferenceName={setConferenceName}
         />
       </Box>

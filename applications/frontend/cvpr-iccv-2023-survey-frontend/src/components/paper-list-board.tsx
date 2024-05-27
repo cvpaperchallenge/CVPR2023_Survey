@@ -5,11 +5,13 @@ import PaperList from './paper-list';
 
 interface PaperListBoardProps {
   papers: Paper[];
+  conferenceName: string;
   setConferenceName: (name: string) => void;
 }
 
 export default function PaperListBoard({
   papers,
+  conferenceName,
   setConferenceName,
 }: PaperListBoardProps) {
   const handleTabChange = (value: string) => {
@@ -25,11 +27,11 @@ export default function PaperListBoard({
 
       <Box pt="3">
         <Tabs.Content value="cvpr-2023">
-          <PaperList papers={papers} />
+          <PaperList papers={papers} conferenceName={conferenceName} />
         </Tabs.Content>
 
         <Tabs.Content value="iccv-2023">
-          <PaperList papers={papers} />
+          <PaperList papers={papers} conferenceName={conferenceName} />
         </Tabs.Content>
       </Box>
     </Tabs.Root>
