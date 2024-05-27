@@ -1,4 +1,5 @@
 import {Text, Flex, Card, Box, Avatar, Skeleton} from '@radix-ui/themes'
+import Link from 'next/link'
 
 import { Paper } from '../libs/types';
 
@@ -37,7 +38,7 @@ export default function PaperList({
       {papers.map((paper, index) => (
         <Box width="90%" key={index}>
           <Card asChild>
-            <a href="#">
+            <Link href={`/paperinfo?conference=${conferenceName}&id=${index}`}>
               <Flex gap="3" direction="row" align="center">
                 <Avatar fallback={index} />
                 <Box>
@@ -49,7 +50,7 @@ export default function PaperList({
                   </Text>
                 </Box>
               </Flex>
-            </a>
+            </Link>
           </Card>
         </Box>
       ))}
