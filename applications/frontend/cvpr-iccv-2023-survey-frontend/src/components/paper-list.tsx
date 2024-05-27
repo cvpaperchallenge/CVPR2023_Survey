@@ -12,7 +12,7 @@ export default function PaperList({ papers }: PaperListProps) {
   if (papers.length === 0) return (
     <Flex direction="column" align="center" gap="3" width="100%">
       {[...Array(numSkeletonCard)].map((_, index) => (
-        <Skeleton>
+        <Skeleton key={index}>
           <Box width="90%">
             <Card>
               <Text as="div" size="2" weight="bold">
@@ -31,7 +31,7 @@ export default function PaperList({ papers }: PaperListProps) {
   return (
     <Flex direction="column" align="center" gap="3" width="100%">
       {papers.map((paper, index) => (
-        <Box width="90%">
+        <Box width="90%" key={index}>
           <Card asChild>
             <a href="#">
               <Flex gap="3" direction="row" align="center">
