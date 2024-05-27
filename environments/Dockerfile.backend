@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=python:3.10.6-slim-bullseye
 FROM ${BASE_IMAGE}
 
-ARG PROJECT_NAME=cvpr-iccv-2023-survey
+ARG PROJECT_NAME=cvpr-iccv-2023-survey-backend
 ARG USER_NAME=challenger
 ARG GROUP_NAME=challengers
 ARG UID=1000
