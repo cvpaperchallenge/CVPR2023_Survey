@@ -56,7 +56,6 @@ export default function PaperInfo() {
     else {
       const fetchPaperDetails = async () => {
         const paperDetails = await loadPaperDetails(conference, paperId)
-        console.log(paperDetails)
         setPaperDetails(paperDetails)
         setIsLoading(false)
       }
