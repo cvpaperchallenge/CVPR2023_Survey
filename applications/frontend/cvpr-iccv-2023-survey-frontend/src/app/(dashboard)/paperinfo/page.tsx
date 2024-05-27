@@ -5,8 +5,8 @@ import { FileIcon, GlobeIcon } from '@radix-ui/react-icons'
 import {Heading, Text, Flex, Link, DataList, Box, Separator, Badge, Button, Code} from '@radix-ui/themes'
 import { useSearchParams, useRouter } from 'next/navigation'
 
-import { PaperDetails, FetchResult } from '../../libs/types'
-import { getPaperDetails } from '../../libs/fetch'
+import { PaperDetails, FetchResult } from '../../../libs/types'
+import { getPaperDetails } from '../../../libs/fetch'
 
 const dummyPaperDetails: PaperDetails = {
   "paperInfo": {
