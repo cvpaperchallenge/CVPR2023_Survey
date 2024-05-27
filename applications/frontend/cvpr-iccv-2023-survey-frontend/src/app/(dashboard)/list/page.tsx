@@ -1,8 +1,8 @@
 'use client'
 import { cache, useRef, useState, type RefObject, useEffect } from 'react'
 import { toast } from 'sonner'
-import { MagnifyingGlassIcon, DotsHorizontalIcon } from '@radix-ui/react-icons'
-import {Heading, Text, Flex, Tabs, TextField, Box, Separator} from '@radix-ui/themes'
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
+import {Heading, Flex, TextField, Box, Separator} from '@radix-ui/themes'
 
 import { Paper, FetchResult } from '../../../libs/types'
 import { getPaperLists, searchPapers } from '../../../libs/fetch'

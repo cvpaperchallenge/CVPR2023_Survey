@@ -1,8 +1,8 @@
 'use client'
-import { cache, useRef, useState, type RefObject, useEffect } from 'react'
+import { cache, useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { FileIcon, GlobeIcon } from '@radix-ui/react-icons'
-import {Heading, Text, Flex, Link, DataList, Box, Separator, Badge, Button, Code} from '@radix-ui/themes'
+import {Heading, Text, Flex, Link, DataList, Separator, Button} from '@radix-ui/themes'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 import { PaperDetails, FetchResult } from '../../../libs/types'
