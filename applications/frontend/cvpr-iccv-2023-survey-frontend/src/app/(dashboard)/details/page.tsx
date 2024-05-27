@@ -8,29 +8,12 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { PaperDetails, FetchResult } from '../../../libs/types'
 import { getPaperDetails } from '../../../libs/fetch'
 
-const dummyPaperDetails: PaperDetails = {
-  "paperInfo": {
-    "title": "dummy title",
-    "authors": ["dummy author"],
-    "abstract": "dummy abstract",
-    "cvfLink": "dummy cvf link",
-    "pdfLink": "dummy pdf link"
-  },
-  "summary": {
-    "outline": "dummy outline",
-    "contribution": "dummy contribution",
-    "method": "dummy method",
-    "evaluation": "dummy evaluation",
-    "discussion": "dummy discussion"
-  }
-}
-
-const handleFetchResult = (result: FetchResult<PaperDetails>, errorMessage: string): PaperDetails => {
+const handleFetchResult = (result: FetchResult<PaperDetails>, errorMessage: string): PaperDetails | null => {
   if (result.error) {
-    toast.error(result.error || errorMessage);
-    return dummyPaperDetails;
+    toast.error(errorMessage);
+    return null;
   }
-  return result.data || dummyPaperDetails;
+  return result.data || null;
 };
 
 export const loadPaperDetails = cache(async (conference: string, id: string) => {
@@ -51,13 +34,18 @@ export default function PaperInfo() {
   useEffect(() => {
     if (!conference || !paperId) {
       toast.error('Invalid URL');
-      router.push('/paperlist')
+      router.push('/list')
     }
     else {
       const fetchPaperDetails = async () => {
         const paperDetails = await loadPaperDetails(conference, paperId)
-        setPaperDetails(paperDetails)
-        setIsLoading(false)
+        if (!paperDetails) {
+          router.push('/list')
+        }
+        else {
+          setPaperDetails(paperDetails)
+          setIsLoading(false)
+        }
       }
       fetchPaperDetails()
     }
