@@ -72,29 +72,6 @@ export default function PaperInfo() {
             <Separator my="2" size="3"/>
           </Flex>
           <DataList.Root size="2">
-            {/* <DataList.Item align="center">
-              <DataList.Label minWidth="88px">Status</DataList.Label>
-              <DataList.Value>
-                <Badge color="jade" variant="soft" radius="full">
-                  Authorized
-                </Badge>
-              </DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Value>{paperId}</DataList.Value>
-                <Flex align="center" gap="2">
-                  <Code variant="ghost"></Code>
-                  <IconButton
-                    size="1"
-                    aria-label="Copy value"
-                    color="gray"
-                    variant="ghost"
-                  >
-                    <CopyIcon />
-                  </IconButton>
-                </Flex>
-              </DataList.Value>
-            </DataList.Item> */}
             <DataList.Item>
               <DataList.Label minWidth="88px">ID</DataList.Label>
               <DataList.Value>{paperId}</DataList.Value>
@@ -113,16 +90,6 @@ export default function PaperInfo() {
               <DataList.Label minWidth="88px">Link</DataList.Label>
               <DataList.Value>
                 <Flex direction="row" gap="4">
-                  {/* <Link target="_blank" href={paperDetails.paperInfo.cvfLink}>
-                    <Badge color="jade" variant="soft" radius="large" size="2">
-                      CVF
-                    </Badge>
-                  </Link>
-                  <Link target="_blank" href={paperDetails.paperInfo.pdfLink}>
-                    <Badge color="jade" variant="soft" radius="large" size="2">
-                      PDF
-                    </Badge>
-                  </Link> */}
                   <Link target="_blank" href={paperDetails.paperInfo.cvfLink}>
                     <Button variant="soft" size="1">
                       <GlobeIcon /> CVF
