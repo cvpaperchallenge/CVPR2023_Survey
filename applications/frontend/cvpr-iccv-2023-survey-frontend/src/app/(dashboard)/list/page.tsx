@@ -10,7 +10,7 @@ import PaperListBoard from '../../../components/paper-list-board'
 
 const handleFetchResult = <T,>(result: FetchResult<T>, errorMessage: string): T | [] => {
   if (result.error) {
-    toast.error(result.error || errorMessage);
+    toast.error(errorMessage);
     return [];
   }
   return result.data || [];
