@@ -38,7 +38,7 @@ export default function PaperList({
       {papers.map((paper, index) => (
         <Box width="90%" key={index}>
           <Card asChild>
-            <Link href={`/paperinfo?conference=${conferenceName}&id=${index}`}>
+            <Link href={`/details?conference=${conferenceName}&id=${index}`}>
               <Flex gap="3" direction="row" align="center">
                 <Avatar fallback={index} />
                 <Box>
