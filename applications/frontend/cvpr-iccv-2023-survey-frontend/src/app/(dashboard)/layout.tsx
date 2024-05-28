@@ -1,18 +1,21 @@
-import { MagnifyingGlassIcon, DotsHorizontalIcon } from '@radix-ui/react-icons'
-import {Box, Flex, Text, TextField, Tabs} from '@radix-ui/themes'
+import {Box, Flex, Text, IconButton, Separator} from '@radix-ui/themes'
+
+import Footer from '@/components/footer'
+import Header from '@/components/header'
 
 export default function PaperListLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const year = new Date().getFullYear()
   return (
-    <Flex direction="column" align="stretch" gap="9">
-      <section>Header</section>
-      <Flex direction="column" align="center" gap="0">
+    <Flex direction="column" align="stretch" style={{ minHeight: '100vh' }} gap="5">
+      <Header/>
+      <Flex direction="column" align="center" gap="0" p="3" style={{ flex: '1 0 auto' }}>
         {children}
       </Flex>
-      <section>Footer</section>
+      <Footer/>
     </Flex>
-  )
+    )
 }
