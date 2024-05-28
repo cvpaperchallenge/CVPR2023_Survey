@@ -82,7 +82,7 @@ export default function PaperList() {
   return (
     <Flex direction="column" align="stretch" gap="3" width="80%" maxWidth="1000px" minWidth="350px">
       <Flex direction="column" align="center" gap="1" width="100%">
-        <Heading size="7">Papers List</Heading>
+        <Heading size="7">Paper List</Heading>
         <Separator my="2" size="3"/>
       </Flex>
       <Box width="100%">
