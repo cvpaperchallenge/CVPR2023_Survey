@@ -1,4 +1,4 @@
-'use-client'
+'use client'
 import { MagnifyingGlassIcon, DotsHorizontalIcon, GitHubLogoIcon, TwitterLogoIcon, SunIcon, DesktopIcon, MoonIcon } from '@radix-ui/react-icons'
 import {Link, Flex, IconButton, Text, SegmentedControl, Separator} from '@radix-ui/themes'
 

@@ -1,3 +1,4 @@
+'use client'
 import {Tabs, Box} from '@radix-ui/themes'
 
 import { Paper } from '../libs/types';

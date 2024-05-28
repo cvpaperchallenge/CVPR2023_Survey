@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+'use client'
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { Inter } from "next/font/google";

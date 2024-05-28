@@ -1,6 +1,6 @@
-'use-client'
-import { MagnifyingGlassIcon, DotsHorizontalIcon, GitHubLogoIcon, TwitterLogoIcon, SunIcon, DesktopIcon, MoonIcon } from '@radix-ui/react-icons'
-import {Box, Flex, IconButton, Text, SegmentedControl, Separator} from '@radix-ui/themes'
+'use client'
+import { PaperPlaneIcon, DotsHorizontalIcon, GitHubLogoIcon, TwitterLogoIcon, SunIcon, DesktopIcon, MoonIcon, ChatBubbleIcon } from '@radix-ui/react-icons'
+import {Dialog, Flex, Button, Text, TextField, Box, TextArea} from '@radix-ui/themes'
 
 export default function Header() {
   return (

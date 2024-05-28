@@ -1,3 +1,4 @@
+'use client'
 import {Box, Flex, Text, IconButton, Separator} from '@radix-ui/themes'
 
 import Footer from '@/components/footer'
