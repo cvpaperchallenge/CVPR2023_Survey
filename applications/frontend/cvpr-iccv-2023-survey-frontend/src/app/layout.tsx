@@ -1,16 +1,11 @@
 'use client'
 import { Theme } from '@radix-ui/themes';
-import '@radix-ui/themes/styles.css';
 import { Inter } from "next/font/google";
 import { Toaster } from 'sonner';
 import "./globals.css";
+import '@radix-ui/themes/styles.css';
 
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "CVPR/ICCV 2023 Summary",
-  description: "Automated summaries of papers accepted at CVPR 2023 and ICCV 2023 using OpenAI's language model.",
-};
 
 export default function RootLayout({
   children,
@@ -19,9 +14,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <title>CVPR/ICCV 2023 Summary</title>
+      <meta name="description" content="Automated summaries of papers accepted at CVPR 2023 and ICCV 2023 using OpenAI's language model." />
       <body className={inter.className}>
         <Toaster />
-          <Theme accentColor="teal" grayColor="gray" appearance="dark">
+          <Theme
+            accentColor="teal"
+            grayColor="gray"
+            appearance="dark"
+            panelBackground="translucent"
+          >
             {children}
           </Theme>
       </body>
