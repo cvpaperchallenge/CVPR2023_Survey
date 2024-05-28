@@ -62,12 +62,17 @@ export default function PaperInfo() {
   return (
     <Flex direction="column" align="center" gap="7" width="100%" maxWidth="1000px" minWidth="350px">
       <Box px="3">
-        <Heading size="5">{paperDetails.paperInfo.title}</Heading>
+        <Heading size="6">{paperDetails.paperInfo.title}</Heading>
       </Box>
       <Flex direction="column" gap="9" align="stretch" width="80%">
         <Flex direction="column" align="start" gap="4">
           <Flex direction="column" align="stretch" gap="0">
-            <Heading size="5">基本情報</Heading>
+            <Flex direction="row" align="end" gap="2">
+              <Heading size="5">基本情報</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+                / Basic Information
+              </Text>
+            </Flex>
             <Separator my="2" size="3"/>
           </Flex>
           <Box p="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
@@ -108,35 +113,60 @@ export default function PaperInfo() {
         </Flex>
         <Flex direction="column" align="start" gap="4">
           <Flex direction="column" align="stretch" gap="0">
-            <Heading size="5">どんなもの？</Heading>
+            <Flex direction="row" align="end" gap="2">
+              <Heading size="5">どんなもの？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+                / Outline
+              </Text>
+            </Flex>
             <Separator my="2" size="3"/>
           </Flex>
           <Text size="3" wrap="pretty">{paperDetails.summary.outline}</Text>
         </Flex>
         <Flex direction="column" align="start" gap="4">
           <Flex direction="column" align="stretch" gap="0">
-            <Heading size="5">先行研究と比べてどこがすごい？</Heading>
+            <Flex direction="row" align="end" gap="2">
+              <Heading size="5">先行研究と比べてどこがすごい？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+                / Contribution
+              </Text>
+            </Flex>
             <Separator my="2" size="3"/>
           </Flex>
           <Text size="3" wrap="pretty">{paperDetails.summary.contribution}</Text>
         </Flex>
         <Flex direction="column" align="start" gap="4">
           <Flex direction="column" align="stretch" gap="0">
-            <Heading size="5">技術や手法のキモはどこ？</Heading>
+            <Flex direction="row" align="end" gap="2">
+              <Heading size="5">技術や手法のキモはどこ？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+                / Methods
+              </Text>
+            </Flex>
             <Separator my="2" size="3"/>
           </Flex>
           <Text size="3" wrap="pretty">{paperDetails.summary.method}</Text>
         </Flex>
         <Flex direction="column" align="start" gap="4">
           <Flex direction="column" align="stretch" gap="0">
-            <Heading size="5">どうやって有効だと検証した？</Heading>
+            <Flex direction="row" align="end" gap="2">
+              <Heading size="5">どうやって有効だと検証した？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+                / Evaluation
+              </Text>
+            </Flex>
             <Separator my="2" size="3"/>
           </Flex>
           <Text size="3" wrap="pretty">{paperDetails.summary.evaluation}</Text>
         </Flex>
         <Flex direction="column" align="start" gap="4">
           <Flex direction="column" align="stretch" gap="0">
-            <Heading size="5">議論はある？</Heading>
+            <Flex direction="row" align="end" gap="2">
+              <Heading size="5">議論はある？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+                / Discussion
+              </Text>
+            </Flex>
             <Separator my="2" size="3"/>
           </Flex>
           <Text size="3" wrap="pretty">{paperDetails.summary.discussion}</Text>
