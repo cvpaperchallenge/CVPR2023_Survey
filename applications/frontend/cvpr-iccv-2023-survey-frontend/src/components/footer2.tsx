@@ -13,7 +13,7 @@ export default function Footer(){
       <Flex
         direction="row"
         justify="between"
-        align="center"
+        align="start"
         style={{
           flexShrink: 0,
           padding: "30px 50px",
@@ -21,7 +21,7 @@ export default function Footer(){
           width: "1100px",
           maxWidth: "100%",
       }}>
-        <Flex direction="row" align="center" gap="5">
+        <Flex direction="row" align="center" gap="5" style={{paddingTop: "10px"}}>
           <Flex direction="column" align="start" gap="2" >
             <img
               src="/cc_logo_2white.png"
@@ -41,32 +41,30 @@ export default function Footer(){
             </Text>
           </Flex>
         </Flex>
-        <Flex direction="row" align="center" gap="3">
+        <Flex direction="row" align="center" gap="4" style={{ backgroundColor: 'var(--sage-a3)', borderRadius: 'var(--radius-3)', padding: '10px 30px'}}>
           <Flex direction="column" align="start" gap="2">
-            <Flex direction="column" align="start" gap="2">
-              <Text color="gray" size="2">
-                Developed by<br/>
-              </Text>
-              <Flex direction="column" align="start" gap="1">
-                <Link href="https://github.com/YoshikiKubotani">
-                  <Flex direction="row" justify="center" gap="1">
-                    <GitHubLogoIcon />
-                    <Text color="gray" size="1" weight="light">Yoshiki Kubotani</Text>
-                  </Flex>
-                </Link>
-                <Link href="https://github.com/gatheluck">
-                  <Flex direction="row" justify="center" gap="1">
-                    <GitHubLogoIcon />
-                    <Text color="gray" size="1" weight="light">Yoshihiro Fukuhara</Text>
-                  </Flex>
-                </Link>
-                <Link href="https://github.com/Hina39">
-                  <Flex direction="row" justify="center" gap="1">
-                    <GitHubLogoIcon />
-                    <Text color="gray" size="1" weight="light">Hina Otake</Text>
-                  </Flex>
-                </Link>
-              </Flex>
+            <Text size="3">
+              Developed by<br/>
+            </Text>
+            <Flex direction="column" align="start" gap="1">
+              <Link href="https://github.com/YoshikiKubotani">
+                <Flex direction="row" align="center" gap="1">
+                  <GitHubLogoIcon />
+                  <Text color="gray" size="2" weight="light">Yoshiki Kubotani</Text>
+                </Flex>
+              </Link>
+              <Link href="https://github.com/gatheluck">
+                <Flex direction="row" align="center" gap="1">
+                  <GitHubLogoIcon />
+                  <Text color="gray" size="2" weight="light">Yoshihiro Fukuhara</Text>
+                </Flex>
+              </Link>
+              <Link href="https://github.com/Hina39">
+                <Flex direction="row" align="center" gap="1">
+                  <GitHubLogoIcon />
+                  <Text color="gray" size="2" weight="light">Hina Otake</Text>
+                </Flex>
+              </Link>
             </Flex>
           </Flex>
           <img

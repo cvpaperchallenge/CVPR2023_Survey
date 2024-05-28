@@ -65,7 +65,7 @@ export default function PaperInfo() {
         <Heading size="6">{paperDetails.paperInfo.title}</Heading>
       </Box>
       <Flex direction="column" gap="9" align="stretch" width="80%">
-        <Flex direction="column" align="start" gap="4">
+        <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
               <Heading size="5">基本情報</Heading>
@@ -73,7 +73,7 @@ export default function PaperInfo() {
                 / Basic Information
               </Text>
             </Flex>
-            <Separator my="2" size="3"/>
+            <Separator my="2" size="4"/>
           </Flex>
           <Box p="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
             <DataList.Root size="2">
@@ -111,7 +111,7 @@ export default function PaperInfo() {
             </DataList.Root>
           </Box>
         </Flex>
-        <Flex direction="column" align="start" gap="4">
+        <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
               <Heading size="5">どんなもの？</Heading>
@@ -119,11 +119,13 @@ export default function PaperInfo() {
                 / Outline
               </Text>
             </Flex>
-            <Separator my="2" size="3"/>
+            <Separator my="2" size="4"/>
           </Flex>
-          <Text size="3" wrap="pretty">{paperDetails.summary.outline}</Text>
+          <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
+            <Text size="3" wrap="pretty">{paperDetails.summary.outline}</Text>
+          </Box>
         </Flex>
-        <Flex direction="column" align="start" gap="4">
+        <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
               <Heading size="5">先行研究と比べてどこがすごい？</Heading>
@@ -131,11 +133,13 @@ export default function PaperInfo() {
                 / Contribution
               </Text>
             </Flex>
-            <Separator my="2" size="3"/>
+            <Separator my="2" size="4"/>
           </Flex>
-          <Text size="3" wrap="pretty">{paperDetails.summary.contribution}</Text>
+          <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
+            <Text size="3" wrap="pretty">{paperDetails.summary.contribution}</Text>
+          </Box>
         </Flex>
-        <Flex direction="column" align="start" gap="4">
+        <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
               <Heading size="5">技術や手法のキモはどこ？</Heading>
@@ -143,11 +147,13 @@ export default function PaperInfo() {
                 / Methods
               </Text>
             </Flex>
-            <Separator my="2" size="3"/>
+            <Separator my="2" size="4"/>
           </Flex>
-          <Text size="3" wrap="pretty">{paperDetails.summary.method}</Text>
+          <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
+            <Text size="3" wrap="pretty">{paperDetails.summary.method}</Text>
+          </Box>
         </Flex>
-        <Flex direction="column" align="start" gap="4">
+        <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
               <Heading size="5">どうやって有効だと検証した？</Heading>
@@ -155,11 +161,13 @@ export default function PaperInfo() {
                 / Evaluation
               </Text>
             </Flex>
-            <Separator my="2" size="3"/>
+            <Separator my="2" size="4"/>
           </Flex>
-          <Text size="3" wrap="pretty">{paperDetails.summary.evaluation}</Text>
+          <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
+            <Text size="3" wrap="pretty">{paperDetails.summary.evaluation}</Text>
+          </Box>
         </Flex>
-        <Flex direction="column" align="start" gap="4">
+        <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
               <Heading size="5">議論はある？</Heading>
@@ -167,9 +175,11 @@ export default function PaperInfo() {
                 / Discussion
               </Text>
             </Flex>
-            <Separator my="2" size="3"/>
+            <Separator my="2" size="4"/>
           </Flex>
-          <Text size="3" wrap="pretty">{paperDetails.summary.discussion}</Text>
+          <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
+            <Text size="3" wrap="pretty">{paperDetails.summary.discussion}</Text>
+          </Box>
         </Flex>
       </Flex>
     </Flex>
