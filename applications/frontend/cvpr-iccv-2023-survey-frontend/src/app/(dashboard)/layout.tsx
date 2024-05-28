@@ -1,8 +1,8 @@
 'use client'
 import {Box, Flex, Text, IconButton, Separator} from '@radix-ui/themes'
 
-import Footer from '@/components/footer'
-import Header from '@/components/header'
+import Footer from '@/components/footer2'
+import Header from '@/components/header2'
 
 export default function PaperListLayout({
   children,

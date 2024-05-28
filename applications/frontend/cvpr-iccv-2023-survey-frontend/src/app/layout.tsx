@@ -2,7 +2,7 @@
 import { Theme } from '@radix-ui/themes';
 import { Inter } from "next/font/google";
 import { Toaster } from 'sonner';
-import "./globals.css";
+import "@/app/globals.css";
 import '@radix-ui/themes/styles.css';
 
 const inter = Inter({ subsets: ["latin"] });

@@ -1,4 +1,4 @@
-import { Paper, PaperDetails, FetchResult } from './types';
+import { Paper, PaperDetails, FetchResult } from '@/libs/types';
 
 async function fetchFromAPI<T>(url: string, options?: RequestInit): Promise<FetchResult<T>> {
   try {

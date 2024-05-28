@@ -1,7 +1,7 @@
 import {Text, Flex, Card, Box, Avatar, Skeleton} from '@radix-ui/themes'
 import Link from 'next/link'
 
-import { Paper } from '../libs/types';
+import { Paper } from '@/libs/types';
 
 interface PaperListProps {
   papers: Paper[];

@@ -1,8 +1,8 @@
 'use client'
 import {Tabs, Box} from '@radix-ui/themes'
 
-import { Paper } from '../libs/types';
-import PaperList from './paper-list';
+import { Paper } from '@/libs/types';
+import PaperList from '@/components/paper-list';
 
 interface PaperListBoardProps {
   papers: Paper[];
