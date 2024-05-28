@@ -29,10 +29,8 @@ export default function Header() {
           style={{
             objectFit: 'cover',
             width: '300px',
-            height: '57px',
-            borderRadius: 'var(--radius-2)',
+            height: '35px',
           }}
-          // backgroundColor: 'var(--accent-9)',
         />
         <Box py="20px">
           <Dialog.Root>
