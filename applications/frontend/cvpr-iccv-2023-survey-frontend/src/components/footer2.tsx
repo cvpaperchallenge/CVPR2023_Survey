@@ -14,12 +14,14 @@ export default function Footer(){
         direction="row"
         justify="between"
         align="start"
+        minWidth="840px"
+        maxWidth="100%"
+        width="1100px"
+        mx="auto"
+        px="50px"
+        py="30px"
         style={{
           flexShrink: 0,
-          padding: "30px 50px",
-          margin: "0 auto",
-          width: "1100px",
-          maxWidth: "100%",
       }}>
         <Flex direction="row" align="center" gap="5" style={{paddingTop: "10px"}}>
           <Flex direction="column" align="start" gap="2" >
@@ -42,7 +44,7 @@ export default function Footer(){
           </Flex>
         </Flex>
         <Flex direction="row" align="center" gap="4" style={{ backgroundColor: 'var(--sage-a3)', borderRadius: 'var(--radius-3)', padding: '10px 30px'}}>
-          <Flex direction="column" align="start" gap="2">
+          <Flex direction="column" align="start" gap="2" width="140px">
             <Text size="3">
               Developed by<br/>
             </Text>

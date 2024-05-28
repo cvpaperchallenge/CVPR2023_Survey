@@ -15,12 +15,14 @@ export default function Header() {
         direction="row"
         justify="between"
         align="center"
+        minWidth="640px"
+        maxWidth="100%"
+        width="1100px"
+        mx="auto"
+        px="15px"
+        py="10px"
         style={{
           flexShrink: 0,
-          padding: "10px 15px",
-          margin: "0 auto",
-          width: "1100px",
-          maxWidth: "100%",
         }}
       >
         <img
