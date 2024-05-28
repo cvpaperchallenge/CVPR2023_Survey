@@ -61,7 +61,9 @@ export default function PaperInfo() {
 
   return (
     <Flex direction="column" align="center" gap="7" width="100%" maxWidth="1000px" minWidth="350px">
-      <Heading size="5">{paperDetails.paperInfo.title}</Heading>
+      <Box px="3">
+        <Heading size="5">{paperDetails.paperInfo.title}</Heading>
+      </Box>
       <Flex direction="column" gap="9" align="stretch" width="80%">
         <Flex direction="column" align="start" gap="4">
           <Flex direction="column" align="stretch" gap="0">
