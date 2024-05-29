@@ -30,7 +30,7 @@ async function fetchFromAPI<T>(url: string, options?: RequestInit): Promise<Fetc
   }
 }
 
-export async function getPaperLists(conference: string): Promise<FetchResult<Paper[]>> {
+export async function getPaperList(conference: string): Promise<FetchResult<Paper[]>> {
   const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${conference}`;
   return fetchFromAPI<Paper[]>(url);
 }

@@ -5,7 +5,7 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import {Heading, Flex, TextField, Box, Separator} from '@radix-ui/themes'
 
 import { Paper, FetchResult } from '@/libs/types'
-import { getPaperLists, searchPapers } from '@/libs/fetch'
+import { getPaperList, searchPapers } from '@/libs/fetch'
 import PaperListBoard from '@/components/paper-list-board'
 
 const handleFetchResult = <T,>(result: FetchResult<T>, errorMessage: string): T | [] => {
@@ -17,7 +17,7 @@ const handleFetchResult = <T,>(result: FetchResult<T>, errorMessage: string): T 
 };
 
 const loadPaperLists = cache(async (conference: string) => {
-  const result = await getPaperLists(conference);
+  const result = await getPaperList(conference);
   return handleFetchResult<Paper[]>(result, 'Failed to fetch papers');
 });
 
