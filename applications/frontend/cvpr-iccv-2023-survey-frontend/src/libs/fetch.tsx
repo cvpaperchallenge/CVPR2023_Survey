@@ -1,21 +1,32 @@
 import { Paper, PaperDetails, FetchResult } from '@/libs/types';
 
+interface ErrorResponse {
+  message: string;
+}
+
 async function fetchFromAPI<T>(url: string, options?: RequestInit): Promise<FetchResult<T>> {
   try {
     const response = await fetch(url, options);
     const data = await response.json() as T;
 
     if (!response.ok) {
+      const errorData = data as unknown as ErrorResponse;
       return {
-        error: data?.message || 'Failed to fetch data',
+        error: `Failed to fetch data.\n${errorData.message}`,
       };
     }
 
     return { data };
   } catch (error) {
+    if (error instanceof Error) {
+      return {
+        error: `An unexpected error occurred.\n${error.message}`,
+      };
+    } else {
     return {
-      error: error.message || 'An unexpected error occurred',
+        error: 'An unexpected error occurred.',
     };
+    }
   }
 }
 
