@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import { PaperPlaneIcon, DotsHorizontalIcon, GitHubLogoIcon, TwitterLogoIcon, SunIcon, DesktopIcon, MoonIcon, ChatBubbleIcon } from '@radix-ui/react-icons'
 import {Dialog, Flex, Button, Text, TextField, Box, TextArea, IconButton, Link, Separator} from '@radix-ui/themes'
 
@@ -25,13 +26,13 @@ export default function Header() {
           flexShrink: 0,
         }}
       >
-        <img
+        <Image
           src="/cc_logo_2white.png"
           alt="logo"
+          width={300}
+          height={35}
           style={{
             objectFit: 'cover',
-            width: '300px',
-            height: '35px',
           }}
         />
         <Flex direction="row" align="center" gap="6">

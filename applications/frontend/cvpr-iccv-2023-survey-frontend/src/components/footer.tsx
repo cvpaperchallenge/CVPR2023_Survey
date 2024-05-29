@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import { MagnifyingGlassIcon, DotsHorizontalIcon, GitHubLogoIcon, TwitterLogoIcon, SunIcon, DesktopIcon, MoonIcon } from '@radix-ui/react-icons'
 import {Link, Flex, IconButton, Text, SegmentedControl, Separator} from '@radix-ui/themes'
 
@@ -73,14 +74,13 @@ export default function Footer(){
               </Flex>
             </Flex>
           </Flex>
-          <img
+          <Image
             src="/forward-propergation-chan4.png"
             alt="jundenpa_chan"
+            width={40}
+            height={40}
             style={{
               objectFit: 'cover',
-              width: '40px',
-              height: '40px',
-              borderRadius: 'var(--radius-2)',
             }}
           />
         </Flex>

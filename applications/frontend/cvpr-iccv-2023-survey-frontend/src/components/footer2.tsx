@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import { MagnifyingGlassIcon, DotsHorizontalIcon, GitHubLogoIcon, TwitterLogoIcon, SunIcon, DesktopIcon, MoonIcon } from '@radix-ui/react-icons'
 import {Link, Flex, IconButton, Text, SegmentedControl, Separator} from '@radix-ui/themes'
 
@@ -25,13 +26,13 @@ export default function Footer(){
       }}>
         <Flex direction="row" align="center" gap="5" style={{paddingTop: "10px"}}>
           <Flex direction="column" align="start" gap="2" >
-            <img
+            <Image
               src="/cc_logo_2white.png"
               alt="logo"
+              width={240}
+              height={23}
               style={{
                 objectFit: 'cover',
-                width: '240px',
-                height: '23px',
               }}
             />
             <Text color="gray" size="2" style={{paddingLeft: "5px"}}>&copy; 2015-{year}</Text>
@@ -69,13 +70,13 @@ export default function Footer(){
               </Link>
             </Flex>
           </Flex>
-          <img
+          <Image
             src="/forward-propergation-chan4.png"
             alt="jundenpa_chan"
+            width={40}
+            height={40}
             style={{
               objectFit: 'cover',
-              width: '40px',
-              height: '40px',
             }}
           />
         </Flex>
