@@ -16,12 +16,12 @@ const handleFetchResult = <T,>(result: FetchResult<T>, errorMessage: string): T 
   return result.data || [];
 };
 
-export const loadPaperLists = cache(async (conference: string) => {
+const loadPaperLists = cache(async (conference: string) => {
   const result = await getPaperLists(conference);
   return handleFetchResult<Paper[]>(result, 'Failed to fetch papers');
 });
 
-export const loadSearchResults = async (query: string, conference: string) => {
+const loadSearchResults = async (query: string, conference: string) => {
   const result = await searchPapers(query, conference);
   return handleFetchResult<Paper[]>(result, 'Failed to fetch search results');
 };

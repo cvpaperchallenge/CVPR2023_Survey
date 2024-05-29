@@ -16,7 +16,7 @@ const handleFetchResult = (result: FetchResult<PaperDetails>, errorMessage: stri
   return result.data || null;
 };
 
-export const loadPaperDetails = cache(async (conference: string, id: string) => {
+const loadPaperDetails = cache(async (conference: string, id: string) => {
   const result = await getPaperDetails(conference, id);
   return handleFetchResult(result, 'Failed to fetch paper details');
 })
@@ -49,6 +49,7 @@ export default function PaperInfo() {
       }
       fetchPaperDetails()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isLoading || !paperDetails) {
