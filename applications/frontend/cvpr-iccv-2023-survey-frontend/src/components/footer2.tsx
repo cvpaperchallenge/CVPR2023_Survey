@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
-import { MagnifyingGlassIcon, DotsHorizontalIcon, GitHubLogoIcon, TwitterLogoIcon, SunIcon, DesktopIcon, MoonIcon } from '@radix-ui/react-icons'
-import {Link, Flex, IconButton, Text, SegmentedControl, Separator} from '@radix-ui/themes'
+import { GitHubLogoIcon } from '@radix-ui/react-icons'
+import {Link, Flex, Text, Separator} from '@radix-ui/themes'
 
 export default function Footer(){
   const year = new Date().getFullYear()

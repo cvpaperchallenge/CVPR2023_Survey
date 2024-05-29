@@ -1,5 +1,5 @@
 'use client'
-import {Box, Flex, Text, IconButton, Separator} from '@radix-ui/themes'
+import { Flex } from '@radix-ui/themes'
 
 // import Footer from '@/components/footer'
 // import Header from '@/components/header'
@@ -12,7 +12,6 @@ export default function PaperListLayout({
 }: {
   children: React.ReactNode
 }) {
-  const year = new Date().getFullYear()
   return (
     <Flex direction="column" align="stretch" style={{ minHeight: '100vh' }} gap="6">
       <Header/>

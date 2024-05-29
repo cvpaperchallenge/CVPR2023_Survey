@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { PaperPlaneIcon, DotsHorizontalIcon, GitHubLogoIcon, TwitterLogoIcon, SunIcon, DesktopIcon, MoonIcon, ChatBubbleIcon } from '@radix-ui/react-icons'
+import { PaperPlaneIcon, GitHubLogoIcon, TwitterLogoIcon, ChatBubbleIcon } from '@radix-ui/react-icons'
 import {Dialog, Flex, Button, Text, TextField, Box, TextArea, IconButton, Link, Separator} from '@radix-ui/themes'
 
 export default function Header() {
