@@ -1,4 +1,4 @@
-import { Paper, PaperDetails, FetchResult } from '@/libs/types';
+import { PaperInfo, PaperDetails, FetchResult } from '@/libs/types';
 
 interface ErrorResponse {
   message: string;
@@ -23,19 +23,19 @@ async function fetchFromAPI<T>(url: string, options?: RequestInit): Promise<Fetc
         error: `An unexpected error occurred.\n${error.message}`,
       };
     } else {
-    return {
+      return {
         error: 'An unexpected error occurred.',
-    };
+      };
     }
   }
 }
 
-export async function getPaperList(conference: string): Promise<FetchResult<Paper[]>> {
+export async function getPaperList(conference: string): Promise<FetchResult<PaperInfo[]>> {
   const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${conference}`;
-  return fetchFromAPI<Paper[]>(url);
+  return fetchFromAPI<PaperInfo[]>(url);
 }
 
-export async function searchPapers(query: string, conference: string): Promise<FetchResult<Paper[]>> {
+export async function searchPapers(query: string, conference: string): Promise<FetchResult<PaperInfo[]>> {
   const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${conference}`;
   const options: RequestInit = {
     method: 'POST',
@@ -44,7 +44,7 @@ export async function searchPapers(query: string, conference: string): Promise<F
     },
     body: JSON.stringify({ query }),
   };
-  return fetchFromAPI<Paper[]>(url, options);
+  return fetchFromAPI<PaperInfo[]>(url, options);
 }
 
 export async function getPaperDetails(conference: string, id: string): Promise<FetchResult<PaperDetails>> {

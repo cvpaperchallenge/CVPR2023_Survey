@@ -4,14 +4,6 @@ export interface FetchResult<T> {
   data?: T;
 }
 
-export interface Paper {
-  title: string;
-  author: string;
-  abstract: string;
-  cvf: string;
-  pdf: string;
-}
-
 export interface PaperInfo {
   title: string;
   abstract: string;

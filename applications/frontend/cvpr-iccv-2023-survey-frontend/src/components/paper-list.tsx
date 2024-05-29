@@ -1,10 +1,10 @@
 import {Text, Flex, Card, Box, Avatar, Skeleton} from '@radix-ui/themes'
 import Link from 'next/link'
 
-import { Paper } from '@/libs/types';
+import { PaperInfo } from '@/libs/types';
 
 interface PaperListProps {
-  papers: Paper[];
+  papers: PaperInfo[];
   conferenceName: string;
 }
 
@@ -46,7 +46,7 @@ export default function PaperList({
                     {paper.title}
                   </Text>
                   <Text as="div" color="gray" size="2">
-                    {paper.author}
+                    {paper.authors.join(", ")}
                   </Text>
                 </Box>
               </Flex>

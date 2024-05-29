@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import {Heading, Flex, TextField, Box, Separator} from '@radix-ui/themes'
 
-import { Paper, FetchResult } from '@/libs/types'
+import { PaperInfo, FetchResult } from '@/libs/types'
 import { getPaperList, searchPapers } from '@/libs/fetch'
 import PaperListBoard from '@/components/paper-list-board'
 
@@ -18,19 +18,19 @@ const handleFetchResult = <T,>(result: FetchResult<T>, errorMessage: string): T 
 
 const loadPaperLists = cache(async (conference: string) => {
   const result = await getPaperList(conference);
-  return handleFetchResult<Paper[]>(result, 'Failed to fetch papers');
+  return handleFetchResult<PaperInfo[]>(result, 'Failed to fetch papers');
 });
 
 const loadSearchResults = async (query: string, conference: string) => {
   const result = await searchPapers(query, conference);
-  return handleFetchResult<Paper[]>(result, 'Failed to fetch search results');
+  return handleFetchResult<PaperInfo[]>(result, 'Failed to fetch search results');
 };
 
 
 export default function PaperList() {
   const inputRef: RefObject<HTMLInputElement> = useRef(null)
 
-  const [papers, setPapers] = useState<Paper[]>([])
+  const [papers, setPapers] = useState<PaperInfo[]>([])
   const [searchText, setSearchText] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [conferenceName, setConferenceName] = useState('cvpr-2023')
