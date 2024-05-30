@@ -1,10 +1,8 @@
 'use client'
 import { Flex } from '@radix-ui/themes'
 
-// import Footer from '@/components/footer'
-// import Header from '@/components/header'
-import Footer from '@/components/footer2'
-import Header from '@/components/header2'
+import Footer from '@/components/footer'
+import Header from '@/components/header'
 import { Suspense } from 'react'
 
 export default function PaperListLayout({
