@@ -7,6 +7,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 
 import { PaperDetails, FetchResult } from '@/libs/types'
 import { getPaperDetails } from '@/libs/fetch'
+import "./styles.css"
 
 const handleFetchResult = (result: FetchResult<PaperDetails>, errorMessage: string): PaperDetails | null => {
   if (result.error) {
@@ -69,15 +70,15 @@ export default function PaperInfo() {
         <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
-              <Heading size="5">基本情報</Heading>
-              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+              <Heading size="5" className="heading">基本情報</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" className="heading-sub" style={{paddingBottom: "4px"}}>
                 / Basic Information
               </Text>
             </Flex>
             <Separator my="2" size="4"/>
           </Flex>
           <Box p="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
-            <DataList.Root size="2">
+            <DataList.Root size="2" orientation={{ initial: 'vertical', sm: 'horizontal' }}>
               <DataList.Item>
                 <DataList.Label minWidth="88px">ID</DataList.Label>
                 <DataList.Value>{paperId}</DataList.Value>
@@ -115,71 +116,71 @@ export default function PaperInfo() {
         <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
-              <Heading size="5">どんなもの？</Heading>
-              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+              <Heading size="5" className="heading">どんなもの？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" className="heading-sub" style={{paddingBottom: "4px"}}>
                 / Outline
               </Text>
             </Flex>
             <Separator my="2" size="4"/>
           </Flex>
           <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
-            <Text size="3" wrap="pretty">{paperDetails.summary.outline}</Text>
+            <Text size="3" wrap="pretty" className="contents">{paperDetails.summary.outline}</Text>
           </Box>
         </Flex>
         <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
-              <Heading size="5">先行研究と比べてどこがすごい？</Heading>
-              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+              <Heading size="5" className="heading">先行研究と比べてどこがすごい？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" className="heading-sub" style={{paddingBottom: "4px"}}>
                 / Contribution
               </Text>
             </Flex>
             <Separator my="2" size="4"/>
           </Flex>
           <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
-            <Text size="3" wrap="pretty">{paperDetails.summary.contribution}</Text>
+            <Text size="3" wrap="pretty" className="contents">{paperDetails.summary.contribution}</Text>
           </Box>
         </Flex>
         <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
-              <Heading size="5">技術や手法のキモはどこ？</Heading>
-              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+              <Heading size="5" className="heading">技術や手法のキモはどこ？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" className="heading-sub" style={{paddingBottom: "4px"}}>
                 / Methods
               </Text>
             </Flex>
             <Separator my="2" size="4"/>
           </Flex>
           <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
-            <Text size="3" wrap="pretty">{paperDetails.summary.method}</Text>
+            <Text size="3" wrap="pretty" className="contents">{paperDetails.summary.method}</Text>
           </Box>
         </Flex>
         <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
-              <Heading size="5">どうやって有効だと検証した？</Heading>
-              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+              <Heading size="5" className="heading">どうやって有効だと検証した？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" className="heading-sub" style={{paddingBottom: "4px"}}>
                 / Evaluation
               </Text>
             </Flex>
             <Separator my="2" size="4"/>
           </Flex>
           <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
-            <Text size="3" wrap="pretty">{paperDetails.summary.evaluation}</Text>
+            <Text size="3" wrap="pretty" className="contents">{paperDetails.summary.evaluation}</Text>
           </Box>
         </Flex>
         <Flex direction="column" align="start" gap="3">
           <Flex direction="column" align="stretch" gap="0">
             <Flex direction="row" align="end" gap="2">
-              <Heading size="5">議論はある？</Heading>
-              <Text color="gray" size="3" weight="light" trim="end" style={{paddingBottom: "4px"}}>
+              <Heading size="5" className="heading">議論はある？</Heading>
+              <Text color="gray" size="3" weight="light" trim="end" className="heading-sub" style={{paddingBottom: "4px"}}>
                 / Discussion
               </Text>
             </Flex>
             <Separator my="2" size="4"/>
           </Flex>
           <Box px="5" py="4" style={{ backgroundColor: 'var(--gray-a2)', borderRadius: 'var(--radius-3)' }}>
-            <Text size="3" wrap="pretty">{paperDetails.summary.discussion}</Text>
+            <Text size="3" wrap="pretty" className="contents">{paperDetails.summary.discussion}</Text>
           </Box>
         </Flex>
       </Flex>
