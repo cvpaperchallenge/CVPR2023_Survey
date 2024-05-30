@@ -11,6 +11,7 @@ export default function Header() {
     <section
       style={{
         background: 'var(--accent-2)',
+        width: '100vw'
       }}>
       <Flex
         direction="row"
