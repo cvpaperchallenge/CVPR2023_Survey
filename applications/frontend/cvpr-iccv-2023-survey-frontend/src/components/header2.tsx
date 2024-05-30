@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { PaperPlaneIcon, GitHubLogoIcon, TwitterLogoIcon, ChatBubbleIcon } from '@radix-ui/react-icons'
 import {Dialog, Flex, Button, Text, TextField, Box, TextArea, IconButton, Link, Separator} from '@radix-ui/themes'
 
+import "./header-styles.css"
+
 export default function Header() {
   const handleSendFeedback = () => {
     alert('Feedback sent!')
@@ -11,7 +13,7 @@ export default function Header() {
     <section
       style={{
         background: 'var(--accent-2)',
-        width: '100vw'
+        minWidth: '450px'
       }}>
       <Flex
         direction="row"
@@ -19,10 +21,11 @@ export default function Header() {
         align="center"
         minWidth="640px"
         maxWidth="100%"
-        width="1100px"
+        width="100vw"
         mx="auto"
         px="15px"
         py="10px"
+        className='header'
         style={{
           flexShrink: 0,
         }}
@@ -32,29 +35,30 @@ export default function Header() {
           alt="logo"
           width={300}
           height={35}
+          className='logo'
           style={{
             objectFit: 'cover',
           }}
         />
-        <Flex direction="row" align="center" gap="6">
+        <Flex direction="row" align="center" gap="6" className='icon-feedback-between-gap'>
           <Flex direction="row" align="center" gap="3">
             <IconButton variant="ghost" asChild>
               <Link href="https://github.com/cvpaperchallenge">
-                <GitHubLogoIcon style={{ width: '28px', height: '28px' }} />
+                <GitHubLogoIcon className="icon-size" />
               </Link>
             </IconButton>
             <Separator orientation="vertical" size="1"/>
             <IconButton variant="ghost" asChild>
               <Link href="https://twitter.com/CVpaperChalleng">
-                <TwitterLogoIcon style={{ width: '28px', height: '28px' }} />
+                <TwitterLogoIcon className="icon-size" />
               </Link>
             </IconButton>
           </Flex>
           <Box py="20px">
             <Dialog.Root>
               <Dialog.Trigger>
-                <Button variant="surface" size="3">
-                  <PaperPlaneIcon/>
+                <Button variant="surface" size="3" className='feedback-button-size'>
+                  <PaperPlaneIcon className='feedback-icon-size'/>
                   Feedback
                 </Button>
               </Dialog.Trigger>

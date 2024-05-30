@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import {Link, Flex, Text, Separator} from '@radix-ui/themes'
 
+import "./footer-styles.css"
+
 export default function Footer(){
   const year = new Date().getFullYear()
 
@@ -10,7 +12,7 @@ export default function Footer(){
     <section
       style={{
         background: 'var(--accent-2)',
-        width: '100vw'
+        minWidth: '450px',
     }}>
       <Flex
         direction="row"
@@ -18,34 +20,36 @@ export default function Footer(){
         align="start"
         minWidth="840px"
         maxWidth="100%"
-        width="1100px"
+        width="100vw"
         mx="auto"
         px="50px"
         py="30px"
+        className='footer'
         style={{
           flexShrink: 0,
       }}>
-        <Flex direction="row" align="center" gap="5" style={{paddingTop: "10px"}}>
+        <Flex direction="row" align="center" gap="5" className="flex-structure" style={{paddingTop: "10px"}}>
           <Flex direction="column" align="start" gap="2" >
             <Image
               src="/cc_logo_2white.png"
               alt="logo"
               width={240}
               height={23}
+              className='footer-logo'
               style={{
                 objectFit: 'cover',
               }}
             />
             <Text color="gray" size="2" style={{paddingLeft: "5px"}}>&copy; 2015-{year}</Text>
           </Flex>
-          <Separator orientation="vertical" size="2"/>
+          <Separator orientation="horizontal" size="2" className='separator'/>
           <Flex direction="row" align="center" gap="5">
             <Text color="gray" size="2">
               Supported by SSII 2024
             </Text>
           </Flex>
         </Flex>
-        <Flex direction="row" align="center" gap="4" style={{ backgroundColor: 'var(--sage-a3)', borderRadius: 'var(--radius-3)', padding: '10px 30px'}}>
+        <Flex direction="row" align="center" gap="4" className="developer-box" style={{ backgroundColor: 'var(--sage-a3)', borderRadius: 'var(--radius-3)'}}>
           <Flex direction="column" align="start" gap="2" width="140px">
             <Text size="3">
               Developed by<br/>
@@ -76,6 +80,7 @@ export default function Footer(){
             alt="jundenpa_chan"
             width={40}
             height={40}
+            className='forward-propagation-chan-image'
             style={{
               objectFit: 'cover',
             }}
