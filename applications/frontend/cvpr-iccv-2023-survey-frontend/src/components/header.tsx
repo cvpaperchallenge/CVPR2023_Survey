@@ -13,8 +13,12 @@ export default function Header() {
 
   const handleSendFeedback = (async () => {
     const result = await sendFeedback(name, feedback)
-    return handleFetchResult<null>(result, 'Failed to send feedback', 'Feedback sent successfully!')
+    handleFetchResult<null>(result, 'Failed to send feedback', 'Feedback sent successfully!')
+    setName('')
+    setFeedback('')
   })
+
+  const isError = /^\s*$/.test(name) || /^\s*$/.test(feedback)
 
   return (
     <section
@@ -112,7 +116,7 @@ export default function Header() {
                     </Button>
                   </Dialog.Close>
                   <Dialog.Close>
-                    <Button onClick={handleSendFeedback} color="mint">Send</Button>
+                    <Button onClick={handleSendFeedback} color="mint" disabled={isError}>Send</Button>
                   </Dialog.Close>
                 </Flex>
               </Dialog.Content>
