@@ -17,7 +17,7 @@ export default function RootLayout({
       <title>CVPR/ICCV 2023 Summary</title>
       <meta name="description" content="Automated summaries of papers accepted at CVPR 2023 and ICCV 2023 using OpenAI's language model." />
       <body className={inter.className}>
-        <Toaster />
+        <Toaster richColors />
           <Theme
             accentColor="teal"
             grayColor="gray"
