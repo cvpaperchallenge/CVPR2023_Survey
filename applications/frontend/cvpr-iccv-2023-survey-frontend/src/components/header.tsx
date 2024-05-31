@@ -4,11 +4,18 @@ import { PaperPlaneIcon, GitHubLogoIcon, TwitterLogoIcon, ChatBubbleIcon } from 
 import {Dialog, Flex, Button, Text, TextField, Box, TextArea, IconButton, Link, Separator} from '@radix-ui/themes'
 
 import "./header-styles.css"
+import { useState } from 'react'
+import { sendFeedback, handleFetchResult} from '@/libs/fetch'
 
 export default function Header() {
-  const handleSendFeedback = () => {
-    alert('Feedback sent!')
-  }
+  const [name, setName] = useState('')
+  const [feedback, setFeedback] = useState('')
+
+  const handleSendFeedback = (async () => {
+    const result = await sendFeedback(name, feedback)
+    return handleFetchResult<null>(result, 'Failed to send feedback', 'Feedback sent successfully!')
+  })
+
   return (
     <section
       style={{
@@ -82,6 +89,8 @@ export default function Header() {
                     </Text>
                     <TextField.Root
                       placeholder="Enter your name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </label>
                   <label>
@@ -90,6 +99,8 @@ export default function Header() {
                     </Text>
                     <TextArea
                       placeholder="Drop your feedback here!"
+                      value={feedback}
+                      onChange={(e) => setFeedback(e.target.value)}
                     />
                   </label>
                 </Flex>
