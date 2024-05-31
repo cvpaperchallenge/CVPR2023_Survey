@@ -5,21 +5,13 @@ import { FileIcon, GlobeIcon } from '@radix-ui/react-icons'
 import {Heading, Text, Flex, Link, DataList, Separator, Button, Box} from '@radix-ui/themes'
 import { useSearchParams, useRouter } from 'next/navigation'
 
-import { PaperDetails, FetchResult } from '@/libs/types'
-import { getPaperDetails } from '@/libs/fetch'
+import { PaperDetails } from '@/libs/types'
+import { getPaperDetails, handleFetchResult } from '@/libs/fetch'
 import "./styles.css"
-
-const handleFetchResult = (result: FetchResult<PaperDetails>, errorMessage: string): PaperDetails | null => {
-  if (result.error) {
-    toast.error(errorMessage);
-    return null;
-  }
-  return result.data || null;
-};
 
 const loadPaperDetails = cache(async (conference: string, id: string) => {
   const result = await getPaperDetails(conference, id);
-  return handleFetchResult(result, 'Failed to fetch paper details');
+  return handleFetchResult<PaperDetails>(result, 'Failed to fetch paper details');
 })
 
 export default function PaperInfo() {

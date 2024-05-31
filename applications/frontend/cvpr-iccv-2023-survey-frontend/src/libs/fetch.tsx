@@ -1,4 +1,5 @@
 import { PaperInfo, PaperDetails, FetchResult } from '@/libs/types';
+import { toast } from 'sonner'
 
 interface ErrorResponse {
   message: string;
@@ -33,14 +34,31 @@ async function fetchFromAPI<T>(url: string, options?: RequestInit): Promise<Fetc
 export const handleFetchResult = <T,>(
   result: FetchResult<T>,
   errorMessage: string,
-  successMessage: string
+  successMessage?: string
   ): T | null => {
   if (result.error) {
     toast.error(errorMessage);
     return null;
   }
-  toast.success(successMessage);
+  if (successMessage){
+    toast.success(successMessage);
+  }
   return null;
+};
+
+export const handleFetchArrayResult = <T,>(
+  result: FetchResult<T>,
+  errorMessage: string,
+  successMessage?: string
+): T | [] => {
+  if (result.error) {
+    toast.error(errorMessage);
+    return [];
+  }
+  if (successMessage) {
+    toast.success(successMessage);
+  }
+  return result.data || [];
 };
 
 export async function getPaperList(conference: string): Promise<FetchResult<PaperInfo[]>> {

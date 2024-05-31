@@ -4,26 +4,18 @@ import { toast } from 'sonner'
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import {Heading, Flex, TextField, Box, Separator} from '@radix-ui/themes'
 
-import { PaperInfo, FetchResult } from '@/libs/types'
-import { getPaperList, searchPapers } from '@/libs/fetch'
+import { PaperInfo } from '@/libs/types'
+import { getPaperList, searchPapers, handleFetchArrayResult } from '@/libs/fetch'
 import PaperListBoard from '@/components/paper-list-board'
-
-const handleFetchResult = <T,>(result: FetchResult<T>, errorMessage: string): T | [] => {
-  if (result.error) {
-    toast.error(errorMessage);
-    return [];
-  }
-  return result.data || [];
-};
 
 const loadPaperLists = cache(async (conference: string) => {
   const result = await getPaperList(conference);
-  return handleFetchResult<PaperInfo[]>(result, 'Failed to fetch papers');
+  return handleFetchArrayResult<PaperInfo[]>(result, 'Failed to fetch papers');
 });
 
 const loadSearchResults = async (query: string, conference: string) => {
   const result = await searchPapers(query, conference);
-  return handleFetchResult<PaperInfo[]>(result, 'Failed to fetch search results');
+  return handleFetchArrayResult<PaperInfo[]>(result, 'Failed to fetch search results');
 };
 
 
