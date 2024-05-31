@@ -49,10 +49,6 @@ export default function PaperList() {
     fetchPapers()
   }, [conferenceName])
 
-  const handleInputChange = (event: any) => {
-    setSearchText(event.target.value);
-  };
-
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -92,7 +88,7 @@ export default function PaperList() {
           size="3"
           value={searchText}
           onKeyDown={handleKeyDown}
-          onChange={handleInputChange}
+          onChange={(e) => setSearchText(e.target.value)}
         >
           <TextField.Slot>
             <MagnifyingGlassIcon height="16" width="16" />
