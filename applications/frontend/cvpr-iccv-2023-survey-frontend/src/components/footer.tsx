@@ -12,7 +12,8 @@ export default function Footer(){
     <section
       style={{
         background: 'var(--accent-2)',
-        minWidth: '450px',
+        minWidth: '340px',
+        boxSizing: 'border-box',
     }}>
       <Flex
         direction="row"
@@ -27,6 +28,7 @@ export default function Footer(){
         className='footer'
         style={{
           flexShrink: 0,
+          boxSizing: 'border-box',
       }}>
         <Flex direction="row" align="center" gap="5" className="flex-structure" style={{paddingTop: "10px"}}>
           <Flex direction="column" align="start" gap="2" >
@@ -40,37 +42,37 @@ export default function Footer(){
                 objectFit: 'cover',
               }}
             />
-            <Text color="gray" size="2" style={{paddingLeft: "5px"}}>&copy; 2015-{year}</Text>
+            <Text color="gray" size="2" className='detailed-text' style={{paddingLeft: "5px"}}>&copy; 2015-{year}</Text>
           </Flex>
           <Separator orientation="horizontal" size="2" className='separator'/>
           <Flex direction="row" align="center" gap="5">
-            <Text color="gray" size="2">
+            <Text color="gray" size="2" className='detailed-text'>
               Supported by SSII 2024
             </Text>
           </Flex>
         </Flex>
         <Flex direction="row" align="center" gap="4" className="developer-box" style={{ backgroundColor: 'var(--sage-a3)', borderRadius: 'var(--radius-3)'}}>
           <Flex direction="column" align="start" gap="2" width="140px">
-            <Text size="3">
+            <Text size="3" className='developer-heading'>
               Developed by<br/>
             </Text>
             <Flex direction="column" align="start" gap="1">
               <Link href="https://github.com/YoshikiKubotani">
                 <Flex direction="row" align="center" gap="1">
                   <GitHubLogoIcon />
-                  <Text color="gray" size="2" weight="light">Yoshiki Kubotani</Text>
+                  <Text color="gray" size="2" weight="light" className='developer-text'>Yoshiki Kubotani</Text>
                 </Flex>
               </Link>
               <Link href="https://github.com/gatheluck">
                 <Flex direction="row" align="center" gap="1">
                   <GitHubLogoIcon />
-                  <Text color="gray" size="2" weight="light">Yoshihiro Fukuhara</Text>
+                  <Text color="gray" size="2" weight="light" className='developer-text'>Yoshihiro Fukuhara</Text>
                 </Flex>
               </Link>
               <Link href="https://github.com/Hina39">
                 <Flex direction="row" align="center" gap="1">
                   <GitHubLogoIcon />
-                  <Text color="gray" size="2" weight="light">Hina Otake</Text>
+                  <Text color="gray" size="2" weight="light" className='developer-text'>Hina Otake</Text>
                 </Flex>
               </Link>
             </Flex>

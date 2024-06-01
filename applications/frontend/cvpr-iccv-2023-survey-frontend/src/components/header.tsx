@@ -24,13 +24,13 @@ export default function Header() {
     <section
       style={{
         background: 'var(--accent-2)',
-        minWidth: '450px'
+        minWidth: '350px',
       }}>
       <Flex
         direction="row"
         justify="between"
         align="center"
-        minWidth="640px"
+        minWidth="350px"
         maxWidth="100%"
         width="100vw"
         mx="auto"
@@ -39,7 +39,7 @@ export default function Header() {
         className='header'
         style={{
           flexShrink: 0,
-        }}
+      }}
       >
         <Image
           src="/cc_logo_2white.png"
@@ -51,8 +51,8 @@ export default function Header() {
             objectFit: 'cover',
           }}
         />
-        <Flex direction="row" align="center" gap="6" className='icon-feedback-between-gap'>
-          <Flex direction="row" align="center" gap="3">
+        <Flex direction="row" align="center" gap="6" className='icon-feedback-gap'>
+          <Flex direction="row" align="center" gap="3" className="icons-gap">
             <IconButton variant="ghost" asChild>
               <Link href="https://github.com/cvpaperchallenge">
                 <GitHubLogoIcon className="icon-size" />
