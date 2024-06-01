@@ -43,7 +43,7 @@ export const handleFetchResult = <T,>(
   if (successMessage){
     toast.success(successMessage);
   }
-  return null;
+  return result.data || null;
 };
 
 export const handleFetchArrayResult = <T,>(
