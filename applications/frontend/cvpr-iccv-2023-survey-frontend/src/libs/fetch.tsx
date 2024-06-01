@@ -61,9 +61,43 @@ export const handleFetchArrayResult = <T,>(
   return result.data || [];
 };
 
+async function GetCachedItem<T>(url: string, cacheKey: string, cacheTime: number): Promise<FetchResult<T>> {
+  const now = Math.floor(Date.now() / 1000);
+  const cachedExpiryTime = Number(localStorage.getItem(`${cacheKey}_expiryTime`))
+
+  // If the cache has expired
+  if (!cachedExpiryTime || now > cachedExpiryTime) {
+    // Set the new expiry time
+    const expiryTime = String(now + cacheTime);
+    localStorage.setItem(`${cacheKey}_expiryTime`, expiryTime);
+
+    // Fetch the data from the API
+    const result = await fetchFromAPI<T>(url);
+
+    // If the data is valid, cache it
+    if (result.data) {
+      localStorage.setItem(cacheKey, JSON.stringify(result.data));
+    }
+    return { data: result.data };
+  }
+
+  // If the cache has not expired
+  const cachedData = localStorage.getItem(cacheKey);
+  // Check if the cached data exists
+  if (cachedData) {
+    const data = JSON.parse(cachedData) as T;
+    return { data };
+  }
+
+  // If the cached data does not exist
+  const result = await fetchFromAPI<T>(url);
+  return { data: result.data };
+}
+
 export async function getPaperList(conference: string): Promise<FetchResult<PaperInfo[]>> {
   const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${conference}`;
-  return fetchFromAPI<PaperInfo[]>(url);
+  const result = await GetCachedItem<PaperInfo[]>(url, conference, 60*60*1);
+  return result;
 }
 
 export async function searchPapers(query: string, conference: string): Promise<FetchResult<PaperInfo[]>> {
