@@ -96,8 +96,9 @@ async function GetCachedItem<T>(url: string, cacheKey: string, cacheTime: number
 
 export async function getPaperList(conference: string): Promise<FetchResult<PaperInfo[]>> {
   const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${conference}`;
-  const result = await GetCachedItem<PaperInfo[]>(url, conference, 60*60*1);
-  return result;
+  // const result = await GetCachedItem<PaperInfo[]>(url, conference, 60*60*1);
+  // return result;
+  return fetchFromAPI<PaperInfo[]>(url);
 }
 
 export async function searchPapers(query: string, conference: string): Promise<FetchResult<PaperInfo[]>> {
