@@ -32,22 +32,24 @@ export default function Footer(){
       }}>
         <Flex direction="row" align="center" gap="5" className="flex-structure" style={{paddingTop: "10px"}}>
           <Flex direction="column" align="start" gap="2" >
-            <Image
-              src="/cc_logo_2white.png"
-              alt="logo"
-              width={240}
-              height={23}
-              className='footer-logo'
-              style={{
-                objectFit: 'cover',
-              }}
-            />
+            <Link href="https://xpaperchallenge.org/cv/">
+              <Image
+                src="/cc_logo_2white.png"
+                alt="logo"
+                width={240}
+                height={23}
+                className='footer-logo'
+                style={{
+                  objectFit: 'cover',
+                }}
+              />
+            </Link>
             <Text color="gray" size="2" className='detailed-text' style={{paddingLeft: "5px"}}>&copy; 2015-{year}</Text>
           </Flex>
           <Separator orientation="horizontal" size="2" className='separator'/>
           <Flex direction="row" align="center" gap="5">
             <Text color="gray" size="2" className='detailed-text'>
-              Supported by SSII 2024
+              Supported by <Link href="https://confit.atlas.jp/guide/event/ssii2024/top?lang=ja">SSII 2024</Link>
             </Text>
           </Flex>
         </Flex>

@@ -41,16 +41,18 @@ export default function Header() {
           flexShrink: 0,
       }}
       >
-        <Image
-          src="/cc_logo_2white.png"
-          alt="logo"
-          width={300}
-          height={35}
-          className='logo'
-          style={{
-            objectFit: 'cover',
-          }}
-        />
+        <Link href="https://xpaperchallenge.org/cv/">
+          <Image
+            src="/cc_logo_2white.png"
+            alt="logo"
+            width={300}
+            height={35}
+            className='logo'
+            style={{
+              objectFit: 'cover',
+            }}
+          />
+        </Link>
         <Flex direction="row" align="center" gap="6" className='icon-feedback-gap'>
           <Flex direction="row" align="center" gap="3" className="icons-gap">
             <IconButton variant="ghost" asChild>
