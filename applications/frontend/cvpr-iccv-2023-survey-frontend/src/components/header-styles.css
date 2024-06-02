@@ -1,6 +1,6 @@
 @media (max-width: 460px) {
   .logo {
-    width: 40%;
+    width: 40vw;
     min-width: 150px;
     height: auto;
   }
@@ -31,7 +31,7 @@
 
 @media (min-width: 461px) and (max-width: 600px) {
   .logo {
-    width: 40%;
+    width: 40vw;
     min-width: 150px;
     height: auto;
   }
@@ -61,7 +61,7 @@
   .logo {
     max-width: 300px;
     min-width: 170px;
-    width: 40%;
+    width: 40vw;
     height: auto;
   }
   .icon-feedback-gap {
