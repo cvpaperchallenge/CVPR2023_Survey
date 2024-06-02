@@ -48,5 +48,6 @@
         }
       }
     ],
+    "react/jsx-sort-props": "error"
   }
 }
