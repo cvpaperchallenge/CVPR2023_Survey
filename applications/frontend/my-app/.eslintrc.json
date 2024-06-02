@@ -9,6 +9,7 @@
       "plugin:@typescript-eslint/eslint-recommended",
       "plugin:@typescript-eslint/recommended-type-checked",
       "next/core-web-vitals",
+      "plugin:tailwindcss/recommended",
       "prettier"
   ],
   "overrides": [
