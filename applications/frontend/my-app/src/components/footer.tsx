@@ -1,8 +1,8 @@
 'use client'
 
-export default function Footer(){
+export default function Footer() {
   return (
-    <div className='flex justify-center items-center h-16 bg-background text-primary'>
+    <div className="flex h-16 items-center justify-center bg-background text-primary">
       <p>Footer</p>
     </div>
   )

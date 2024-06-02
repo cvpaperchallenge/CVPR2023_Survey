@@ -1,7 +1,6 @@
 'use client'
 import Footer from '@/components/footer'
 import Header from '@/components/header'
-import { Suspense } from 'react'
 
 export default function PaperListLayout({
   children,
@@ -9,16 +8,14 @@ export default function PaperListLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className='flex flex-col items-center min-h-screen w-screen gap-8'>
-      <div className='flex-none w-full h-24'>
-        <Header/>
+    <div className="flex min-h-screen w-screen flex-col items-center gap-8 ">
+      <div className="h-24 w-full flex-none">
+        <Header />
       </div>
-      <div className='grow flex-1'>
-          {children}
-      </div>
-      <div className='flex-none w-full h-44'>
-        <Footer/>
+      <div className="flex-1 grow">{children}</div>
+      <div className="h-44 w-full flex-none">
+        <Footer />
       </div>
     </div>
-    )
+  )
 }
