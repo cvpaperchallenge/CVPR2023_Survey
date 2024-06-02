@@ -74,7 +74,7 @@ export default function PaperList() {
         <Separator my="2" size="3"/>
       </Flex>
       <Box width="100%">
-        <TextField.Root
+        {/* <TextField.Root
           ref={inputRef}
           placeholder="Search papers…"
           size="3"
@@ -85,7 +85,7 @@ export default function PaperList() {
           <TextField.Slot>
             <MagnifyingGlassIcon height="16" width="16" />
           </TextField.Slot>
-        </TextField.Root>
+        </TextField.Root> */}
         <PaperListBoard
           papers={papers}
           conferenceName={conferenceName}
