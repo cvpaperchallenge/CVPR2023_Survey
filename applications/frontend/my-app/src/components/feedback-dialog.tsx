@@ -18,8 +18,12 @@ export function FeedbackDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" className="border border-border hover:text-[var(--teal-11)]">
-          <MdFeedback className="mr-2 w-3.5 h-3.5"/>
+        <Button variant="ghost" size="sm" className="border border-border text-xs min-[461px]:text-sm hover:text-[var(--teal-11)]">
+          <MdFeedback className="
+            mr-2
+            w-3 h-3
+            min-[601px]:w-4 min-[601px]:h-4
+          "/>
           Feedback
         </Button>
       </DialogTrigger>

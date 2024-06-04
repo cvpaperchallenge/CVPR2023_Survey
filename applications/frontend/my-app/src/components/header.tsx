@@ -29,16 +29,16 @@ export default function Header() {
       </a>
       <div className="
         flex flex-row items-center
-        gap-3
+        gap-2
         min-[461px]:max-[600px]:gap-4
         min-[601px]:gap-8
       ">
         <div className="
           flex flex-row items-center
-          gap-2
+          gap-1
           min-[461px]:gap-3
         ">
-          <Button variant="ghost" size="icon" className="w-fit rounded-full hover:text-[var(--teal-11)]">
+          <Button variant="ghost" size="icon" className="w-fit h-fit p-1 rounded-full hover:text-[var(--teal-11)]">
             <a href="https://github.com/cvpaperchallenge" target="_blank">
               <RxGithubLogo className="
                 w-4 h-4
@@ -51,7 +51,7 @@ export default function Header() {
             className="h-5 w-px bg-border"
             orientation="vertical"
           />
-          <Button variant="ghost" size="icon" className="w-fit rounded-full hover:text-[var(--teal-11)]">
+          <Button variant="ghost" size="icon" className="w-fit h-fit p-1 aspect-square rounded-full hover:text-[var(--teal-11)]">
             <a href="https://twitter.com/CVpaperChalleng" target="_blank">
               <PiXLogo className="
                 w-4 h-4
