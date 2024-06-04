@@ -8,14 +8,22 @@
 @import "@radix-ui/colors/teal-dark-alpha";
 @import "@radix-ui/colors/lime";
 @import "@radix-ui/colors/lime-dark";
+@import "@radix-ui/colors/red";
+@import "@radix-ui/colors/red-dark";
 @import "@radix-ui/colors/olive";
 @import "@radix-ui/colors/olive-dark";
+@import "@radix-ui/colors/olive-alpha";
+
+@import "@radix-ui/colors/gray";
+@import "@radix-ui/colors/gray-alpha";
+@import "@radix-ui/colors/black-alpha";
+@import "@radix-ui/colors/white-alpha";
 
 
 @layer base {
   :root {
     --background: var(--teal-1);
-    --foreground: var(--teal-12);
+    --foreground: var(--teal-11);
 
     --card: var(--teal-2);
     --card-foreground: var(--teal-12);
@@ -23,17 +31,17 @@
     --popover: var(--teal-2);
     --popover-foreground: var(--teal-12);
 
-    --primary: var(--teal-11);
-    --primary-foreground: var(--teal-12);
+    --primary: var(--teal-10);
+    --primary-foreground: var(--teal-1);
 
-    --secondary: var(--teal-10);
-    --secondary-foreground: var(--teal-3);
+    --secondary: var(--olive-9);
+    --secondary-foreground: var(--gray-1);
 
-    --muted: var(--teal-3);
-    --muted-foreground: var(--teal-10);
+    --muted: var(--olive-3);
+    --muted-foreground: var(--olive-10);
 
     --accent: var(--teal-5);
-    --accent-foreground: var(--teal-12);
+    --accent-foreground: var(--olive-12);
 
     --destructive: var(--red-10);
     --destructive-foreground: var(--red-3);
