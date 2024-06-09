@@ -73,7 +73,7 @@ export default function Footer() {
         gap-0 min-[611px]:gap-4
       ">
         <div className="flex flex-col items-start gap-2">
-          <div className="font-semibold text-sm min-[611px]:text-base">
+          <div className="font-semibold text-card-foreground text-sm min-[611px]:text-base">
             Developed by
           </div>
           <div className="flex flex-col items-start min-w-[140px] gap-1">
