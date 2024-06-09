@@ -67,6 +67,7 @@ export default function Footer() {
             <a
               className="text-primary hover:border-b-2 hover:bg-accent hover:text-accent-foreground active:border-b-2 active:bg-primary active:text-primary-foreground"
               href="https://confit.atlas.jp/guide/event/ssii2024/top?lang=ja"
+              target="_blank"
             >
               SSII 2024
             </a>
@@ -94,6 +95,7 @@ export default function Footer() {
             <a
               className="p-0.5 hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground"
               href="https://github.com/YoshikiKubotani"
+              target="_blank"
             >
               <div className="flex flex-row items-center">
                 <RxGithubLogo className="mr-1 size-4" />
@@ -105,6 +107,7 @@ export default function Footer() {
             <a
               className="p-0.5 hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground"
               href="https://github.com/gatheluck"
+              target="_blank"
             >
               <div className="flex flex-row items-center">
                 <RxGithubLogo className="mr-1 size-4" />
@@ -116,6 +119,7 @@ export default function Footer() {
             <a
               className="p-0.5 hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground"
               href="https://github.com/Hina39"
+              target="_blank"
             >
               <div className="flex flex-row items-center">
                 <RxGithubLogo className="mr-1 size-4" />
@@ -132,7 +136,7 @@ export default function Footer() {
           className="
             hidden size-5 dark:block
             min-[461px]:max-[610px]:size-7 min-[611px]:size-10
-        "
+          "
           sizes="100vw"
           src={whiteForwardPropagationMark}
         />
