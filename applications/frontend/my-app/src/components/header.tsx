@@ -16,12 +16,14 @@ export default function Header() {
       <a href="https://xpaperchallenge.org/cv/" target="_blank">
         <Image
           alt="logo"
+          priority={true}
           className="hidden h-auto w-[40vw] min-w-36 max-w-80 dark:block"
           sizes="100vw"
           src={whiteLogo}
         />
         <Image
           alt="logo"
+          priority={true}
           className="h-auto w-[40vw] min-w-36 max-w-80 dark:hidden "
           sizes="100vw"
           src={blackLogo}

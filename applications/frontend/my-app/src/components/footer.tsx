@@ -35,12 +35,14 @@ export default function Footer() {
           <a href="https://xpaperchallenge.org/cv/" target="_blank">
             <Image
               alt="logo"
+              priority={true}
               className="hidden h-auto w-[40vw] min-w-36 max-w-56 dark:block"
               sizes="100vw"
               src={whiteLogo}
             />
             <Image
               alt="logo"
+              priority={true}
               className="h-auto w-[40vw] min-w-36 max-w-80 dark:hidden "
               sizes="100vw"
               src={blackLogo}
@@ -126,6 +128,7 @@ export default function Footer() {
         </div>
         <Image
           alt="jundenpa_chan"
+          priority={true}
           className="
             hidden size-5 dark:block
             min-[461px]:max-[610px]:size-7 min-[611px]:size-10
@@ -135,6 +138,7 @@ export default function Footer() {
         />
         <Image
           alt="jundenpa_chan"
+          priority={true}
           className="
             size-5 dark:hidden min-[461px]:max-[610px]:size-7
             min-[611px]:size-10
