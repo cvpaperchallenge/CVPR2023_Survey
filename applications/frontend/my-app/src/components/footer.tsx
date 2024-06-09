@@ -63,7 +63,7 @@ export default function Footer() {
           Supported by{' '}
           <span className="inline">
             <a
-              className="visited:text-purple-600"
+              className="text-primary hover:border-b-2 hover:bg-accent hover:text-accent-foreground active:border-b-2 active:bg-primary active:text-primary-foreground"
               href="https://confit.atlas.jp/guide/event/ssii2024/top?lang=ja"
             >
               SSII 2024
@@ -74,7 +74,7 @@ export default function Footer() {
       <div
         className="
         flex
-        min-w-[180px]
+        min-w-[170px]
         flex-row
         items-center
         gap-0
@@ -88,27 +88,36 @@ export default function Footer() {
           <div className="text-sm font-semibold text-card-foreground min-[611px]:text-base">
             Developed by
           </div>
-          <div className="flex min-w-[140px] flex-col items-start gap-1">
-            <a href="https://github.com/YoshikiKubotani">
+          <div className="flex min-w-[130px] flex-col items-start gap-1">
+            <a
+              className="p-0.5 hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground"
+              href="https://github.com/YoshikiKubotani"
+            >
               <div className="flex flex-row items-center">
-                <RxGithubLogo className="size-4 text-primary" />
-                <span className="pl-1 text-xs min-[611px]:text-sm">
+                <RxGithubLogo className="mr-1 size-4" />
+                <span className="text-[10px] min-[611px]:text-sm">
                   Yoshiki Kubotani
                 </span>
               </div>
             </a>
-            <a href="https://github.com/gatheluck">
+            <a
+              className="p-0.5 hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground"
+              href="https://github.com/gatheluck"
+            >
               <div className="flex flex-row items-center">
-                <RxGithubLogo className="size-4 text-primary" />
-                <span className="pl-1 text-xs min-[611px]:text-sm">
+                <RxGithubLogo className="mr-1 size-4" />
+                <span className="text-[10px] min-[611px]:text-sm">
                   Yoshihiro Fukuhara
                 </span>
               </div>
             </a>
-            <a href="https://github.com/Hina39">
+            <a
+              className="p-0.5 hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground"
+              href="https://github.com/Hina39"
+            >
               <div className="flex flex-row items-center">
-                <RxGithubLogo className="size-4 text-primary" />
-                <span className="pl-1 text-xs min-[611px]:text-sm">
+                <RxGithubLogo className="mr-1 size-4" />
+                <span className="text-[10px] min-[611px]:text-sm">
                   Hina Otake
                 </span>
               </div>
