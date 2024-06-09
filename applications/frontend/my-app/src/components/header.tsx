@@ -1,63 +1,77 @@
 'use client'
 import Image from 'next/image'
-import { PiXLogo } from "react-icons/pi";
-import { RxGithubLogo } from "react-icons/rx";
-import { MdFeedback } from "react-icons/md";
-import whiteLogo from '../../public/cc_logo_2white.png'
-import blackLogo from '../../public/cc_logo_2.png'
+import { PiXLogo } from 'react-icons/pi'
+import { RxGithubLogo } from 'react-icons/rx'
 
+import { FeedbackDialog } from '@/components/feedback-dialog'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { FeedbackDialog } from '@/components/feedback-dialog'
+
+import blackLogo from '../../public/cc_logo_2.png'
+import whiteLogo from '../../public/cc_logo_2white.png'
 
 export default function Header() {
   return (
-    <div className="flex h-full items-center justify-between text-primary py-2.5 px-4">
+    <div className="flex h-full items-center justify-between px-4 py-2.5 text-primary">
       <a href="https://xpaperchallenge.org/cv/" target="_blank">
         <Image
-          src={whiteLogo}
           alt="logo"
+          className="hidden h-auto w-[40vw] min-w-36 max-w-80 dark:block"
           sizes="100vw"
-          className="w-[40vw] h-auto min-w-36 max-w-80 hidden dark:block"
+          src={whiteLogo}
         />
         <Image
-          src={blackLogo}
           alt="logo"
+          className="h-auto w-[40vw] min-w-36 max-w-80 dark:hidden "
           sizes="100vw"
-          className="w-[40vw] h-auto min-w-36 max-w-80 dark:hidden "
+          src={blackLogo}
         />
       </a>
-      <div className="
+      <div
+        className="
         flex flex-row items-center
         gap-2
         min-[461px]:max-[600px]:gap-4
         min-[601px]:gap-8
-      ">
-        <div className="
+      "
+      >
+        <div
+          className="
           flex flex-row items-center
           gap-1
           min-[461px]:gap-3
-        ">
-          <Button variant="ghost" size="icon" className="w-fit h-fit p-1 rounded-full hover:text-[var(--teal-11)]">
+        "
+        >
+          <Button
+            className="size-fit rounded-full p-1 hover:text-[var(--teal-11)]"
+            size="icon"
+            variant="ghost"
+          >
             <a href="https://github.com/cvpaperchallenge" target="_blank">
-              <RxGithubLogo className="
-                w-4 h-4
-                min-[461px]:max-[600px]:w-5 min-[461px]:max-[600px]:h-5
-                min-[601px]:w-7 min-[601px]:h-7
-              "/>
+              <RxGithubLogo
+                className="
+                size-4 min-[461px]:max-[600px]:size-5
+                min-[601px]:size-7
+              "
+              />
             </a>
           </Button>
           <Separator
             className="h-5 w-px bg-[var(--olive-8)]"
             orientation="vertical"
           />
-          <Button variant="ghost" size="icon" className="w-fit h-fit p-1 aspect-square rounded-full hover:text-[var(--teal-11)]">
+          <Button
+            className="aspect-square size-fit rounded-full p-1 hover:text-[var(--teal-11)]"
+            size="icon"
+            variant="ghost"
+          >
             <a href="https://twitter.com/CVpaperChalleng" target="_blank">
-              <PiXLogo className="
-                w-4 h-4
-                min-[461px]:max-[600px]:w-5 min-[461px]:max-[600px]:h-5
-                min-[601px]:w-7 min-[601px]:h-7
-              "/>
+              <PiXLogo
+                className="
+                size-4 min-[461px]:max-[600px]:size-5
+                min-[601px]:size-7
+              "
+              />
             </a>
           </Button>
         </div>
