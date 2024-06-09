@@ -4,7 +4,8 @@ import { Separator } from "@/components/ui/separator"
 import { RxGithubLogo } from "react-icons/rx";
 import whiteLogo from '../../public/cc_logo_2white.png'
 import blackLogo from '../../public/cc_logo_2.png'
-import forwardPropagationMark from '../../public/forward-propergation-chan4.png'
+import whiteForwardPropagationMark from '../../public/forward-propergation-chan4-white.png'
+import blackForwardPropagationMark from '../../public/forward-propergation-chan4.png'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -103,12 +104,22 @@ export default function Footer() {
           </div>
         </div>
         <Image
-          src={forwardPropagationMark}
+          src={whiteForwardPropagationMark}
           alt="jundenpa_chan"
           sizes="100vw"
           className='
             w-5 min-[461px]:max-[610px]:w-7 min-[611px]:w-10
             h-5 min-[461px]:max-[610px]:h-7 min-[611px]:h-10
+            hidden dark:block
+        '/>
+        <Image
+          src={blackForwardPropagationMark}
+          alt="jundenpa_chan"
+          sizes="100vw"
+          className='
+            w-5 min-[461px]:max-[610px]:w-7 min-[611px]:w-10
+            h-5 min-[461px]:max-[610px]:h-7 min-[611px]:h-10
+            dark:hidden
           '/>
       </div>
     </div>
