@@ -33,7 +33,7 @@ export function FeedbackDialog() {
           Feedback
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-[var(--teal-3)] dark:bg-[var(--teal-2)] sm:max-w-[425px]">
+      <DialogContent className="bg-[var(--teal-3)] dark:bg-[var(--teal-2)] sm:max-w-[450px]">
         <DialogHeader>
           <DialogTitle className="text-left">
             <MdFeedback className="mr-2 inline h-5 w-auto" /> Please send your
