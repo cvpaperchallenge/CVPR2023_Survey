@@ -49,7 +49,7 @@ export default function Footer() {
             ml-2
             h-px min-[861px]:h-5
             w-5 min-[861px]:w-px
-            bg-border
+            bg-[var(--olive-8)]
           "
           orientation="horizontal"
         />

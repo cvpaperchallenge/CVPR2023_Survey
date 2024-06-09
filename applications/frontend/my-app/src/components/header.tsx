@@ -48,7 +48,7 @@ export default function Header() {
             </a>
           </Button>
           <Separator
-            className="h-5 w-px bg-border"
+            className="h-5 w-px bg-[var(--olive-8)]"
             orientation="vertical"
           />
           <Button variant="ghost" size="icon" className="w-fit h-fit p-1 aspect-square rounded-full hover:text-[var(--teal-11)]">
