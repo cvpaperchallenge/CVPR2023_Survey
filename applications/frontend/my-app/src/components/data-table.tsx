@@ -28,16 +28,6 @@ import {
 } from "@/components/ui/table"
 
 import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-
-import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -48,13 +38,13 @@ import {
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { DataTablePagination } from "@/components/data-table-pagination"
 
 type Checked = DropdownMenuCheckboxItemProps["checked"]
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  // set default values
   numPagesDisplayed?: number
 }
 
@@ -85,54 +75,6 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   })
-
-  const getPaginationItems = () => {
-    const pageCount = table.getPageCount();
-    const pageIndex = table.getState().pagination.pageIndex + 1;
-    const items = [];
-    let startPage = Math.max(1, pageIndex - Math.floor(numPagesDisplayed / 2));
-    let endPage = Math.min(pageCount, startPage + numPagesDisplayed - 1);
-
-    // Adjust start and end if we're too close to the boundaries
-    if (startPage === 1) {
-      endPage = Math.min(pageCount, startPage + numPagesDisplayed - 1);
-    } else if (endPage === pageCount) {
-      startPage = Math.max(1, endPage - numPagesDisplayed + 1);
-    }
-    // Add ellipsis if necessary at the beginning
-    if (startPage > 1) {
-      items.push(
-          <PaginationItem key="start-ellipsis">
-              <PaginationEllipsis />
-          </PaginationItem>
-      );
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-        items.push(
-            <PaginationItem>
-                <PaginationLink
-                    isActive={i === pageIndex}
-                    onClick={() => {
-                        table.setPageIndex(i - 1);
-                    }}
-                >
-                    {i}
-                </PaginationLink>
-            </PaginationItem>
-        );
-    }
-
-    // Add ellipsis if necessary at the end
-    if (endPage < pageCount) {
-      items.push(
-          <PaginationItem key="end-ellipsis">
-              <PaginationEllipsis />
-          </PaginationItem>
-      );
-    }
-    return items;
-  };
 
   const column = table.getColumn("authors")
   // const autoCompleteSuggestions =  Array.from(
@@ -254,28 +196,7 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={() => table.previousPage()}
-              />
-            </PaginationItem>
-            {getPaginationItems()}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={
-                  table.getCanNextPage() ? (
-                    () => table.nextPage()
-                  ) : (
-                    () => {}
-                  )}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        <DataTablePagination table={table} numPagesDisplayed={numPagesDisplayed}/>
       </div>
     </div>
   )
