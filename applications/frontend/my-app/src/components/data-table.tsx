@@ -30,8 +30,6 @@ import {
 import { DataTablePagination } from "@/components/data-table-pagination"
 import { DataTableToolbar } from "@/components/data-table-toolbar"
 
-type Checked = DropdownMenuCheckboxItemProps["checked"]
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -68,7 +66,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} columnName="author"/>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
