@@ -1,20 +1,28 @@
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 import { Table } from '@tanstack/react-table'
 
-import { RxMagnifyingGlass } from "react-icons/rx";
-import { useState } from "react"
+import { RxCheck } from "react-icons/rx";
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 
 interface DataTableFacetedFilterProps<TData> {
   table: Table<TData>
@@ -25,67 +33,114 @@ export function DataTableFacetedFilter<TData>({
   table,
   columnName
 }: DataTableFacetedFilterProps<TData>) {
-  const [filterText, setFilterText] = useState<string>("")
   const column = table.getColumn(columnName)
   if (!column) return null
 
-  const facets = new Set(
-    Array.from(column?.getFacetedUniqueValues().keys()).flat()
+  const facets = column?.getFacetedUniqueValues()
+  const options = new Set(
+    Array.from(facets.keys()).flat()
   )
   const selectedValues = new Set<string>(column?.getFilterValue() as string[])
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost">{column.columnDef.header}</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent loop={false}>
-        <DropdownMenuLabel>Filter by {column.columnDef.header}</DropdownMenuLabel>
-        <RxMagnifyingGlass className="h-4 w-4" />
-        <Input
-          placeholder="Search..."
-          type="text"
-          value={filterText}
-          onChange={(event) => {
-              event.stopPropagation()
-              event.preventDefault()
-              event.nativeEvent.stopImmediatePropagation()
-              setFilterText(event.target.value)
-            }
-          }
-          onKeyDown={(event) => {
-            event.nativeEvent.stopImmediatePropagation()
-          }}
-        />
-        <DropdownMenuSeparator />
-        <ScrollArea className="h-72">
-          {Array.from(facets).map((option) => {
-            const isSelected = selectedValues.has(option) //.value)
-            return (
-              <DropdownMenuCheckboxItem
-                key={option}
-                checked={isSelected}
-                onSelect={(e) => {
-                  e.preventDefault()
-                  // すでに選択されている項目をクリックした場合はselectedValuesから削除
-                  if (isSelected) {
-                    selectedValues.delete(option)
-                  // 選択されていない項目をクリックした場合は場合はselectedValuesに追加
-                  } else {
-                    selectedValues.add(option)
-                  }
-                  // selectedValuesに登録された値をフィルター値に設定
-                  column?.setFilterValue(
-                    Array.from(selectedValues).length ? Array.from(selectedValues) : undefined
-                  )
-                }}
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="sm" className="h-8 border-dashed">
+          {column.columnDef.header}
+          {selectedValues?.size > 0 && (
+            <>
+              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Badge
+                variant="secondary"
+                className="rounded-sm px-1 font-normal lg:hidden"
               >
-                {option}
-              </DropdownMenuCheckboxItem>
-            )
-          })}
-        </ScrollArea>
-      </DropdownMenuContent>
-    </DropdownMenu>
+                {selectedValues.size}
+              </Badge>
+              <div className="hidden space-x-1 lg:flex">
+                {selectedValues.size > 2 ? (
+                  <Badge
+                    variant="secondary"
+                    className="rounded-sm px-1 font-normal"
+                  >
+                    {selectedValues.size} selected
+                  </Badge>
+                ) : (
+                  Array.from(options)
+                    .filter((option) => selectedValues.has(option))
+                    .map((option) => (
+                      <Badge
+                        variant="secondary"
+                        key={option}
+                        className="rounded-sm px-1 font-normal"
+                      >
+                        {option}
+                      </Badge>
+                    ))
+                )}
+              </div>
+            </>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0" align="start">
+        <Command>
+          <CommandInput placeholder="Search..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup>
+              {Array.from(options).map((option) => {
+                const isSelected = selectedValues.has(option)
+                return (
+                  <CommandItem
+                    key={option}
+                    onSelect={() => {
+                      if (isSelected) {
+                        selectedValues.delete(option)
+                      } else {
+                        selectedValues.add(option)
+                      }
+                      const filterValues = Array.from(selectedValues)
+                      column?.setFilterValue(
+                        filterValues.length ? filterValues : undefined
+                      )
+                    }}
+                  >
+                    <div
+                      className={cn(
+                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                        isSelected
+                          ? "bg-primary text-primary-foreground"
+                          : "opacity-50 [&_svg]:invisible"
+                      )}
+                    >
+                      <RxCheck className={cn("h-4 w-4")} />
+                    </div>
+                    <span>{option}</span>
+                    {facets?.get(option) && (
+                      <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+                        {facets.get(option)}
+                      </span>
+                    )}
+                  </CommandItem>
+                )
+              })}
+            </CommandGroup>
+          </CommandList>
+          {selectedValues.size > 0 && (
+            <>
+              <CommandSeparator />
+              <CommandGroup>
+                <CommandItem
+                  onSelect={() => column?.setFilterValue(undefined)}
+                  className="justify-center text-center"
+                >
+                  Clear filters
+                </CommandItem>
+              </CommandGroup>
+            </>
+          )}
+        </Command>
+      </PopoverContent>
+    </Popover>
   )
 }
