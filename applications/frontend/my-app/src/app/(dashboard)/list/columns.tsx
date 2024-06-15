@@ -34,8 +34,8 @@ export const columns: ColumnDef<Paper>[] = [
       return <div>{authors.join(", ")}</div>
     },
     filterFn: (rows, id, filterValue) => {
-      console.log(`Filtering authors with value: ${filterValue}`)
-      console.log(rows)
+      // console.log(`Filtering authors with value: ${filterValue}`)
+      // console.log(rows)
       const authorsArray = rows.original.authors
       // Return true if authorsArray contains any author that includes filterValue
       return authorsArray.some((author) => filterValue.includes(author))

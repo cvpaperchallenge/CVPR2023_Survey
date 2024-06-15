@@ -16,7 +16,11 @@ const generateDummyData = (num: number): Paper[] => {
     papers.push({
       id: i.toString(),
       title: `Loooooooooooooooooooong Title ${i}`,
-      authors: [`Author ${i}`, `Author ${i + 1}`, `Author ${i + 2}`],
+      authors: [
+        `Author ${String(i).padStart(3, '0')}`,
+        `Author ${String(i + 1).padStart(3, '0')}`,
+        `Author ${String(i + 2).padStart(3, '0')}`
+      ],
       cvfLink: `Link ${i}`,
       conference: `Conference ${i}`
     });
