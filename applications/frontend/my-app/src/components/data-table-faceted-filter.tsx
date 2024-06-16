@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 import { Table } from '@tanstack/react-table'
 
@@ -62,17 +61,17 @@ export function DataTableFacetedFilter<TData>({
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="sm" className="h-8 border-dashed">
-          {column.columnDef.header}
+          {String(column.columnDef.header)}
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
                 variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
+                className="rounded-sm px-1 font-normal sm:hidden"
               >
                 {selectedValues.size}
               </Badge>
-              <div className="hidden space-x-1 lg:flex">
+              <div className="hidden space-x-1 sm:flex">
                 {selectedValues.size > 2 ? (
                   <Badge
                     variant="secondary"
@@ -82,6 +81,7 @@ export function DataTableFacetedFilter<TData>({
                   </Badge>
                 ) : (
                   Array.from(options)
+                    .sort()
                     .filter((option) => selectedValues.has(option))
                     .map((option) => (
                       <Badge
@@ -104,7 +104,7 @@ export function DataTableFacetedFilter<TData>({
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {Array.from(options).map((option) => {
+              {Array.from(options).sort().map((option) => {
                 const isSelected = selectedValues.has(option)
                 return (
                   <CommandItem
@@ -132,9 +132,9 @@ export function DataTableFacetedFilter<TData>({
                       <RxCheck className={cn("h-4 w-4")} />
                     </div>
                     <span>{option}</span>
-                      <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+                    <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                       {authorFrecency.get(option)}
-                      </span>
+                    </span>
                   </CommandItem>
                 )
               })}
