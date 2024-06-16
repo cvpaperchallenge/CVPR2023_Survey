@@ -3,15 +3,9 @@ import { LuArrowUpDown } from "react-icons/lu";
 
 import { Button } from "@/components/ui/button"
 
-export interface Paper {
-  id: string
-  title: string
-  authors: string[]
-  cvfLink: string
-  conference: string
-}
+import { PaperInfo } from "@/lib/types"
 
-export const columns: ColumnDef<Paper>[] = [
+export const columns: ColumnDef<PaperInfo>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {

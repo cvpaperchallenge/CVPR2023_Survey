@@ -6,10 +6,10 @@ export interface FetchResult<T> {
 
 export interface PaperInfo {
   title: string
-  abstract: string
   authors: string[]
   cvfLink: string
   pdfLink: string
+  conference: string
 }
 
 export interface Summary {
@@ -22,5 +22,6 @@ export interface Summary {
 
 export interface PaperDetails {
   paperInfo: PaperInfo
+  abstract: string
   summary: Summary
 }

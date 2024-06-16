@@ -103,12 +103,10 @@ async function GetCachedItem<T>(
   return { data: result.data }
 }
 
-export async function getPaperList(
-  conference: string
-): Promise<FetchResult<PaperInfo[]>> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${conference}`
-  // const result = await GetCachedItem<PaperInfo[]>(url, conference, 60*60*1);
-  // return result;
+export async function getPaperList(): Promise<FetchResult<PaperInfo[]>> {
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/paper`
+  // // const result = await GetCachedItem<PaperInfo[]>(url, conference, 60*60*1);
+  // // return result;
   return fetchFromAPI<PaperInfo[]>(url)
 }
 
