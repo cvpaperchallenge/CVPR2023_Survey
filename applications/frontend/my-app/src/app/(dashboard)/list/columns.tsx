@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 
 import { PaperInfo } from "@/lib/types"
 import { Badge } from "@/components/ui/badge";
-import { RxGlobe } from "react-icons/rx";
+import { RxFile, RxGlobe } from "react-icons/rx";
 
 export const columns: ColumnDef<PaperInfo>[] = [
   {
@@ -53,7 +53,7 @@ export const columns: ColumnDef<PaperInfo>[] = [
     }
   },
   {
-    accessorKey: "cvfLink",
+    accessorKey: "Link",
     header: "Link",
     cell : ({ row }) => {
       return (
@@ -63,9 +63,44 @@ export const columns: ColumnDef<PaperInfo>[] = [
         //     {row.getValue("title")}
         //   </span>
         // </div>
-        <a href={row.original.cvfLink} target="_blank" rel="noreferrer">
-          <Badge variant="outline" className="gap-1"><RxGlobe/> CVF</Badge>
-        </a>
+        <div className="flex flex-col gap-1.5">
+          <a href={row.original.cvfLink} target="_blank" rel="noreferrer">
+            <Button
+              variant="outline"
+              // size="sm"
+              className="
+              gap-1
+              text-[var(--jade-11)]
+              bg-[var(--jade-3)]
+              hover:bg-[var(--jade-4)]
+              hover:text-[var(--jade-12)]
+              border-none
+              px-2
+              h-6
+              text-xs
+            ">
+              <RxGlobe/> CVF
+            </Button>
+          </a>
+          <a href={row.original.pdfLink} target="_blank" rel="noreferrer">
+            <Button
+              variant="outline"
+              // size="sm"
+              className="
+                gap-1
+                text-[var(--red-11)]
+                bg-[var(--red-3)]
+                hover:bg-[var(--red-4)]
+                hover:text-[var(--red-12)]
+                border-none
+                px-2
+                h-6
+                text-xs
+            ">
+                <RxFile/> PDF
+            </Button>
+          </a>
+        </div>
       )
     },
   },
