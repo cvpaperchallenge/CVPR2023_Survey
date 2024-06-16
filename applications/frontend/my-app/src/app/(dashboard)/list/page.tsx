@@ -1,9 +1,6 @@
 'use client'
 
-import { useTheme } from 'next-themes'
 import * as React from 'react'
-
-import { Button } from '@/components/ui/button'
 
 import { Paper, columns } from './columns'
 import { DataTable } from '@/components/data-table'
@@ -38,7 +35,6 @@ const loadPaperLists = async () => {
 
 export default function ModeToggle() {
   const [papers, setPapers] = useState<Paper[]>([])
-  const { setTheme } = useTheme()
 
   useEffect(() => {
     const fetchPapers = async () => {
@@ -49,10 +45,6 @@ export default function ModeToggle() {
 
   return (
     <div>
-      <Button onClick={() => setTheme('dark')} size="default" variant="outline">
-        Dark
-        <span className="sr-only">Toggle theme</span>
-      </Button>
       <div className="container mx-auto py-10">
         <DataTable columns={columns} data={papers} />
       </div>
