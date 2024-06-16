@@ -35,32 +35,35 @@ export function DataTableFacetedFilter<TData>({
   const column = table.getColumn(columnName)
   if (!column) return null
 
-  const facets = column?.getFacetedUniqueValues()
-  // Create a map object to store the frecency of each author
-  const authorFrecency: Map<string, number> = new Map()
-
-  // Iterate over the original map object having the authors array as keys
-  facets.forEach((frequency, authors) => {
-    // Iterate over the authors array
-    authors.forEach((author: string) => {
-      // If the author is already in the map object, increment its frecency
-      if (authorFrecency.has(author)) {
-        authorFrecency.set(author, authorFrecency.get(author)! + frequency)
-      } else {
-        // Otherwise, set the frecency to the frequency
-        authorFrecency.set(author, frequency)
-      }
+  // Create a map object to store the frecency of each option
+  let optionFrequency: Map<string, number> = new Map()
+  if (columnName === 'authors') {
+    // Iterate over the original map object having the authors array as keys
+    column?.getFacetedUniqueValues().forEach((frequency, authors) => {
+      // Iterate over the authors array
+      authors.forEach((author: string) => {
+        // If the author is already in the map object, increment its frecency
+        if (optionFrequency.has(author)) {
+          optionFrequency.set(author, optionFrequency.get(author)! + frequency)
+        } else {
+          // Otherwise, set the frecency to the frequency
+          optionFrequency.set(author, frequency)
+        }
+      })
     })
-  })
+  } else {
+    optionFrequency = column?.getFacetedUniqueValues()
+  }
+
   const options = new Set(
-    Array.from(facets.keys()).flat()
+    Array.from(optionFrequency.keys()).flat()
   )
   const selectedValues = new Set<string>(column?.getFilterValue() as string[])
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-8 border-dashed">
+        <Button variant="outline" size="sm" className="h-8 w-fit border-dashed rounded-sm">
           {String(column.columnDef.header)}
           {selectedValues?.size > 0 && (
             <>
@@ -133,7 +136,7 @@ export function DataTableFacetedFilter<TData>({
                     </div>
                     <span>{option}</span>
                     <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
-                      {authorFrecency.get(option)}
+                      {optionFrequency.get(option)}
                     </span>
                   </CommandItem>
                 )

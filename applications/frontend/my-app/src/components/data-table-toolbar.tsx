@@ -12,7 +12,7 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   return (
-    <div className="flex items-center py-4">
+    <div className="flex flex-col justify-start gap-2 py-4">
       <Input
         placeholder="Filter titles..."
         type="text"
@@ -22,7 +22,10 @@ export function DataTableToolbar<TData>({
         }
         className="max-w-sm"
       />
-      <DataTableFacetedFilter table={table} columnName="authors"/>
+      <div className="flex flex-row items-center gap-2">
+        <DataTableFacetedFilter table={table} columnName="authors"/>
+        <DataTableFacetedFilter table={table} columnName="conference"/>
+      </div>
     </div>
   )
 }

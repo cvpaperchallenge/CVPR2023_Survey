@@ -107,5 +107,11 @@ export const columns: ColumnDef<PaperInfo>[] = [
   {
     accessorKey: "conference",
     header: "Conference",
+    cell: ({ row }) => {
+      return <div>{row.original.conference}</div>
+    },
+    filterFn: (row, id, filterValue) => {
+      return filterValue.includes(row.getValue(id))
+    }
   },
 ]
