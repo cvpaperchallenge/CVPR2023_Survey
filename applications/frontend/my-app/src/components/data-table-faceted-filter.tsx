@@ -37,6 +37,22 @@ export function DataTableFacetedFilter<TData>({
   if (!column) return null
 
   const facets = column?.getFacetedUniqueValues()
+  // Create a map object to store the frecency of each author
+  const authorFrecency: Map<string, number> = new Map()
+
+  // Iterate over the original map object having the authors array as keys
+  facets.forEach((frequency, authors) => {
+    // Iterate over the authors array
+    authors.forEach((author: string) => {
+      // If the author is already in the map object, increment its frecency
+      if (authorFrecency.has(author)) {
+        authorFrecency.set(author, authorFrecency.get(author)! + frequency)
+      } else {
+        // Otherwise, set the frecency to the frequency
+        authorFrecency.set(author, frequency)
+      }
+    })
+  })
   const options = new Set(
     Array.from(facets.keys()).flat()
   )
@@ -116,11 +132,9 @@ export function DataTableFacetedFilter<TData>({
                       <RxCheck className={cn("h-4 w-4")} />
                     </div>
                     <span>{option}</span>
-                    {facets?.get(option) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
-                        {facets.get(option)}
+                      {authorFrecency.get(option)}
                       </span>
-                    )}
                   </CommandItem>
                 )
               })}
