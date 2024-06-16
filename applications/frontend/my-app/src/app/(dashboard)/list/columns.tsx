@@ -21,6 +21,17 @@ export const columns: ColumnDef<PaperInfo>[] = [
         </Button>
       )
     },
+    cell: ({ row }) => {
+      const authors = row.getValue("authors") as string[]
+      return (
+        <a href={`/details?conference=${row.original.conference}&id=${row.index}`}>
+          <div className="flex flex-col justify-start gap-1 rounded p-2 hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
+            <div className="font-semibold">{row.getValue("title")}</div>
+            <div className="text-sm text-muted-foreground">{authors.join(", ")}</div>
+          </div>
+        </a>
+      )
+    }
   },
   {
     accessorKey: "authors",

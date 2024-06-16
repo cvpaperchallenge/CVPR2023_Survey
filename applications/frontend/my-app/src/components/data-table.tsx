@@ -45,6 +45,9 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
+  const [columnVisibility, setColumnVisibility] = useState({
+    authors: false,
+  });
   const router = useRouter()
 
   const table = useReactTable({
@@ -61,6 +64,7 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
+      columnVisibility
     },
   })
 
@@ -93,8 +97,7 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() => router.push(`/dashboard/paper/${row.id}`)}
-                    className="hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors"
+                    // className="hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
