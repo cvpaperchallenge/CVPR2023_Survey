@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <DataTableToolbar table={table} columnName="author"/>
+      <DataTableToolbar table={table}/>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
