@@ -4,6 +4,8 @@ import { LuArrowUpDown } from "react-icons/lu";
 import { Button } from "@/components/ui/button"
 
 import { PaperInfo } from "@/lib/types"
+import { Badge } from "@/components/ui/badge";
+import { RxGlobe } from "react-icons/rx";
 
 export const columns: ColumnDef<PaperInfo>[] = [
   {
@@ -42,6 +44,19 @@ export const columns: ColumnDef<PaperInfo>[] = [
   {
     accessorKey: "cvfLink",
     header: "Link",
+    cell : ({ row }) => {
+      return (
+        // <div className="flex space-x-2">
+        //   <Badge variant="outline">{row.original.label}</Badge>
+        //   <span className="max-w-[500px] truncate font-medium">
+        //     {row.getValue("title")}
+        //   </span>
+        // </div>
+        <a href={row.original.cvfLink} target="_blank" rel="noreferrer">
+          <Badge variant="outline" className="gap-1"><RxGlobe/> CVF</Badge>
+        </a>
+      )
+    },
   },
   {
     accessorKey: "conference",
