@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button"
 
 import { Table } from '@tanstack/react-table'
 
-import { RxCheck } from "react-icons/rx";
+import { RxCheck, RxCaretLeft, RxCaretRight } from "react-icons/rx";
+
+import { useState } from "react"
 
 import {
   Command,
@@ -56,9 +58,19 @@ export function DataTableFacetedFilter<TData>({
   }
 
   const options = new Set(
-    Array.from(optionFrequency.keys()).flat()
+    Array.from(column?.getFacetedUniqueValues().keys()).flat()
   )
   const selectedValues = new Set<string>(column?.getFilterValue() as string[])
+
+  const itemsPerPage = 20
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const paginatedOptions = Array.from(options).sort().slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  const totalPages = Math.ceil(Array.from(options).length / itemsPerPage)
 
   return (
     <Popover>
@@ -107,7 +119,7 @@ export function DataTableFacetedFilter<TData>({
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {Array.from(options).sort().map((option) => {
+              {paginatedOptions.sort().map((option) => {
                 const isSelected = selectedValues.has(option)
                 return (
                   <CommandItem
@@ -156,6 +168,25 @@ export function DataTableFacetedFilter<TData>({
               </CommandGroup>
             </>
           )}
+          <div className="flex justify-between items-center p-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <RxCaretLeft/>
+            </Button>
+            <span>{currentPage} / {totalPages}</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              <RxCaretRight/>
+            </Button>
+          </div>
         </Command>
       </PopoverContent>
     </Popover>
