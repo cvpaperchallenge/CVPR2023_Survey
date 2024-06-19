@@ -28,7 +28,7 @@ def validate_conference(conference: str, year: int) -> str:
     if conference == "cvpr":
         if year not in range(2013, 2025):
             raise ValueError(
-                "CVPR conference is held from 2013 to 2023. \
+                "CVPR conference is held from 2013 to 2024. \
                 Please specify the year in the range."
             )
         return f"CVPR{year}"
