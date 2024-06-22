@@ -1,16 +1,16 @@
+'use client'
 import { Button } from "@/components/ui/button"
 
 import { Table } from '@tanstack/react-table'
 
-import { RxCheck, RxCaretLeft, RxCaretRight } from "react-icons/rx";
+import { RxCheck, RxCaretLeft, RxCaretRight, RxMagnifyingGlass } from "react-icons/rx";
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 
 import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
   CommandSeparator,
@@ -57,20 +57,29 @@ export function DataTableFacetedFilter<TData>({
     optionFrequency = column?.getFacetedUniqueValues()
   }
 
-  const options = new Set(
-    Array.from(column?.getFacetedUniqueValues().keys()).flat()
-  )
+  const options = useMemo(() => Array.from(optionFrequency.keys()), [optionFrequency]);
   const selectedValues = new Set<string>(column?.getFilterValue() as string[])
 
-  const itemsPerPage = 20
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 20
 
-  const paginatedOptions = Array.from(options).sort().slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  )
 
-  const totalPages = Math.ceil(Array.from(options).length / itemsPerPage)
+  const filteredOptions = useMemo(() => {
+    return options.sort().filter(option => option.toLowerCase().includes(searchTerm.toLowerCase()));
+  }, [options, searchTerm]);
+
+  const paginatedOptions = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredOptions.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredOptions, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(filteredOptions.length / itemsPerPage)
+
+  const handleSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1);
+  }
 
   return (
     <Popover>
@@ -115,11 +124,19 @@ export function DataTableFacetedFilter<TData>({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
-          <CommandInput placeholder="Search..." />
+          <div className="flex items-center border-b px-3">
+            <RxMagnifyingGlass className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+            <input
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+              className="flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground font-medium disabled:cursor-not-allowed disabled:opacity-50"
+            />
+          </div>
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {paginatedOptions.sort().map((option) => {
+              {paginatedOptions.map((option) => {
                 const isSelected = selectedValues.has(option)
                 return (
                   <CommandItem
