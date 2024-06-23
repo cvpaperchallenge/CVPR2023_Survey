@@ -3,8 +3,7 @@ import { Button } from "@/components/ui/button"
 
 import { Table } from '@tanstack/react-table'
 
-import { RxCheck, RxCaretLeft, RxCaretRight, RxMagnifyingGlass } from "react-icons/rx";
-
+import { RxCheck, RxCaretLeft, RxCaretRight, RxMagnifyingGlass, RxDoubleArrowLeft, RxDoubleArrowRight } from "react-icons/rx";
 import { useState, useMemo } from "react"
 
 import {
@@ -183,26 +182,51 @@ export function DataTableFacetedFilter<TData>({
                   Clear filters
                 </CommandItem>
               </CommandGroup>
+              <CommandSeparator />
             </>
           )}
-          <div className="flex justify-between items-center p-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentPage(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              <RxCaretLeft/>
-            </Button>
+          <div className="flex justify-between items-center p-2 bg-[var(--teal-a3)]">
+            <div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full w-7 h-7"
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+              >
+                <RxDoubleArrowLeft/>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full w-7 h-7"
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                <RxCaretLeft/>
+              </Button>
+            </div>
             <span>{currentPage} / {totalPages}</span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <RxCaretRight/>
-            </Button>
+            <div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full w-7 h-7"
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                <RxCaretRight/>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full w-7 h-7"
+                onClick={() => setCurrentPage(totalPages)}
+                disabled={currentPage === totalPages}
+              >
+                <RxDoubleArrowRight/>
+              </Button>
+            </div>
           </div>
         </Command>
       </PopoverContent>
