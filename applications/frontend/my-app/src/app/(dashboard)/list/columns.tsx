@@ -56,20 +56,13 @@ export const columns: ColumnDef<PaperInfo>[] = [
   },
   {
     accessorKey: "Link",
-    header: "Link",
+    header: () => <div className="text-center">Link</div>,
     cell : ({ row }) => {
       return (
-        // <div className="flex space-x-2">
-        //   <Badge variant="outline">{row.original.label}</Badge>
-        //   <span className="max-w-[500px] truncate font-medium">
-        //     {row.getValue("title")}
-        //   </span>
-        // </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col items-center gap-1.5">
           <a href={row.original.cvfLink} target="_blank" rel="noreferrer">
             <Button
               variant="outline"
-              // size="sm"
               className="
               gap-1
               text-[var(--jade-11)]
@@ -87,7 +80,6 @@ export const columns: ColumnDef<PaperInfo>[] = [
           <a href={row.original.pdfLink} target="_blank" rel="noreferrer">
             <Button
               variant="outline"
-              // size="sm"
               className="
                 gap-1
                 text-[var(--red-11)]
@@ -110,10 +102,14 @@ export const columns: ColumnDef<PaperInfo>[] = [
     accessorKey: "conference",
     header: "Conference",
     cell: ({ row }) => {
-      return <div>{row.original.conference}</div>
+      return (
+        <div className="text-center">
+          {row.original.conference}
+        </div>
+      )
     },
     filterFn: (row, id, filterValue) => {
       return filterValue.includes(row.getValue(id))
-    }
+    },
   },
 ]
