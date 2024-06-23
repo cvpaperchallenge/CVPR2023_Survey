@@ -1,17 +1,206 @@
 'use client'
 
-import { useTheme } from 'next-themes'
-import * as React from 'react'
+import {  useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
+import { toast } from "sonner"
+import { Skeleton } from '@/components/ui/skeleton'
+import { Separator } from "@/components/ui/separator"
+
+import { PaperDetails } from '@/lib/types'
+import { getPaperDetails, handleFetchResult } from '@/lib/fetch'
 import { Button } from '@/components/ui/button'
+import { RxFile, RxGlobe } from 'react-icons/rx'
+
+const loadPaperDetails = async (conference: string, id: string) => {
+  const result = await getPaperDetails(conference, id);
+  return handleFetchResult<PaperDetails>(result, 'Failed to fetch paper details');
+}
 
 export default function ModeToggle() {
-  const { setTheme } = useTheme()
+
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const conference= searchParams.get('conference')
+  const paperId= searchParams.get('id')
+
+  const [paperDetails, setPaperDetails] = useState<PaperDetails | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    if (!conference || !paperId) {
+      toast.error('Invalid URL');
+      router.push('/list')
+    }
+    else {
+      const fetchPaperDetails = async () => {
+        const renamedConference = conference.replace(/([A-Z]+)(\d+)/, (match, p1, p2) => {
+          return p1.toLowerCase() + '-' + p2;
+        });
+        const paperDetails = await loadPaperDetails(renamedConference, paperId)
+        if (!paperDetails) {
+          router.push('/list')
+        }
+        else {
+          setPaperDetails(paperDetails)
+          setIsLoading(false)
+        }
+      }
+      fetchPaperDetails()
+    }
+  }, [])
+
+  if (isLoading || !paperDetails) {
+    return (
+      <div className="flex flex-col items-start gap-10 w-[75vw]">
+        <Skeleton className='h-12 w-full rounded-sm'/>
+        <div className='flex flex-col items-center gap-16 w-full'>
+          <div className='flex flex-col items-start gap-4 w-full'>
+            <Skeleton className='h-8 w-1/4 rounded-sm'/>
+            <Skeleton className='h-96 w-full rounded-sm'/>
+          </div>
+          <div className='flex flex-col items-start gap-4 w-full'>
+            <Skeleton className='h-8 w-1/4 rounded-sm'/>
+            <Skeleton className='h-44 w-full rounded-sm'/>
+          </div>
+          <div className='flex flex-col items-start gap-4 w-full'>
+            <Skeleton className='h-8 w-1/4 rounded-sm'/>
+            <Skeleton className='h-44 w-full rounded-sm'/>
+          </div>
+          <div className='flex flex-col items-start gap-4 w-full'>
+            <Skeleton className='h-8 w-1/4 rounded-sm'/>
+            <Skeleton className='h-44 w-full rounded-sm'/>
+          </div>
+          <div className='flex flex-col items-start gap-4 w-full'>
+            <Skeleton className='h-8 w-1/4 rounded-sm'/>
+            <Skeleton className='h-44 w-full rounded-sm'/>
+          </div>
+          <div className='flex flex-col items-start gap-4 w-full'>
+            <Skeleton className='h-8 w-1/4 rounded-sm'/>
+            <Skeleton className='h-44 w-full rounded-sm'/>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <Button onClick={() => setTheme('light')} size="default" variant="outline">
-      light
-      <span className="sr-only">Toggle theme</span>
-    </Button>
+    <div className="flex flex-col items-start gap-7 w-[75vw] max-w-[800px] min-w-[350px]">
+      <div className='flex flex-row justify-center w-full'>
+        <div className='text-xl font-extrabold text-foreground'>
+          {paperDetails.paperInfo.title}
+        </div>
+      </div>
+      <div className='flex flex-col items-center gap-12 w-full'>
+        <div className='flex flex-col items-start gap-0 w-full'>
+          <div>
+            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>基本情報</span>
+            <span className='text-sm font-normal text-muted-foreground'>/ Basic Information</span>
+          </div>
+          <Separator className='my-2 w-60'/>
+          <div className="grid grid-cols-6 gap-4 items-center w-full p-4 bg-[var(--teal-3)] rounded-sm">
+            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>ID</div>
+            <div className='col-span-5 gap-2 text-xs text-popover-foreground'>{paperId}</div>
+            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Authors</div>
+            <div className='col-span-5 gap-2 text-xs text-popover-foreground'>{paperDetails.paperInfo.authors.join(", ")}</div>
+            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Abstract</div>
+            <div className='col-span-5 gap-2 text-xs text-justify text-popover-foreground'>React does not preserve any state for renders that got suspended before they were able to mount for the first time. When the component has loaded, React will retry rendering the suspended tree from scratch.
+If Suspense was displaying content for the tree, but then it suspended again, the fallback will be shown again unless the update causing it was caused by startTransition or useDeferredValue.
+If React needs to hide the already visible content because it suspended again, it will clean up layout Effects in the content tree. When the content is ready to be shown again, React will fire the layout Effects again. This ensures that Effects measuring the DOM layout don’t try to do this while the content is hidden.
+React includes under-the-hood optimizations like Streaming Server Rendering and Selective Hydration that are integrated with Suspense. Read an architectural overview and watch a technical talk to learn more.</div>
+            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Link</div>
+            <div className='col-span-5 flex flex-row items-start gap-2'>
+              <a href={paperDetails.paperInfo.cvfLink} target="_blank" rel="noreferrer">
+                <Button
+                  variant="outline"
+                  className="
+                  gap-1
+                  text-[var(--jade-11)]
+                  bg-[var(--jade-4)]
+                  hover:bg-[var(--jade-5)]
+                  hover:text-[var(--jade-12)]
+                  border-[var(--jade-6)]
+                  px-2
+                  h-6
+                  text-xs
+                ">
+                  <RxGlobe/> CVF
+                </Button>
+              </a>
+              <a href={paperDetails.paperInfo.pdfLink} target="_blank" rel="noreferrer">
+                <Button
+                  variant="outline"
+                  className="
+                    gap-1
+                    text-[var(--red-11)]
+                    bg-[var(--red-3)]
+                    hover:bg-[var(--red-4)]
+                    hover:text-[var(--red-12)]
+                    border-[var(--red-6)]
+                    px-2
+                    h-6
+                    text-xs
+                ">
+                    <RxFile/> PDF
+                </Button>
+              </a>
+            </div>
+            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Conference</div>
+            <div className='col-span-5 gap-2 text-xs text-popover-foreground'>{conference}</div>
+          </div>
+        </div>
+        <div className='flex flex-col items-start gap-0 w-full'>
+          <div>
+            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>どんなもの？</span>
+            <span className='text-sm font-normal text-muted-foreground'>/ Outline</span>
+          </div>
+          <Separator className='my-2 w-44'/>
+          <div className="w-full p-4 bg-[var(--teal-3)]  rounded-sm">
+            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.outline}</div>
+          </div>
+        </div>
+        <div className='flex flex-col items-start gap-0 w-full'>
+          <div>
+            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>先行研究と比べてどこがすごい？</span>
+            <span className='text-sm font-normal text-muted-foreground'>/ Contribution</span>
+          </div>
+          <Separator className='my-2 w-[365px]'/>
+          <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
+            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.contribution}</div>
+          </div>
+        </div>
+        <div className='flex flex-col items-start gap-0 w-full'>
+          <div>
+            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>技術や手法のキモはどこ？</span>
+            <span className='text-sm font-normal text-muted-foreground'>/ Methods</span>
+          </div>
+          <Separator className='my-2 w-[295px]'/>
+          <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
+            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.method}</div>
+          </div>
+        </div>
+        <div className='flex flex-col items-start gap-0 w-full'>
+          <div>
+            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>どうやって有効だと検証した？</span>
+            <span className='text-sm font-normal text-muted-foreground'>/ Evaluation</span>
+          </div>
+          <Separator className='my-2 w-[330px]'/>
+          <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
+            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.evaluation}</div>
+          </div>
+        </div>
+        <div className='flex flex-col items-start gap-0 w-full'>
+          <div>
+            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>議論はある？</span>
+            <span className='text-sm font-normal text-muted-foreground'>/ Discussion</span>
+          </div>
+          <Separator className='my-2 w-52'/>
+          <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
+            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.discussion}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

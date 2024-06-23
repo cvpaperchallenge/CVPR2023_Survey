@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/lib/providers'
 import { cn } from '@/lib/utils'
 
 import type { Metadata } from 'next'
+import { Toaster } from 'sonner';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
+        <Toaster richColors/>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
