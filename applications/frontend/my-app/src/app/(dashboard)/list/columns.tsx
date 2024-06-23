@@ -28,7 +28,7 @@ export const columns: ColumnDef<PaperInfo>[] = [
           <div className="flex flex-col justify-start gap-1 rounded p-2 hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
             <div className="font-semibold">{row.getValue("title")}</div>
             <ScrollArea className="h-10">
-            <div className="text-sm text-muted-foreground">{authors.join(", ")}</div>
+              <div className="text-sm text-muted-foreground">{authors.join(", ")}</div>
             </ScrollArea>
           </div>
         </a>
@@ -66,10 +66,10 @@ export const columns: ColumnDef<PaperInfo>[] = [
               className="
               gap-1
               text-[var(--jade-11)]
-              bg-[var(--jade-3)]
-              hover:bg-[var(--jade-4)]
+              bg-[var(--jade-4)]
+              hover:bg-[var(--jade-5)]
               hover:text-[var(--jade-12)]
-              border-none
+              border-[var(--jade-6)]
               px-2
               h-6
               text-xs
@@ -86,7 +86,7 @@ export const columns: ColumnDef<PaperInfo>[] = [
                 bg-[var(--red-3)]
                 hover:bg-[var(--red-4)]
                 hover:text-[var(--red-12)]
-                border-none
+                border-[var(--red-6)]
                 px-2
                 h-6
                 text-xs
