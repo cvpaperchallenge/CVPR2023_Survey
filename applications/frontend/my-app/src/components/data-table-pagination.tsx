@@ -68,7 +68,7 @@ export function DataTablePagination<TData>({
   }
 
   return (
-    <Pagination>
+    <Pagination className="p-3 bg-[var(--teal-4)] dark:bg-[var(--teal-3)] border-t">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

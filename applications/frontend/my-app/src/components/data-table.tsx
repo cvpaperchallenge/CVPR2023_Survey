@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
 
 import { useRouter } from 'next/navigation'
 import {
@@ -69,16 +68,16 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div>
+    <div className=" w-[80vw]">
       <DataTableToolbar table={table}/>
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-[var(--teal-4)] dark:bg-[var(--teal-3)]">
             {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id}>
+                      <TableHead key={header.id} className="text-card-foreground">
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -94,17 +93,17 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    // className="hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="bg-[var(--teal-2)] h-32"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="p-3">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
               ))
             ) : (
               <TableRow>
