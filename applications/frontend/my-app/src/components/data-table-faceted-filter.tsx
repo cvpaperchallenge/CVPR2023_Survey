@@ -84,22 +84,22 @@ export function DataTableFacetedFilter<TData>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 w-fit border-dashed rounded-sm">
+        <Button variant="outline" size="sm" className="h-8 w-fit border-dashed rounded-sm bg-[var(--teal-4)]">
           {String(column.columnDef.header)}
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
-                variant="secondary"
-                className="rounded-sm px-1 font-normal sm:hidden"
+                variant="default"
+                className="rounded-sm px-1 font-normal bg-[var(--teal-9)] sm:hidden"
               >
                 {selectedValues.size}
               </Badge>
               <div className="hidden space-x-1 sm:flex">
                 {selectedValues.size > 2 ? (
                   <Badge
-                    variant="secondary"
-                    className="rounded-sm px-1 font-normal"
+                    variant="default"
+                    className="rounded-sm px-1 bg-[var(--teal-9)] font-normal"
                   >
                     {selectedValues.size} selected
                   </Badge>
@@ -109,9 +109,9 @@ export function DataTableFacetedFilter<TData>({
                     .filter((option) => selectedValues.has(option))
                     .map((option) => (
                       <Badge
-                        variant="secondary"
+                        variant="default"
                         key={option}
-                        className="rounded-sm px-1 font-normal"
+                        className="rounded-sm px-1 bg-[var(--teal-9)] font-normal"
                       >
                         {option}
                       </Badge>
