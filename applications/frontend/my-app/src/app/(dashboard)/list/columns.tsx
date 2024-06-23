@@ -4,8 +4,8 @@ import { LuArrowUpDown } from "react-icons/lu";
 import { Button } from "@/components/ui/button"
 
 import { PaperInfo } from "@/lib/types"
-import { Badge } from "@/components/ui/badge";
 import { RxFile, RxGlobe } from "react-icons/rx";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const columns: ColumnDef<PaperInfo>[] = [
   {
@@ -27,7 +27,9 @@ export const columns: ColumnDef<PaperInfo>[] = [
         <a href={`/details?conference=${row.original.conference}&id=${row.index}`}>
           <div className="flex flex-col justify-start gap-1 rounded p-2 hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
             <div className="font-semibold">{row.getValue("title")}</div>
+            <ScrollArea className="h-10">
             <div className="text-sm text-muted-foreground">{authors.join(", ")}</div>
+            </ScrollArea>
           </div>
         </a>
       )
