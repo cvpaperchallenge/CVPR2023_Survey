@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/pagination"
 
 import { Table } from "@tanstack/react-table"
+import { RxCaretLeft, RxCaretRight, RxDoubleArrowLeft, RxDoubleArrowRight } from "react-icons/rx";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>
@@ -71,22 +72,49 @@ export function DataTablePagination<TData>({
     <Pagination className="p-3 bg-[var(--teal-4)] dark:bg-[var(--teal-3)] border-t">
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious
-            href="#"
+          <PaginationLink
+            aria-label="Go to the first page"
+            size="default"
+            // href="#"
+            onClick={() => table.firstPage()}
+            className="gap-1 pl-2.5"
+            isDisabled={!table.getCanPreviousPage()}
+          >
+            <RxDoubleArrowLeft className="h-4 w-4" />
+          </PaginationLink>
+          <PaginationLink
+            aria-label="Go to previous page"
+            size="default"
+            // href="#"
             onClick={() => table.previousPage()}
-          />
+            className="gap-1 pl-2.5"
+            isDisabled={!table.getCanPreviousPage()}
+          >
+            <RxCaretLeft className="h-4 w-4" />
+          </PaginationLink>
         </PaginationItem>
         {getPaginationItems()}
         <PaginationItem>
-          <PaginationNext
-            href="#"
-            onClick={
-              table.getCanNextPage() ? (
-                () => table.nextPage()
-              ) : (
-                () => {}
-              )}
-          />
+          <PaginationLink
+            aria-label="Go to next page"
+            size="default"
+            // href="#"
+            onClick={() => table.nextPage()}
+            className="gap-1 pr-2.5"
+            isDisabled={!table.getCanNextPage()}
+          >
+            <RxCaretRight className="h-4 w-4" />
+          </PaginationLink>
+          <PaginationLink
+            aria-label="Go to the last page"
+            size="default"
+            // href="#"
+            onClick={() => table.lastPage()}
+            className="gap-1 pr-2.5"
+            isDisabled={!table.getCanNextPage()}
+          >
+            <RxDoubleArrowRight className="h-4 w-4" />
+          </PaginationLink>
         </PaginationItem>
       </PaginationContent>
     </Pagination>
