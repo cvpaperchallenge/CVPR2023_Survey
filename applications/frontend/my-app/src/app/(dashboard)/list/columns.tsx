@@ -42,10 +42,10 @@ export const columns: ColumnDef<PaperInfo>[] = [
       const authors = row.getValue("authors") as string[]
       return <div>{authors.join(", ")}</div>
     },
-    filterFn: (rows, id, filterValue) => {
+    filterFn: (row, id, filterValue) => {
       // console.log(`Filtering authors with value: ${filterValue}`)
       // console.log(rows)
-      const authorsArray = rows.original.authors
+      const authorsArray = row.original.authors
       // Return true if authorsArray contains any author that includes filterValue
       return authorsArray.some((author) => filterValue.includes(author))
       // return rows.filter((row) => {

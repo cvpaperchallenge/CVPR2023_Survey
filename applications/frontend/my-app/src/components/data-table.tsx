@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 
-import { useRouter } from 'next/navigation'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -47,7 +46,6 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] = useState({
     authors: false,
   });
-  const router = useRouter()
 
   const table = useReactTable({
     data,

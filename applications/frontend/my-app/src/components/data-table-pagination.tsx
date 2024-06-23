@@ -75,7 +75,6 @@ export function DataTablePagination<TData>({
           <PaginationLink
             aria-label="Go to the first page"
             size="default"
-            // href="#"
             onClick={() => table.firstPage()}
             className="gap-1 pl-2.5"
             isDisabled={!table.getCanPreviousPage()}
@@ -85,7 +84,6 @@ export function DataTablePagination<TData>({
           <PaginationLink
             aria-label="Go to previous page"
             size="default"
-            // href="#"
             onClick={() => table.previousPage()}
             className="gap-1 pl-2.5"
             isDisabled={!table.getCanPreviousPage()}
@@ -98,7 +96,6 @@ export function DataTablePagination<TData>({
           <PaginationLink
             aria-label="Go to next page"
             size="default"
-            // href="#"
             onClick={() => table.nextPage()}
             className="gap-1 pr-2.5"
             isDisabled={!table.getCanNextPage()}
@@ -108,7 +105,6 @@ export function DataTablePagination<TData>({
           <PaginationLink
             aria-label="Go to the last page"
             size="default"
-            // href="#"
             onClick={() => table.lastPage()}
             className="gap-1 pr-2.5"
             isDisabled={!table.getCanNextPage()}

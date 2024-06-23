@@ -1,32 +1,10 @@
 'use client'
 
-import * as React from 'react'
-
 import { columns } from './columns'
 import { DataTable } from '@/components/data-table'
-import { useRef, useState, type RefObject, useEffect } from 'react'
-import { getPaperList, searchPapers, handleFetchArrayResult } from '@/lib/fetch'
+import { useState, useEffect } from 'react'
+import { getPaperList, handleFetchArrayResult } from '@/lib/fetch'
 import { PaperInfo } from '@/lib/types'
-
-const generateDummyData = (num: number): PaperInfo[] => {
-  const papers: PaperInfo[] = [];
-
-  for (let i = 1; i <= num; i++) {
-    papers.push({
-      title: `Loooooooooooooooooooong Title ${i}`,
-      authors: [
-        `Author ${String(i).padStart(3, '0')}`,
-        `Author ${String(i + 1).padStart(3, '0')}`,
-        `Author ${String(i + 2).padStart(3, '0')}`
-      ],
-      cvfLink: `CVFLink ${i}`,
-      pdfLink: `PDFLink ${i}`,
-      conference: `Conference ${i}`
-    });
-  }
-
-  return papers;
-}
 
 const loadPaperLists = async () => {
   const result = await getPaperList();
