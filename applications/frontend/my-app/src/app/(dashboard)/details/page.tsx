@@ -11,6 +11,16 @@ import { PaperDetails } from '@/lib/types'
 import { getPaperDetails, handleFetchResult } from '@/lib/fetch'
 import { useSimplePaperContext } from '@/lib/providers'
 import { Button } from '@/components/ui/button'
+import { RxFile, RxGlobe, RxCaretLeft, RxCaretRight } from 'react-icons/rx'
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import {
   Pagination,
   PaginationContent,
@@ -94,6 +104,24 @@ export default function DetailedPage() {
   }
 
   return (
+    <div className="flex flex-col items-center gap-12 w-screen">
+      <div className='flex flex-row justify-start w-full px-10'>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/list">Paper List</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{paperId}. {paperDetails.paperInfo.title}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
     <div className="flex flex-col items-start gap-7 w-[75vw] max-w-[800px] min-w-[350px]">
       <div className='flex flex-row justify-center w-full'>
         <div className='text-xl font-extrabold text-foreground'>
