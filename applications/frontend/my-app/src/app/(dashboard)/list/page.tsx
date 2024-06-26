@@ -22,10 +22,8 @@ export default function ListPage() {
   }, [])
 
   return (
-    <div>
-      <div className="container mx-auto py-10">
-        <DataTable columns={columns} data={papers} />
-      </div>
+    <div className="container mx-auto py-10 flex flex-col items-center">
+      <DataTable columns={columns} data={papers} />
     </div>
   )
 }

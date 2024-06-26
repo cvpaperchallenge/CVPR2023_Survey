@@ -56,10 +56,10 @@ export const columns: ColumnDef<PaperInfo>[] = [
       const authors: string[] = row.getValue("authors")
       return (
         <div className="flex flex-col justify-start">
-          <a onClick={handleClick} className=" rounded p-2 cursor-pointer hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
+          <a onClick={handleClick} className=" rounded px-2 py-1 cursor-pointer hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
             <div className="font-semibold">{row.getValue("title")}</div>
           </a>
-          <ScrollArea className="h-10">
+          <ScrollArea className="h-10 mt-1">
             <div className="text-sm text-muted-foreground px-2 pb-2 ">{authors.join(", ")}</div>
           </ScrollArea>
         </div>
