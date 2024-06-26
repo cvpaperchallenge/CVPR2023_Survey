@@ -1,5 +1,5 @@
 import { PaperInfo, PaperDetails, FetchResult } from '@/lib/types'
-// import { toast } from 'sonner'
+import { toast } from 'sonner'
 
 interface ErrorResponse {
   message: string
@@ -40,11 +40,11 @@ export const handleFetchResult = <T,>(
   successMessage?: string
 ): T | null => {
   if (result.error) {
-    // toast.error(errorMessage)
+    toast.error(errorMessage)
     return null
   }
   if (successMessage) {
-    // toast.success(successMessage)
+    toast.success(successMessage)
   }
   return result.data || null
 }
@@ -55,11 +55,11 @@ export const handleFetchArrayResult = <T,>(
   successMessage?: string
 ): T | [] => {
   if (result.error) {
-    // toast.error(errorMessage)
+    toast.error(errorMessage)
     return []
   }
   if (successMessage) {
-    // toast.success(successMessage)
+    toast.success(successMessage)
   }
   return result.data || []
 }
@@ -110,26 +110,11 @@ export async function getPaperList(): Promise<FetchResult<PaperInfo[]>> {
   return fetchFromAPI<PaperInfo[]>(url)
 }
 
-export async function searchPapers(
-  query: string,
-  conference: string
-): Promise<FetchResult<PaperInfo[]>> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${conference}`
-  const options: RequestInit = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ query }),
-  }
-  return fetchFromAPI<PaperInfo[]>(url, options)
-}
-
 export async function getPaperDetails(
   conference: string,
   id: string
 ): Promise<FetchResult<PaperDetails>> {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${conference}/${id}`
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/paper/${id}`
   return fetchFromAPI<PaperDetails>(url)
 }
 
