@@ -1,7 +1,7 @@
 import { Inter as FontSans } from 'next/font/google'
 
 import './globals.css'
-import { ThemeProvider } from '@/lib/providers'
+import { SimplePaperStateProvider, ThemeProvider } from '@/lib/providers'
 
 import { cn } from '@/lib/utils'
 
@@ -38,7 +38,9 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          {children}
+          <SimplePaperStateProvider>
+            {children}
+          </SimplePaperStateProvider>
         </ThemeProvider>
       </body>
     </html>

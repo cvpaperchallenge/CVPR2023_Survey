@@ -1,11 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { LuArrowUpDown } from "react-icons/lu";
+import { useSimplePaperContext, SimplePaperState, SimplePaperStates } from "@/lib/providers";
 
 import { Button } from "@/components/ui/button"
 
 import { PaperInfo } from "@/lib/types"
 import { RxFile, RxGlobe } from "react-icons/rx";
 import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { useEffect } from "react";
+import { useRouter } from 'next/navigation'
 
 export const columns: ColumnDef<PaperInfo>[] = [
   {
@@ -21,10 +25,37 @@ export const columns: ColumnDef<PaperInfo>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => {
-      const authors = row.getValue("authors") as string[]
+    cell: ({ table, row }) => {
+      const router = useRouter()
+      const { simplePaperStates, setSimplePaperStates } = useSimplePaperContext()
+
+      const handleClick = () => {
+        const sumRowNumber = table.getRowCount()
+        const previousPaperState: SimplePaperState | null = row.index !== 0 ? {
+          paperId: row.index - 1,
+          paperTitle: table.getRow((row.index - 1).toString()).getValue("title") ?? "",
+        } : null
+        const currentPaperState: SimplePaperState = {
+          paperId: row.index,
+          paperTitle: row.getValue("title"),
+        }
+        const nextPaperState: SimplePaperState | null = row.index !== sumRowNumber - 1 ? {
+          paperId: row.index + 1,
+          paperTitle: table.getRow((row.index + 1).toString()).getValue("title") ?? "",
+        } : null
+        const paperStates: SimplePaperStates = {
+          previousPaperState,
+          currentPaperState,
+          nextPaperState,
+        }
+        setSimplePaperStates(paperStates)
+
+        router.push(`/details?conference=${row.original.conference}&id=${row.index}`)
+      }
+
+      const authors: string[] = row.getValue("authors")
       return (
-        <a href={`/details?conference=${row.original.conference}&id=${row.index}`}>
+        <a onClick={handleClick}>
           <div className="flex flex-col justify-start gap-1 rounded p-2 hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
             <div className="font-semibold">{row.getValue("title")}</div>
             <ScrollArea className="h-10">

@@ -9,8 +9,14 @@ import { Separator } from "@/components/ui/separator"
 
 import { PaperDetails } from '@/lib/types'
 import { getPaperDetails, handleFetchResult } from '@/lib/fetch'
+import { useSimplePaperContext } from '@/lib/providers'
 import { Button } from '@/components/ui/button'
-import { RxFile, RxGlobe } from 'react-icons/rx'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination"
 
 const loadPaperDetails = async (conference: string, id: string) => {
   const result = await getPaperDetails(conference, id);
@@ -27,6 +33,9 @@ export default function DetailedPage() {
 
   const [paperDetails, setPaperDetails] = useState<PaperDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  const { simplePaperStates } = useSimplePaperContext()
+
 
   useEffect(() => {
     if (!conference || !paperId) {
@@ -98,18 +107,15 @@ export default function DetailedPage() {
             <span className='text-sm font-normal text-muted-foreground'>/ Basic Information</span>
           </div>
           <Separator className='my-2 w-60'/>
-          <div className="grid grid-cols-6 gap-4 items-center w-full p-4 bg-[var(--teal-3)] rounded-sm">
-            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>ID</div>
-            <div className='col-span-5 gap-2 text-xs text-popover-foreground'>{paperId}</div>
-            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Authors</div>
-            <div className='col-span-5 gap-2 text-xs text-popover-foreground'>{paperDetails.paperInfo.authors.join(", ")}</div>
-            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Abstract</div>
-            <div className='col-span-5 gap-2 text-xs text-justify text-popover-foreground'>React does not preserve any state for renders that got suspended before they were able to mount for the first time. When the component has loaded, React will retry rendering the suspended tree from scratch.
-If Suspense was displaying content for the tree, but then it suspended again, the fallback will be shown again unless the update causing it was caused by startTransition or useDeferredValue.
-If React needs to hide the already visible content because it suspended again, it will clean up layout Effects in the content tree. When the content is ready to be shown again, React will fire the layout Effects again. This ensures that Effects measuring the DOM layout don’t try to do this while the content is hidden.
-React includes under-the-hood optimizations like Streaming Server Rendering and Selective Hydration that are integrated with Suspense. Read an architectural overview and watch a technical talk to learn more.</div>
-            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Link</div>
-            <div className='col-span-5 flex flex-row items-start gap-2'>
+            <div className="flex flex-col gap-1 items-start min-[775px]:grid min-[775px]:grid-cols-6 min-[775px]:gap-4 min-[775px]:items-center w-full p-4 bg-[var(--teal-3)] rounded-sm">
+              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>ID</div>
+              <div className='mb-3 min-[775px]:mb-0 pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{paperId}</div>
+              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>Authors</div>
+              <div className='mb-3 min-[775px]:mb-0 pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{paperDetails.paperInfo.authors.join(", ")}</div>
+              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>Abstract</div>
+              <div className='mb-3 min-[775px]:mb-0 pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-justify text-popover-foreground'>{paperDetails.abstract}</div>
+              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>Link</div>
+              <div className='mb-3 min-[775px]:mb-0 col-span-5 flex flex-row items-start gap-2'>
               <a href={paperDetails.paperInfo.cvfLink} target="_blank" rel="noreferrer">
                 <Button
                   variant="outline"
@@ -146,7 +152,7 @@ React includes under-the-hood optimizations like Streaming Server Rendering and 
               </a>
             </div>
             <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Conference</div>
-            <div className='col-span-5 gap-2 text-xs text-popover-foreground'>{conference}</div>
+              <div className='pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{conference}</div>
           </div>
         </div>
         <div className='flex flex-col items-start gap-0 w-full'>
@@ -199,6 +205,37 @@ React includes under-the-hood optimizations like Streaming Server Rendering and 
             <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.discussion}</div>
           </div>
         </div>
+        </div>
+      </div>
+      <div>
+        <Pagination className="flex flex-row gap-2 px-5">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationLink
+                aria-label="Go to previous page"
+                size="default"
+                onClick={() => router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) - 1}`)}
+                className="flex flex-row items-center gap-1 p-3 w-[40vw] h-fit"
+                isDisabled={simplePaperStates.previousPaperState === null}
+              >
+                <RxCaretLeft className="h-5 w-5" />
+                <div className='text-[10px] leading-[12px] text-pretty'>{simplePaperStates.previousPaperState?.paperTitle}</div>
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                aria-label="Go to next page"
+                size="default"
+                onClick={() => router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) + 1}`)}
+                className="flex flex-row items-center gap-1 p-3 w-[40vw] h-fit"
+                isDisabled={simplePaperStates.nextPaperState === null}
+              >
+                <div className='text-[10px] leading-[12px] text-pretty'>{simplePaperStates.nextPaperState?.paperTitle}</div>
+                <RxCaretRight className="h-5 w-5"/>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   )
