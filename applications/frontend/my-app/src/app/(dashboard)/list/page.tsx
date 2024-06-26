@@ -11,7 +11,7 @@ const loadPaperLists = async () => {
   return handleFetchArrayResult<PaperInfo[]>(result, 'Failed to fetch papers');
 };
 
-export default function ModeToggle() {
+export default function ListPage() {
   const [papers, setPapers] = useState<PaperInfo[]>([])
 
   useEffect(() => {

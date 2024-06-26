@@ -17,13 +17,13 @@ const loadPaperDetails = async (conference: string, id: string) => {
   return handleFetchResult<PaperDetails>(result, 'Failed to fetch paper details');
 }
 
-export default function ModeToggle() {
+export default function DetailedPage() {
 
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const conference= searchParams.get('conference')
-  const paperId= searchParams.get('id')
+  const conference = searchParams.get('conference')
+  const paperId = searchParams.get('id')
 
   const [paperDetails, setPaperDetails] = useState<PaperDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -41,8 +41,7 @@ export default function ModeToggle() {
         const paperDetails = await loadPaperDetails(renamedConference, paperId)
         if (!paperDetails) {
           router.push('/list')
-        }
-        else {
+        } else {
           setPaperDetails(paperDetails)
           setIsLoading(false)
         }
@@ -89,10 +88,10 @@ export default function ModeToggle() {
     <div className="flex flex-col items-start gap-7 w-[75vw] max-w-[800px] min-w-[350px]">
       <div className='flex flex-row justify-center w-full'>
         <div className='text-xl font-extrabold text-foreground'>
-          {paperDetails.paperInfo.title}
+            {paperDetails.paperInfo.title || ''}
+          </div>
         </div>
-      </div>
-      <div className='flex flex-col items-center gap-12 w-full'>
+        <div className='flex flex-col items-center gap-10 w-full'>
         <div className='flex flex-col items-start gap-0 w-full'>
           <div>
             <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>基本情報</span>
