@@ -135,13 +135,13 @@ export default function DetailedPage() {
             </div>
             <Separator className='my-2 w-60'/>
             <div className="flex flex-col gap-1 items-start min-[775px]:grid min-[775px]:grid-cols-6 min-[775px]:gap-4 min-[775px]:items-center w-full p-4 bg-[var(--teal-3)] rounded-sm">
-              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>ID</div>
+              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground font-medium'>ID</div>
               <div className='mb-3 min-[775px]:mb-0 pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{paperId}</div>
-              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>Authors</div>
+              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground font-medium'>Authors</div>
               <div className='mb-3 min-[775px]:mb-0 pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{paperDetails.paperInfo.authors.join(", ")}</div>
-              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>Abstract</div>
+              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground font-medium'>Abstract</div>
               <div className='mb-3 min-[775px]:mb-0 pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-justify text-popover-foreground'>{paperDetails.abstract}</div>
-              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>Link</div>
+              <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground font-medium'>Link</div>
               <div className='mb-3 min-[775px]:mb-0 col-span-5 flex flex-row items-start gap-2'>
                 <a href={paperDetails.paperInfo.cvfLink} target="_blank" rel="noreferrer">
                   <Button
@@ -178,7 +178,7 @@ export default function DetailedPage() {
                   </Button>
                 </a>
               </div>
-            <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Conference</div>
+              <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground font-medium'>Conference</div>
               <div className='pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{conference}</div>
             </div>
           </div>
