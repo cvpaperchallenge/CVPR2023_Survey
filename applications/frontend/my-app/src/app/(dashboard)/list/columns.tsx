@@ -55,14 +55,14 @@ export const columns: ColumnDef<PaperInfo>[] = [
 
       const authors: string[] = row.getValue("authors")
       return (
-        <a onClick={handleClick}>
-          <div className="flex flex-col justify-start gap-1 rounded p-2 hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
+        <div className="flex flex-col justify-start">
+          <a onClick={handleClick} className=" rounded p-2 cursor-pointer hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
             <div className="font-semibold">{row.getValue("title")}</div>
-            <ScrollArea className="h-10">
-              <div className="text-sm text-muted-foreground">{authors.join(", ")}</div>
-            </ScrollArea>
-          </div>
-        </a>
+          </a>
+          <ScrollArea className="h-10">
+            <div className="text-sm text-muted-foreground px-2 pb-2 ">{authors.join(", ")}</div>
+          </ScrollArea>
+        </div>
       )
     }
   },
