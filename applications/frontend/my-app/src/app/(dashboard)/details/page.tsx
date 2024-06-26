@@ -7,9 +7,8 @@ import { toast } from "sonner"
 import { Skeleton } from '@/components/ui/skeleton'
 import { Separator } from "@/components/ui/separator"
 
-import { PaperDetails } from '@/lib/types'
+import { PaperDetails, PaperInfo } from '@/lib/types'
 import { getPaperDetails, handleFetchResult } from '@/lib/fetch'
-import { useSimplePaperContext } from '@/lib/providers'
 import { Button } from '@/components/ui/button'
 import { RxFile, RxGlobe, RxCaretLeft, RxCaretRight } from 'react-icons/rx'
 
@@ -44,8 +43,8 @@ export default function DetailedPage() {
   const [paperDetails, setPaperDetails] = useState<PaperDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const { simplePaperStates } = useSimplePaperContext()
-
+  const cachedData = localStorage.getItem("paper")
+  const data: PaperInfo[] = JSON.parse(cachedData as string)
 
   useEffect(() => {
     if (!conference || !paperId) {
@@ -67,7 +66,7 @@ export default function DetailedPage() {
       }
       fetchPaperDetails()
     }
-  }, [])
+  }, [conference, paperId])
 
   if (isLoading || !paperDetails) {
     return (
@@ -122,19 +121,19 @@ export default function DetailedPage() {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-    <div className="flex flex-col items-start gap-7 w-[75vw] max-w-[800px] min-w-[350px]">
-      <div className='flex flex-row justify-center w-full'>
-        <div className='text-xl font-extrabold text-foreground'>
+      <div className="flex flex-col items-start gap-7 w-[75vw] max-w-[800px] min-w-[350px]">
+        <div className='flex flex-row justify-center w-full'>
+          <div className='text-xl font-extrabold text-foreground'>
             {paperDetails.paperInfo.title || ''}
           </div>
         </div>
         <div className='flex flex-col items-center gap-10 w-full'>
-        <div className='flex flex-col items-start gap-0 w-full'>
-          <div>
-            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>基本情報</span>
-            <span className='text-sm font-normal text-muted-foreground'>/ Basic Information</span>
-          </div>
-          <Separator className='my-2 w-60'/>
+          <div className='flex flex-col items-start gap-0 w-full'>
+            <div>
+              <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>基本情報</span>
+              <span className='text-sm font-normal text-muted-foreground'>/ Basic Information</span>
+            </div>
+            <Separator className='my-2 w-60'/>
             <div className="flex flex-col gap-1 items-start min-[775px]:grid min-[775px]:grid-cols-6 min-[775px]:gap-4 min-[775px]:items-center w-full p-4 bg-[var(--teal-3)] rounded-sm">
               <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>ID</div>
               <div className='mb-3 min-[775px]:mb-0 pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{paperId}</div>
@@ -144,122 +143,138 @@ export default function DetailedPage() {
               <div className='mb-3 min-[775px]:mb-0 pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-justify text-popover-foreground'>{paperDetails.abstract}</div>
               <div className='flex flex-col items-start min-w-20 gap-2 text-[14px] text-popover-foreground'>Link</div>
               <div className='mb-3 min-[775px]:mb-0 col-span-5 flex flex-row items-start gap-2'>
-              <a href={paperDetails.paperInfo.cvfLink} target="_blank" rel="noreferrer">
-                <Button
-                  variant="outline"
-                  className="
-                  gap-1
-                  text-[var(--jade-11)]
-                  bg-[var(--jade-4)]
-                  hover:bg-[var(--jade-5)]
-                  hover:text-[var(--jade-12)]
-                  border-[var(--jade-6)]
-                  px-2
-                  h-6
-                  text-xs
-                ">
-                  <RxGlobe/> CVF
-                </Button>
-              </a>
-              <a href={paperDetails.paperInfo.pdfLink} target="_blank" rel="noreferrer">
-                <Button
-                  variant="outline"
-                  className="
+                <a href={paperDetails.paperInfo.cvfLink} target="_blank" rel="noreferrer">
+                  <Button
+                    variant="outline"
+                    className="
                     gap-1
-                    text-[var(--red-11)]
-                    bg-[var(--red-3)]
-                    hover:bg-[var(--red-4)]
-                    hover:text-[var(--red-12)]
-                    border-[var(--red-6)]
+                    text-[var(--jade-11)]
+                    bg-[var(--jade-4)]
+                    hover:bg-[var(--jade-5)]
+                    hover:text-[var(--jade-12)]
+                    border-[var(--jade-6)]
                     px-2
                     h-6
                     text-xs
-                ">
-                    <RxFile/> PDF
-                </Button>
-              </a>
-            </div>
+                  ">
+                    <RxGlobe/> CVF
+                  </Button>
+                </a>
+                <a href={paperDetails.paperInfo.pdfLink} target="_blank" rel="noreferrer">
+                  <Button
+                    variant="outline"
+                    className="
+                      gap-1
+                      text-[var(--red-11)]
+                      bg-[var(--red-3)]
+                      hover:bg-[var(--red-4)]
+                      hover:text-[var(--red-12)]
+                      border-[var(--red-6)]
+                      px-2
+                      h-6
+                      text-xs
+                  ">
+                      <RxFile/> PDF
+                  </Button>
+                </a>
+              </div>
             <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground'>Conference</div>
               <div className='pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{conference}</div>
+            </div>
           </div>
-        </div>
-        <div className='flex flex-col items-start gap-0 w-full'>
-          <div>
-            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>どんなもの？</span>
-            <span className='text-sm font-normal text-muted-foreground'>/ Outline</span>
+          <div className='flex flex-col items-start gap-0 w-full'>
+            <div>
+              <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>どんなもの？</span>
+              <span className='text-sm font-normal text-muted-foreground'>/ Outline</span>
+            </div>
+            <Separator className='my-2 w-44'/>
+            <div className="w-full p-4 bg-[var(--teal-3)]  rounded-sm">
+              <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.outline}</div>
+            </div>
           </div>
-          <Separator className='my-2 w-44'/>
-          <div className="w-full p-4 bg-[var(--teal-3)]  rounded-sm">
-            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.outline}</div>
+          <div className='flex flex-col items-start gap-0 w-full'>
+            <div>
+              <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>先行研究と比べてどこがすごい？</span>
+              <span className='text-sm font-normal text-muted-foreground'>/ Contribution</span>
+            </div>
+            <Separator className='my-2 w-[365px]'/>
+            <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
+              <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.contribution}</div>
+            </div>
           </div>
-        </div>
-        <div className='flex flex-col items-start gap-0 w-full'>
-          <div>
-            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>先行研究と比べてどこがすごい？</span>
-            <span className='text-sm font-normal text-muted-foreground'>/ Contribution</span>
+          <div className='flex flex-col items-start gap-0 w-full'>
+            <div>
+              <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>技術や手法のキモはどこ？</span>
+              <span className='text-sm font-normal text-muted-foreground'>/ Methods</span>
+            </div>
+            <Separator className='my-2 w-[295px]'/>
+            <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
+              <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.method}</div>
+            </div>
           </div>
-          <Separator className='my-2 w-[365px]'/>
-          <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
-            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.contribution}</div>
+          <div className='flex flex-col items-start gap-0 w-full'>
+            <div>
+              <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>どうやって有効だと検証した？</span>
+              <span className='text-sm font-normal text-muted-foreground'>/ Evaluation</span>
+            </div>
+            <Separator className='my-2 w-[330px]'/>
+            <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
+              <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.evaluation}</div>
+            </div>
           </div>
-        </div>
-        <div className='flex flex-col items-start gap-0 w-full'>
-          <div>
-            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>技術や手法のキモはどこ？</span>
-            <span className='text-sm font-normal text-muted-foreground'>/ Methods</span>
+          <div className='flex flex-col items-start gap-0 w-full'>
+            <div>
+              <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>議論はある？</span>
+              <span className='text-sm font-normal text-muted-foreground'>/ Discussion</span>
+            </div>
+            <Separator className='my-2 w-52'/>
+            <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
+              <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.discussion}</div>
+            </div>
           </div>
-          <Separator className='my-2 w-[295px]'/>
-          <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
-            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.method}</div>
-          </div>
-        </div>
-        <div className='flex flex-col items-start gap-0 w-full'>
-          <div>
-            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>どうやって有効だと検証した？</span>
-            <span className='text-sm font-normal text-muted-foreground'>/ Evaluation</span>
-          </div>
-          <Separator className='my-2 w-[330px]'/>
-          <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
-            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.evaluation}</div>
-          </div>
-        </div>
-        <div className='flex flex-col items-start gap-0 w-full'>
-          <div>
-            <span className='text-xl font-semibold text-[var(--black-a10)] dark:text-[var(--white-a10)] pr-2'>議論はある？</span>
-            <span className='text-sm font-normal text-muted-foreground'>/ Discussion</span>
-          </div>
-          <Separator className='my-2 w-52'/>
-          <div className="w-full p-4 bg-[var(--teal-3)] rounded-sm">
-            <div className='text-justify text-sm text-popover-foreground'>{paperDetails.summary.discussion}</div>
-          </div>
-        </div>
         </div>
       </div>
       <div>
-        <Pagination className="flex flex-row gap-2 px-5">
-          <PaginationContent>
-            <PaginationItem>
+        <Pagination>
+          <PaginationContent className="flex flex-row gap-5 min-[461px]:max-[774px]:gap-5 min-[775px]:gap-10 px-5 max-w-[1000px]">
+            <PaginationItem className='w-[40vw] flex flex-row justify-end min-[461px]:justify-start'>
               <PaginationLink
                 aria-label="Go to previous page"
                 size="default"
-                onClick={() => router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) - 1}`)}
-                className="flex flex-row items-center gap-1 p-3 w-[40vw] h-fit"
-                isDisabled={simplePaperStates.previousPaperState === null}
+                onClick={() => {
+                  if (paperId !== '0') {
+                    router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) - 1}`)
+                  }
+                }}
+                className="flex flex-row items-center gap-1 p-3 h-fit"
+                isDisabled={paperId === '0'}
               >
-                <RxCaretLeft className="h-5 w-5" />
-                <div className='text-[10px] leading-[12px] text-pretty'>{simplePaperStates.previousPaperState?.paperTitle}</div>
+                <RxCaretLeft className="h-5 w-5 flex-shrink-0"/>
+                <div className='flex flex-row flex-grow gap-2 items-center'>
+                  <div className='min-[775px]:text-lg'>{parseInt(paperId as string) - 1}</div>
+                  <Separator orientation="vertical" className='ml-2 h-5 hidden min-[461px]:block'/>
+                  <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[461px]:block'>{data[parseInt(paperId as string)-1]?.title}</div>
+                </div>
               </PaginationLink>
             </PaginationItem>
-            <PaginationItem>
+            <PaginationItem className='w-[40vw] flex flex-row justify-start min-[461px]:justify-end'>
               <PaginationLink
                 aria-label="Go to next page"
                 size="default"
-                onClick={() => router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) + 1}`)}
-                className="flex flex-row items-center gap-1 p-3 w-[40vw] h-fit"
-                isDisabled={simplePaperStates.nextPaperState === null}
+                onClick={() => {
+                  if (paperId !== (data?.length-1).toString()) {
+                    router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) + 1}`)
+                  }
+                }}
+                className="flex flex-row items-center gap-1 p-3 h-fit"
+                isDisabled={paperId === (data?.length-1).toString()}
               >
-                <div className='text-[10px] leading-[12px] text-pretty'>{simplePaperStates.nextPaperState?.paperTitle}</div>
-                <RxCaretRight className="h-5 w-5"/>
+                <div className='flex flex-row flex-grow gap-2 items-center'>
+                  <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[461px]:block'>{data[parseInt(paperId as string)+1]?.title}</div>
+                  <Separator orientation="vertical" className='ml-2 h-5 hidden min-[461px]:block'/>
+                  <div className='min-[775px]:text-lg'>{parseInt(paperId as string) + 1}</div>
+                </div>
+                <RxCaretRight className="h-5 w-5 flex-shrink-0"/>
               </PaginationLink>
             </PaginationItem>
           </PaginationContent>
