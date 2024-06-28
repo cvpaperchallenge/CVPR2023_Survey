@@ -66,7 +66,7 @@ export default function DetailedPage() {
 
   if (isLoading || !paperDetails) {
     return (
-      <div className="flex flex-col items-center gap-12 w-screen">
+      <div className="flex flex-col items-center gap-12 w-screen py-8">
         <div className='flex flex-row justify-start w-full px-10'>
           <Skeleton className='h-5 w-full rounded-sm'/>
         </div>
@@ -108,7 +108,7 @@ export default function DetailedPage() {
   }
 
   return (
-    <div className="flex flex-col items-center gap-12 w-screen">
+    <div className="flex flex-col items-center gap-12 w-screen py-8">
       <div className='flex flex-row justify-start w-full px-10'>
         <Breadcrumb>
           <BreadcrumbList>

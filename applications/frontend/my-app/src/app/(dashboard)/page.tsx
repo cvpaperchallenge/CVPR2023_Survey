@@ -6,8 +6,13 @@ import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
-    <div className="bg-gradient-to-br from-[var(--teal-2)] from-20% via-[var(--cyan-3)] via-50% to-[var(--teal-5)] to-90% text-white">
-
+    <div className="
+      h-full grow
+      bg-gradient-to-br
+      from-[var(--teal-3)] dark:from-[var(--teal-2)] from-20%
+      via-[var(--cyan-5)] dark:via-[var(--cyan-3)] via-50%
+      to-[var(--teal-7)] dark:to-[var(--teal-5)] to-90%
+    ">
       <div className="container mx-auto px-4">
         <motion.section
           initial={{ opacity: 0, y: 20 }}
