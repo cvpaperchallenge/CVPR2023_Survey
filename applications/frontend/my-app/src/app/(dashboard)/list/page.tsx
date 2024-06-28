@@ -22,13 +22,30 @@ const loadPaperLists = async () => {
 
 export default function ListPage() {
   const [papers, setPapers] = useState<PaperInfo[]>([])
+  const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
     const fetchPapers = async () => {
       setPapers(await loadPaperLists())
     }
     fetchPapers()
+
+    window.addEventListener('resize', handleResize);
+
+    // 初回レンダリング時に画面の幅を設定
+    handleResize();
+
+    // コンポーネントがアンマウントされる時にクリーンアップ
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [])
+
+  // 画面の幅に応じて変数の値を設定
+  const numPagesDisplayed = width > 600 ? 5 : width > 490 ? 3 : 0;
 
   return (
     <div className="flex flex-col items-center gap-12 w-screen">
@@ -45,7 +62,7 @@ export default function ListPage() {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <DataTable columns={columns} data={papers} />
+      <DataTable columns={columns} data={papers} width={width} numPagesDisplayed={numPagesDisplayed}/>
     </div>
   )
 }

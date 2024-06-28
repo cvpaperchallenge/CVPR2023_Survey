@@ -19,6 +19,9 @@ export function DataTablePagination<TData>({
   numPagesDisplayed
 }: DataTablePaginationProps<TData>) {
   const getPaginationItems = () => {
+    if (numPagesDisplayed === 0) {
+      return [];
+    }
     const pageCount = table.getPageCount();
     const pageIndex = table.getState().pagination.pageIndex + 1;
     const items = [];
@@ -32,7 +35,7 @@ export function DataTablePagination<TData>({
       startPage = Math.max(1, endPage - numPagesDisplayed + 1);
     }
     // Add ellipsis if necessary at the beginning
-    if (startPage > 1) {
+    if (startPage > 1 || numPagesDisplayed < pageCount) {
       items.push(
           <PaginationItem key="start-ellipsis">
               <PaginationEllipsis />
@@ -56,7 +59,7 @@ export function DataTablePagination<TData>({
     }
 
     // Add ellipsis if necessary at the end
-    if (endPage < pageCount) {
+    if (endPage < pageCount || numPagesDisplayed < pageCount) {
       items.push(
           <PaginationItem key="end-ellipsis">
               <PaginationEllipsis />
