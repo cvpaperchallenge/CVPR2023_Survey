@@ -5,6 +5,8 @@ import { DataTable } from '@/components/data-table'
 import { useState, useEffect } from 'react'
 import { getPaperList, handleFetchArrayResult } from '@/lib/fetch'
 import { PaperInfo } from '@/lib/types'
+import { useRouter } from 'next/navigation'
+import { Skeleton } from '@/components/ui/skeleton'
 
 import {
   Breadcrumb,
@@ -21,7 +23,10 @@ const loadPaperLists = async () => {
 };
 
 export default function ListPage() {
+  const router = useRouter()
+
   const [papers, setPapers] = useState<PaperInfo[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -29,7 +34,13 @@ export default function ListPage() {
       setWidth(window.innerWidth);
     };
     const fetchPapers = async () => {
-      setPapers(await loadPaperLists())
+      const fetchedPapers = await loadPaperLists()
+      if (!fetchedPapers) {
+        router.push("/")
+      } else {
+        setPapers(fetchedPapers)
+        setIsLoading(false)
+      }
     }
     fetchPapers()
 
@@ -43,6 +54,20 @@ export default function ListPage() {
   }, [])
 
   const numPagesDisplayed = width > 600 ? 5 : width > 490 ? 3 : 0;
+
+  if (isLoading || !papers) {
+    return (
+      <div className="flex flex-col items-center gap-12 w-screen">
+        <div className='flex flex-row justify-start w-full px-10'>
+          <Skeleton className='h-5 w-full rounded-sm'/>
+        </div>
+        <div className="w-[80vw] pb-10 min-w-[320px]">
+          <Skeleton className='h-20 my-4 w-full max-w-sm rounded-sm'/>
+          <Skeleton className='h-[1393px] w-full rounded-sm'/>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col items-center gap-12 w-screen">
