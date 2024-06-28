@@ -15,7 +15,22 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 
+import { useState } from 'react'
+import { sendFeedback, handleFetchResult } from '@/lib/fetch'
+
 export function FeedbackDialog() {
+  const [name, setName] = useState('')
+  const [feedback, setFeedback] = useState('')
+
+  const handleSendFeedback = (async () => {
+    const result = await sendFeedback(name, feedback)
+    handleFetchResult<null>(result, 'Failed to send feedback', 'Feedback sent successfully!')
+    setName('')
+    setFeedback('')
+  })
+
+  const isError = /^\s*$/.test(name) || /^\s*$/.test(feedback)
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -56,7 +71,12 @@ export function FeedbackDialog() {
                 / Name
               </span>
             </Label>
-            <Input id="name" placeholder="Enter your name" />
+            <Input
+              id="name"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
           <div className="flex flex-col gap-1">
             <Label className="text-left" htmlFor="feedback">
@@ -71,6 +91,8 @@ export function FeedbackDialog() {
               className="resize-none"
               id="feedback"
               placeholder="Drop your feedback here!"
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
             />
           </div>
         </div>
@@ -84,6 +106,8 @@ export function FeedbackDialog() {
             className="hover:bg-[var(--teal-a12)]"
             type="submit"
             variant="default"
+            disabled={isError}
+            onClick={handleSendFeedback}
           >
             Send
           </Button>
