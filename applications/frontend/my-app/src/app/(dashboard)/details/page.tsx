@@ -236,8 +236,8 @@ export default function DetailedPage() {
       </div>
       <div>
         <Pagination>
-          <PaginationContent className="flex flex-row gap-5 pb-0 min-[461px]:pb-10 min-[461px]:max-[774px]:gap-5 min-[775px]:gap-10 px-5 max-w-[1000px]">
-            <PaginationItem className='w-[40vw] flex flex-row justify-end min-[461px]:justify-start'>
+          <PaginationContent className="flex flex-row gap-5 pb-0 min-[601px]:pb-10 min-[601px]:max-[774px]:gap-5 min-[775px]:gap-10 px-5 max-w-[1000px]">
+            <PaginationItem className='w-[40vw] flex flex-row justify-end min-[601px]:justify-start'>
               <PaginationLink
                 aria-label="Go to previous page"
                 size="default"
@@ -250,14 +250,16 @@ export default function DetailedPage() {
                 isDisabled={paperId === '0'}
               >
                 <RxCaretLeft className="h-5 w-5 flex-shrink-0"/>
-                <div className='flex flex-row flex-grow gap-2 items-center'>
-                  <div className='min-[775px]:text-lg'>{parseInt(paperId as string) - 1}</div>
-                  <Separator orientation="vertical" className='ml-2 h-5 hidden min-[461px]:block'/>
-                  <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[461px]:block'>{data[parseInt(paperId as string)-1]?.title}</div>
-                </div>
+                {paperId !== '0' ?
+                  <div className='flex flex-row flex-grow gap-2 items-center'>
+                    <div className='min-[775px]:text-lg'>{parseInt(paperId as string) - 1}</div>
+                    <Separator orientation="vertical" className='ml-2 h-5 hidden min-[601px]:block'/>
+                    <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[601px]:block'>{data[parseInt(paperId as string)-1]?.title}</div>
+                  </div>
+                : null}
               </PaginationLink>
             </PaginationItem>
-            <PaginationItem className='w-[40vw] flex flex-row justify-start min-[461px]:justify-end'>
+            <PaginationItem className='w-[40vw] flex flex-row justify-start min-[601px]:justify-end'>
               <PaginationLink
                 aria-label="Go to next page"
                 size="default"
@@ -269,11 +271,12 @@ export default function DetailedPage() {
                 className="flex flex-row items-center gap-1 p-3 h-fit"
                 isDisabled={paperId === (data?.length-1).toString()}
               >
-                <div className='flex flex-row flex-grow gap-2 items-center'>
-                  <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[461px]:block'>{data[parseInt(paperId as string)+1]?.title}</div>
-                  <Separator orientation="vertical" className='ml-2 h-5 hidden min-[461px]:block'/>
-                  <div className='min-[775px]:text-lg'>{parseInt(paperId as string) + 1}</div>
-                </div>
+                {paperId !== (data?.length-1).toString() ? <div className='flex flex-row flex-grow gap-2 items-center'>
+                  <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[601px]:block'>{data[parseInt(paperId as string)+1]?.title}</div>
+                    <Separator orientation="vertical" className='ml-2 h-5 hidden min-[601px]:block'/>
+                    <div className='min-[775px]:text-lg'>{parseInt(paperId as string) + 1}</div>
+                  </div>
+                : null}
                 <RxCaretRight className="h-5 w-5 flex-shrink-0"/>
               </PaginationLink>
             </PaginationItem>
