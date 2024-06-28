@@ -83,12 +83,12 @@ export default function Footer() {
         gap-0
         rounded-md bg-[var(--black-a2)]
         p-2.5 dark:bg-[var(--white-a1)]
-        min-[611px]:gap-4
-        min-[611px]:px-7
+        min-[601px]:gap-4
+        min-[601px]:px-7
       "
       >
         <div className="flex flex-col items-start gap-2">
-          <div className="text-sm font-semibold text-card-foreground min-[611px]:text-base">
+          <div className="text-sm font-semibold text-card-foreground min-[601px]:text-base">
             Developed by
           </div>
           <div className="flex min-w-[130px] flex-col items-start gap-1">
@@ -99,7 +99,7 @@ export default function Footer() {
             >
               <div className="flex flex-row items-center">
                 <RxGithubLogo className="mr-1 size-4" />
-                <span className="text-[10px] min-[611px]:text-sm">
+                <span className="text-[10px] min-[601px]:text-sm">
                   Yoshiki Kubotani
                 </span>
               </div>
@@ -111,7 +111,7 @@ export default function Footer() {
             >
               <div className="flex flex-row items-center">
                 <RxGithubLogo className="mr-1 size-4" />
-                <span className="text-[10px] min-[611px]:text-sm">
+                <span className="text-[10px] min-[601px]:text-sm">
                   Yoshihiro Fukuhara
                 </span>
               </div>
@@ -123,7 +123,7 @@ export default function Footer() {
             >
               <div className="flex flex-row items-center">
                 <RxGithubLogo className="mr-1 size-4" />
-                <span className="text-[10px] min-[611px]:text-sm">
+                <span className="text-[10px] min-[601px]:text-sm">
                   Hina Otake
                 </span>
               </div>
@@ -135,7 +135,7 @@ export default function Footer() {
           priority={true}
           className="
             hidden size-5 dark:block
-            min-[461px]:max-[610px]:size-7 min-[611px]:size-10
+            min-[461px]:max-[610px]:size-7 min-[601px]:size-10
           "
           sizes="100vw"
           src={whiteForwardPropagationMark}
@@ -145,7 +145,7 @@ export default function Footer() {
           priority={true}
           className="
             size-5 dark:hidden min-[461px]:max-[610px]:size-7
-            min-[611px]:size-10
+            min-[601px]:size-10
           "
           sizes="100vw"
           src={blackForwardPropagationMark}
