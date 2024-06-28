@@ -35,16 +35,13 @@ export default function ListPage() {
 
     window.addEventListener('resize', handleResize);
 
-    // 初回レンダリング時に画面の幅を設定
     handleResize();
 
-    // コンポーネントがアンマウントされる時にクリーンアップ
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [])
 
-  // 画面の幅に応じて変数の値を設定
   const numPagesDisplayed = width > 600 ? 5 : width > 490 ? 3 : 0;
 
   return (
