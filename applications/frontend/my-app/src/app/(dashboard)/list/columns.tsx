@@ -57,7 +57,7 @@ export const columns: ColumnDef<PaperInfo>[] = [
     }
   },
   {
-    accessorKey: "Link",
+    accessorKey: "link",
     header: () => <div className="text-center">Link</div>,
     cell : ({ row }) => {
       return (

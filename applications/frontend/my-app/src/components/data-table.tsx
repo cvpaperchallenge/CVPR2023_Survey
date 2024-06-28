@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import {
   ColumnDef,
@@ -31,12 +31,14 @@ import { DataTableToolbar } from "@/components/data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  width: number
   numPagesDisplayed?: number
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  width,
   numPagesDisplayed = 5,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -45,7 +47,15 @@ export function DataTable<TData, TValue>({
   )
   const [columnVisibility, setColumnVisibility] = useState({
     authors: false,
+    link: true,
   });
+
+  useEffect(() => {
+    setColumnVisibility({
+      authors: false,
+      link: width > 600,
+    })
+  }, [width])
 
   const table = useReactTable({
     data,
