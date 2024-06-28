@@ -1,6 +1,6 @@
 'use client'
 
-import {  useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { toast } from "sonner"
@@ -52,11 +52,11 @@ export default function DetailedPage() {
     }
     else {
       const fetchPaperDetails = async () => {
-        const paperDetails = await loadPaperDetails(paperId)
-        if (!paperDetails) {
+        const fetchedPaperDetails = await loadPaperDetails(paperId)
+        if (!fetchedPaperDetails) {
           router.push('/list')
         } else {
-          setPaperDetails(paperDetails)
+          setPaperDetails(fetchedPaperDetails)
           setIsLoading(false)
         }
       }
