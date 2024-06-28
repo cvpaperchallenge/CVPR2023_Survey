@@ -70,33 +70,42 @@ export default function DetailedPage() {
 
   if (isLoading || !paperDetails) {
     return (
-      <div className="flex flex-col items-start gap-10 w-[75vw]">
-        <Skeleton className='h-12 w-full rounded-sm'/>
-        <div className='flex flex-col items-center gap-16 w-full'>
-          <div className='flex flex-col items-start gap-4 w-full'>
-            <Skeleton className='h-8 w-1/4 rounded-sm'/>
-            <Skeleton className='h-96 w-full rounded-sm'/>
+      <div className="flex flex-col items-center gap-12 w-screen">
+        <div className='flex flex-row justify-start w-full px-10'>
+          <Skeleton className='h-5 w-full rounded-sm'/>
+        </div>
+        <div className="flex flex-col items-start gap-7 w-[75vw] max-w-[800px] min-w-[350px]">
+          <Skeleton className='h-12 w-full rounded-sm'/>
+          <div className='flex flex-col items-center gap-10 w-full'>
+            <div className='flex flex-col items-start gap-4 w-full'>
+              <Skeleton className='h-8 w-1/4 rounded-sm'/>
+              <Skeleton className='h-96 w-full rounded-sm'/>
+            </div>
+            <div className='flex flex-col items-start gap-4 w-full'>
+              <Skeleton className='h-8 w-1/4 rounded-sm'/>
+              <Skeleton className='h-44 w-full rounded-sm'/>
+            </div>
+            <div className='flex flex-col items-start gap-4 w-full'>
+              <Skeleton className='h-8 w-1/4 rounded-sm'/>
+              <Skeleton className='h-44 w-full rounded-sm'/>
+            </div>
+            <div className='flex flex-col items-start gap-4 w-full'>
+              <Skeleton className='h-8 w-1/4 rounded-sm'/>
+              <Skeleton className='h-44 w-full rounded-sm'/>
+            </div>
+            <div className='flex flex-col items-start gap-4 w-full'>
+              <Skeleton className='h-8 w-1/4 rounded-sm'/>
+              <Skeleton className='h-44 w-full rounded-sm'/>
+            </div>
+            <div className='flex flex-col items-start gap-4 w-full'>
+              <Skeleton className='h-8 w-1/4 rounded-sm'/>
+              <Skeleton className='h-44 w-full rounded-sm'/>
+            </div>
           </div>
-          <div className='flex flex-col items-start gap-4 w-full'>
-            <Skeleton className='h-8 w-1/4 rounded-sm'/>
-            <Skeleton className='h-44 w-full rounded-sm'/>
-          </div>
-          <div className='flex flex-col items-start gap-4 w-full'>
-            <Skeleton className='h-8 w-1/4 rounded-sm'/>
-            <Skeleton className='h-44 w-full rounded-sm'/>
-          </div>
-          <div className='flex flex-col items-start gap-4 w-full'>
-            <Skeleton className='h-8 w-1/4 rounded-sm'/>
-            <Skeleton className='h-44 w-full rounded-sm'/>
-          </div>
-          <div className='flex flex-col items-start gap-4 w-full'>
-            <Skeleton className='h-8 w-1/4 rounded-sm'/>
-            <Skeleton className='h-44 w-full rounded-sm'/>
-          </div>
-          <div className='flex flex-col items-start gap-4 w-full'>
-            <Skeleton className='h-8 w-1/4 rounded-sm'/>
-            <Skeleton className='h-44 w-full rounded-sm'/>
-          </div>
+        </div>
+        <div className="flex flex-row gap-5 pb-0 min-[601px]:pb-10 min-[601px]:max-[774px]:gap-5 min-[775px]:gap-10 px-5 max-w-[1000px]">
+          <Skeleton className='h-14 w-[40vw] rounded-sm'/>
+          <Skeleton className='h-14 w-[40vw] rounded-sm'/>
         </div>
       </div>
     )
@@ -234,55 +243,53 @@ export default function DetailedPage() {
           </div>
         </div>
       </div>
-      <div>
-        <Pagination>
-          <PaginationContent className="flex flex-row gap-5 pb-0 min-[601px]:pb-10 min-[601px]:max-[774px]:gap-5 min-[775px]:gap-10 px-5 max-w-[1000px]">
-            <PaginationItem className='w-[40vw] flex flex-row justify-end min-[601px]:justify-start'>
-              <PaginationLink
-                aria-label="Go to previous page"
-                size="default"
-                onClick={() => {
-                  if (paperId !== '0') {
-                    router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) - 1}`)
-                  }
-                }}
-                className="flex flex-row items-center gap-1 p-3 h-fit"
-                isDisabled={paperId === '0'}
-              >
-                <RxCaretLeft className="h-5 w-5 flex-shrink-0"/>
-                {paperId !== '0' ?
-                  <div className='flex flex-row flex-grow gap-2 items-center'>
-                    <div className='min-[775px]:text-lg'>{parseInt(paperId as string) - 1}</div>
-                    <Separator orientation="vertical" className='ml-2 h-5 hidden min-[601px]:block'/>
-                    <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[601px]:block'>{data[parseInt(paperId as string)-1]?.title}</div>
-                  </div>
-                : null}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem className='w-[40vw] flex flex-row justify-start min-[601px]:justify-end'>
-              <PaginationLink
-                aria-label="Go to next page"
-                size="default"
-                onClick={() => {
-                  if (paperId !== (data?.length-1).toString()) {
-                    router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) + 1}`)
-                  }
-                }}
-                className="flex flex-row items-center gap-1 p-3 h-fit"
-                isDisabled={paperId === (data?.length-1).toString()}
-              >
-                {paperId !== (data?.length-1).toString() ? <div className='flex flex-row flex-grow gap-2 items-center'>
-                  <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[601px]:block'>{data[parseInt(paperId as string)+1]?.title}</div>
-                    <Separator orientation="vertical" className='ml-2 h-5 hidden min-[601px]:block'/>
-                    <div className='min-[775px]:text-lg'>{parseInt(paperId as string) + 1}</div>
-                  </div>
-                : null}
-                <RxCaretRight className="h-5 w-5 flex-shrink-0"/>
-              </PaginationLink>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <Pagination>
+        <PaginationContent className="flex flex-row gap-5 pb-0 min-[601px]:pb-10 min-[601px]:max-[774px]:gap-5 min-[775px]:gap-10 px-5 max-w-[1000px]">
+          <PaginationItem className='w-[40vw] flex flex-row justify-end min-[601px]:justify-start'>
+            <PaginationLink
+              aria-label="Go to previous page"
+              size="default"
+              onClick={() => {
+                if (paperId !== '0') {
+                  router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) - 1}`)
+                }
+              }}
+              className="flex flex-row items-center gap-1 p-3 h-fit"
+              isDisabled={paperId === '0'}
+            >
+              <RxCaretLeft className="h-5 w-5 flex-shrink-0"/>
+              {paperId !== '0' ?
+                <div className='flex flex-row flex-grow gap-2 items-center'>
+                  <div className='min-[775px]:text-lg'>{parseInt(paperId as string) - 1}</div>
+                  <Separator orientation="vertical" className='ml-2 h-5 hidden min-[601px]:block'/>
+                  <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[601px]:block'>{data[parseInt(paperId as string)-1]?.title}</div>
+                </div>
+              : null}
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem className='w-[40vw] flex flex-row justify-start min-[601px]:justify-end'>
+            <PaginationLink
+              aria-label="Go to next page"
+              size="default"
+              onClick={() => {
+                if (paperId !== (data?.length-1).toString()) {
+                  router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) + 1}`)
+                }
+              }}
+              className="flex flex-row items-center gap-1 p-3 h-fit"
+              isDisabled={paperId === (data?.length-1).toString()}
+            >
+              {paperId !== (data?.length-1).toString() ? <div className='flex flex-row flex-grow gap-2 items-center'>
+                <div className='text-[10px] leading-[12px] min-[775px]:text-xs text-pretty break-all hidden min-[601px]:block'>{data[parseInt(paperId as string)+1]?.title}</div>
+                  <Separator orientation="vertical" className='ml-2 h-5 hidden min-[601px]:block'/>
+                  <div className='min-[775px]:text-lg'>{parseInt(paperId as string) + 1}</div>
+                </div>
+              : null}
+              <RxCaretRight className="h-5 w-5 flex-shrink-0"/>
+            </PaginationLink>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   )
 }
