@@ -6,6 +6,15 @@ import { useState, useEffect } from 'react'
 import { getPaperList, handleFetchArrayResult } from '@/lib/fetch'
 import { PaperInfo } from '@/lib/types'
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+
 const loadPaperLists = async () => {
   const result = await getPaperList();
   return handleFetchArrayResult<PaperInfo[]>(result, 'Failed to fetch papers');
@@ -22,7 +31,20 @@ export default function ListPage() {
   }, [])
 
   return (
-    <div className="container mx-auto py-10 flex flex-col items-center">
+    <div className="flex flex-col items-center gap-12 w-screen">
+      <div className='flex flex-row justify-start w-full px-10'>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Paper List</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <DataTable columns={columns} data={papers} />
     </div>
   )

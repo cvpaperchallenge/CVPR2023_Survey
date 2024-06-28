@@ -236,7 +236,7 @@ export default function DetailedPage() {
       </div>
       <div>
         <Pagination>
-          <PaginationContent className="flex flex-row gap-5 min-[461px]:max-[774px]:gap-5 min-[775px]:gap-10 px-5 max-w-[1000px]">
+          <PaginationContent className="flex flex-row gap-5 pb-0 min-[461px]:pb-10 min-[461px]:max-[774px]:gap-5 min-[775px]:gap-10 px-5 max-w-[1000px]">
             <PaginationItem className='w-[40vw] flex flex-row justify-end min-[461px]:justify-start'>
               <PaginationLink
                 aria-label="Go to previous page"
