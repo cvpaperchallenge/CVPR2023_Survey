@@ -27,7 +27,7 @@ export const columns: ColumnDef<PaperInfo>[] = [
       const authors: string[] = row.getValue("authors")
       return (
         <div className="flex flex-col justify-start">
-          <a onClick={() => router.push(`/details?conference=${row.original.conference}&id=${row.index}`)} className=" rounded px-2 py-1 cursor-pointer hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
+          <a onClick={() => router.push(`/details?id=${row.index}`)} className=" rounded px-2 py-1 cursor-pointer hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
             <div className="font-semibold">{row.getValue("title")}</div>
           </a>
           <ScrollArea className="h-10 mt-1">

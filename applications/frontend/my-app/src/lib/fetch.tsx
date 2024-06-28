@@ -111,7 +111,6 @@ export async function getPaperList(): Promise<FetchResult<PaperInfo[]>> {
 }
 
 export async function getPaperDetails(
-  conference: string,
   id: string
 ): Promise<FetchResult<PaperDetails>> {
   const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/paper/${id}`

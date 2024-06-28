@@ -27,8 +27,8 @@ import {
   PaginationLink,
 } from "@/components/ui/pagination"
 
-const loadPaperDetails = async (conference: string, id: string) => {
-  const result = await getPaperDetails(conference, id);
+const loadPaperDetails = async (id: string) => {
+  const result = await getPaperDetails(id);
   return handleFetchResult<PaperDetails>(result, 'Failed to fetch paper details');
 }
 
@@ -37,7 +37,6 @@ export default function DetailedPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const conference = searchParams.get('conference')
   const paperId = searchParams.get('id')
 
   const [paperDetails, setPaperDetails] = useState<PaperDetails | null>(null)
@@ -47,16 +46,13 @@ export default function DetailedPage() {
   const data: PaperInfo[] = JSON.parse(cachedData as string)
 
   useEffect(() => {
-    if (!conference || !paperId) {
+    if (!paperId) {
       toast.error('Invalid URL');
       router.push('/list')
     }
     else {
       const fetchPaperDetails = async () => {
-        const renamedConference = conference.replace(/([A-Z]+)(\d+)/, (match, p1, p2) => {
-          return p1.toLowerCase() + '-' + p2;
-        });
-        const paperDetails = await loadPaperDetails(renamedConference, paperId)
+        const paperDetails = await loadPaperDetails(paperId)
         if (!paperDetails) {
           router.push('/list')
         } else {
@@ -66,7 +62,7 @@ export default function DetailedPage() {
       }
       fetchPaperDetails()
     }
-  }, [conference, paperId])
+  }, [paperId])
 
   if (isLoading || !paperDetails) {
     return (
@@ -188,7 +184,7 @@ export default function DetailedPage() {
                 </a>
               </div>
               <div className='flex flex-col items-start gap-2 text-[14px] text-popover-foreground font-medium'>Conference</div>
-              <div className='pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{conference}</div>
+              <div className='pl-2 min-[775px]:pl-0 col-span-5 gap-2 text-xs text-popover-foreground'>{paperDetails.paperInfo.conference}</div>
             </div>
           </div>
           <div className='flex flex-col items-start gap-0 w-full'>
@@ -251,7 +247,7 @@ export default function DetailedPage() {
               size="default"
               onClick={() => {
                 if (paperId !== '0') {
-                  router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) - 1}`)
+                  router.push(`/details?id=${parseInt(paperId as string) - 1}`)
                 }
               }}
               className="flex flex-row items-center gap-1 p-3 h-fit"
@@ -273,7 +269,7 @@ export default function DetailedPage() {
               size="default"
               onClick={() => {
                 if (paperId !== (data?.length-1).toString()) {
-                  router.push(`/details?conference=${conference}&id=${parseInt(paperId as string) + 1}`)
+                  router.push(`/details?id=${parseInt(paperId as string) + 1}`)
                 }
               }}
               className="flex flex-row items-center gap-1 p-3 h-fit"
