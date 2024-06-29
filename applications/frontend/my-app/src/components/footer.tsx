@@ -35,15 +35,15 @@ export default function Footer() {
           <a href="https://xpaperchallenge.org/cv/" target="_blank">
             <Image
               alt="logo"
-              priority={true}
               className="hidden h-auto w-[35vw] min-w-36 max-w-56 dark:block"
+              priority={true}
               sizes="100vw"
               src={whiteLogo}
             />
             <Image
               alt="logo"
-              priority={true}
               className="h-auto w-[35vw] min-w-36 max-w-56 dark:hidden "
+              priority={true}
               sizes="100vw"
               src={blackLogo}
             />
@@ -65,7 +65,7 @@ export default function Footer() {
           Supported by{' '}
           <span className="inline">
             <a
-              className="text-primary hover:border-b-2 hover:bg-accent hover:text-accent-foreground active:border-b-2 active:bg-primary active:text-primary-foreground transition-colors"
+              className="text-primary transition-colors hover:border-b-2 hover:bg-accent hover:text-accent-foreground active:border-b-2 active:bg-primary active:text-primary-foreground"
               href="https://confit.atlas.jp/guide/event/ssii2024/top?lang=ja"
               target="_blank"
             >
@@ -93,7 +93,7 @@ export default function Footer() {
           </div>
           <div className="flex min-w-[130px] flex-col items-start gap-1">
             <a
-              className="p-0.5 hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground transition-colors"
+              className="p-0.5 transition-colors hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground"
               href="https://github.com/YoshikiKubotani"
               target="_blank"
             >
@@ -105,7 +105,7 @@ export default function Footer() {
               </div>
             </a>
             <a
-              className="p-0.5 hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground transition-colors"
+              className="p-0.5 transition-colors hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground"
               href="https://github.com/gatheluck"
               target="_blank"
             >
@@ -117,7 +117,7 @@ export default function Footer() {
               </div>
             </a>
             <a
-              className="p-0.5 hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground transition-colors"
+              className="p-0.5 transition-colors hover:bg-[var(--teal-4)] hover:text-foreground active:bg-primary active:text-primary-foreground"
               href="https://github.com/Hina39"
               target="_blank"
             >
@@ -132,21 +132,21 @@ export default function Footer() {
         </div>
         <Image
           alt="jundenpa_chan"
-          priority={true}
           className="
             hidden size-5 dark:block
             min-[461px]:max-[610px]:size-7 min-[601px]:size-10
           "
+          priority={true}
           sizes="100vw"
           src={whiteForwardPropagationMark}
         />
         <Image
           alt="jundenpa_chan"
-          priority={true}
           className="
             size-5 dark:hidden min-[461px]:max-[610px]:size-7
             min-[601px]:size-10
           "
+          priority={true}
           sizes="100vw"
           src={blackForwardPropagationMark}
         />

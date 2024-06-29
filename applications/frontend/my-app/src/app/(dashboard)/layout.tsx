@@ -12,7 +12,7 @@ export default function PaperListLayout({
       <div className="h-24 w-full flex-none border-b bg-[var(--teal-4)] dark:bg-card">
         <Header />
       </div>
-      <div className="flex flex-col grow w-full">{children}</div>
+      <div className="flex w-full grow flex-col">{children}</div>
       <div className="h-44 w-full flex-none border-t bg-[var(--teal-4)] dark:bg-card">
         <Footer />
       </div>

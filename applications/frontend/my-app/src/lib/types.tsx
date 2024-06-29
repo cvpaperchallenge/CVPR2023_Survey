@@ -1,4 +1,3 @@
-
 export interface FetchResult<T> {
   error?: string
   data?: T

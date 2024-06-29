@@ -2,11 +2,10 @@
 import { Inter as FontSans } from 'next/font/google'
 
 import './globals.css'
+import { Toaster } from 'sonner'
+
 import { ThemeProvider } from '@/lib/providers'
-
 import { cn } from '@/lib/utils'
-
-import { Toaster } from 'sonner';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -21,14 +20,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <title>CVPR/ICCV 2023 Summary</title>
-      <meta name="description" content="Automated summaries of papers accepted at CVPR 2023 and ICCV 2023 using OpenAI's language model." />
+      <meta
+        content="Automated summaries of papers accepted at CVPR 2023 and ICCV 2023 using OpenAI's language model."
+        name="description"
+      />
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
           fontSans.variable
         )}
       >
-        <Toaster richColors/>
+        <Toaster richColors />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

@@ -1,5 +1,6 @@
-import { PaperInfo, PaperDetails, FetchResult } from '@/lib/types'
 import { toast } from 'sonner'
+
+import { PaperInfo, PaperDetails, FetchResult } from '@/lib/types'
 
 interface ErrorResponse {
   message: string
@@ -105,8 +106,8 @@ async function GetCachedItem<T>(
 
 export async function getPaperList(): Promise<FetchResult<PaperInfo[]>> {
   const url = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/paper`
-  const result = await GetCachedItem<PaperInfo[]>(url, "paper", 60*60*1);
-  return result;
+  const result = await GetCachedItem<PaperInfo[]>(url, 'paper', 60 * 60 * 1)
+  return result
   // return fetchFromAPI<PaperInfo[]>(url)
 }
 

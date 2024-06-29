@@ -1,6 +1,4 @@
-"use client"
-
-import { useEffect, useState } from "react"
+'use client'
 
 import {
   ColumnDef,
@@ -14,8 +12,11 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from '@tanstack/react-table'
+import { useEffect, useState } from 'react'
 
+import { DataTablePagination } from '@/components/data-table-pagination'
+import { DataTableToolbar } from '@/components/data-table-toolbar'
 import {
   Table,
   TableBody,
@@ -23,10 +24,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-
-import { DataTablePagination } from "@/components/data-table-pagination"
-import { DataTableToolbar } from "@/components/data-table-toolbar"
+} from '@/components/ui/table'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -42,13 +40,11 @@ export function DataTable<TData, TValue>({
   numPagesDisplayed = 5,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  )
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState({
     authors: false,
     link: true,
-  });
+  })
 
   useEffect(() => {
     setColumnVisibility({
@@ -71,58 +67,67 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
-      columnVisibility
+      columnVisibility,
     },
   })
 
   return (
-    <div className="w-[80vw] pb-10 min-w-[320px]">
-      <DataTableToolbar table={table}/>
+    <div className="w-[80vw] min-w-[320px] pb-10">
+      <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader className="bg-[var(--teal-4)] dark:bg-[var(--teal-3)]">
             {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id} className="text-card-foreground">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    )
-                  })}
-                </TableRow>
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead className="text-card-foreground" key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  )
+                })}
+              </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className="h-32 bg-[var(--teal-2)]"
+                  data-state={row.getIsSelected() && 'selected'}
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className="bg-[var(--teal-2)] h-32"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="p-3">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <TableCell className="p-3" key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  className="h-24 text-center"
+                  colSpan={columns.length}
+                >
                   No results.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-        <DataTablePagination table={table} numPagesDisplayed={numPagesDisplayed}/>
+        <DataTablePagination
+          numPagesDisplayed={numPagesDisplayed}
+          table={table}
+        />
       </div>
     </div>
   )

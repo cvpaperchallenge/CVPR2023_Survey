@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { MdFeedback } from 'react-icons/md'
 
 import { Button } from '@/components/ui/button'
@@ -15,19 +16,22 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 
-import { useState } from 'react'
 import { sendFeedback, handleFetchResult } from '@/lib/fetch'
 
 export function FeedbackDialog() {
   const [name, setName] = useState('')
   const [feedback, setFeedback] = useState('')
 
-  const handleSendFeedback = (async () => {
+  const handleSendFeedback = async () => {
     const result = await sendFeedback(name, feedback)
-    handleFetchResult<null>(result, 'Failed to send feedback', 'Feedback sent successfully!')
+    handleFetchResult<null>(
+      result,
+      'Failed to send feedback',
+      'Feedback sent successfully!'
+    )
     setName('')
     setFeedback('')
-  })
+  }
 
   const isError = /^\s*$/.test(name) || /^\s*$/.test(feedback)
 
@@ -73,9 +77,9 @@ export function FeedbackDialog() {
             </Label>
             <Input
               id="name"
+              onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -90,9 +94,9 @@ export function FeedbackDialog() {
             <Textarea
               className="resize-none"
               id="feedback"
+              onChange={(e) => setFeedback(e.target.value)}
               placeholder="Drop your feedback here!"
               value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
             />
           </div>
         </div>
@@ -104,10 +108,10 @@ export function FeedbackDialog() {
           </DialogClose>
           <Button
             className="hover:bg-[var(--teal-a12)]"
-            type="submit"
-            variant="default"
             disabled={isError}
             onClick={handleSendFeedback}
+            type="submit"
+            variant="default"
           >
             Send
           </Button>

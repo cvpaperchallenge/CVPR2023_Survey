@@ -1,13 +1,18 @@
+import { Table } from '@tanstack/react-table'
+import {
+  RxCaretLeft,
+  RxCaretRight,
+  RxDoubleArrowLeft,
+  RxDoubleArrowRight,
+} from 'react-icons/rx'
+
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-} from "@/components/ui/pagination"
-
-import { Table } from "@tanstack/react-table"
-import { RxCaretLeft, RxCaretRight, RxDoubleArrowLeft, RxDoubleArrowRight } from "react-icons/rx";
+} from '@/components/ui/pagination'
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>
@@ -16,105 +21,105 @@ interface DataTablePaginationProps<TData> {
 
 export function DataTablePagination<TData>({
   table,
-  numPagesDisplayed
+  numPagesDisplayed,
 }: DataTablePaginationProps<TData>) {
   const getPaginationItems = () => {
     if (numPagesDisplayed === 0) {
-      return [];
+      return []
     }
-    const pageCount = table.getPageCount();
-    const pageIndex = table.getState().pagination.pageIndex + 1;
-    const items = [];
-    let startPage = Math.max(1, pageIndex - Math.floor(numPagesDisplayed / 2));
-    let endPage = Math.min(pageCount, startPage + numPagesDisplayed - 1);
+    const pageCount = table.getPageCount()
+    const pageIndex = table.getState().pagination.pageIndex + 1
+    const items = []
+    let startPage = Math.max(1, pageIndex - Math.floor(numPagesDisplayed / 2))
+    let endPage = Math.min(pageCount, startPage + numPagesDisplayed - 1)
 
     // Adjust start and end if we're too close to the boundaries
     if (startPage === 1) {
-      endPage = Math.min(pageCount, startPage + numPagesDisplayed - 1);
+      endPage = Math.min(pageCount, startPage + numPagesDisplayed - 1)
     } else if (endPage === pageCount) {
-      startPage = Math.max(1, endPage - numPagesDisplayed + 1);
+      startPage = Math.max(1, endPage - numPagesDisplayed + 1)
     }
     // Add ellipsis if necessary at the beginning
     if (startPage > 1 || numPagesDisplayed < pageCount) {
       items.push(
-          <PaginationItem key="start-ellipsis">
-              <PaginationEllipsis />
-          </PaginationItem>
-      );
+        <PaginationItem key="start-ellipsis">
+          <PaginationEllipsis />
+        </PaginationItem>
+      )
     }
 
     for (let i = startPage; i <= endPage; i++) {
-        items.push(
-            <PaginationItem>
-                <PaginationLink
-                    isActive={i === pageIndex}
-                    onClick={() => {
-                        table.setPageIndex(i - 1);
-                    }}
-                >
-                    {i}
-                </PaginationLink>
-            </PaginationItem>
-        );
+      items.push(
+        <PaginationItem>
+          <PaginationLink
+            isActive={i === pageIndex}
+            onClick={() => {
+              table.setPageIndex(i - 1)
+            }}
+          >
+            {i}
+          </PaginationLink>
+        </PaginationItem>
+      )
     }
 
     // Add ellipsis if necessary at the end
     if (endPage < pageCount || numPagesDisplayed < pageCount) {
       items.push(
-          <PaginationItem key="end-ellipsis">
-              <PaginationEllipsis />
-          </PaginationItem>
-      );
+        <PaginationItem key="end-ellipsis">
+          <PaginationEllipsis />
+        </PaginationItem>
+      )
     }
-    return items;
+    return items
   }
 
   return (
-    <Pagination className="p-3 bg-[var(--teal-4)] dark:bg-[var(--teal-3)] border-t">
+    <Pagination className="border-t bg-[var(--teal-4)] p-3 dark:bg-[var(--teal-3)]">
       <PaginationContent>
         <PaginationItem>
           <PaginationLink
             aria-label="Go to the first page"
-            size="default"
-            onClick={() => table.firstPage()}
             className="gap-1 p-3"
             isDisabled={!table.getCanPreviousPage()}
+            onClick={() => table.firstPage()}
+            size="default"
           >
-            <RxDoubleArrowLeft className="h-4 w-4" />
+            <RxDoubleArrowLeft className="size-4" />
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>
           <PaginationLink
             aria-label="Go to previous page"
-            size="default"
-            onClick={() => table.previousPage()}
             className="gap-1 p-3"
             isDisabled={!table.getCanPreviousPage()}
+            onClick={() => table.previousPage()}
+            size="default"
           >
-            <RxCaretLeft className="h-4 w-4" />
+            <RxCaretLeft className="size-4" />
           </PaginationLink>
         </PaginationItem>
         {getPaginationItems()}
         <PaginationItem>
           <PaginationLink
             aria-label="Go to next page"
-            size="default"
-            onClick={() => table.nextPage()}
             className="gap-1 p-3"
             isDisabled={!table.getCanNextPage()}
+            onClick={() => table.nextPage()}
+            size="default"
           >
-            <RxCaretRight className="h-4 w-4" />
+            <RxCaretRight className="size-4" />
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>
           <PaginationLink
             aria-label="Go to the last page"
-            size="default"
-            onClick={() => table.lastPage()}
             className="gap-1 p-3"
             isDisabled={!table.getCanNextPage()}
+            onClick={() => table.lastPage()}
+            size="default"
           >
-            <RxDoubleArrowRight className="h-4 w-4" />
+            <RxDoubleArrowRight className="size-4" />
           </PaginationLink>
         </PaginationItem>
       </PaginationContent>

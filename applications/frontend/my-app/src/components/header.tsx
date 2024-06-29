@@ -19,15 +19,15 @@ export default function Header() {
       <a href="https://xpaperchallenge.org/cv/" target="_blank">
         <Image
           alt="logo"
-          priority={true}
           className="hidden h-auto w-[35vw] min-w-36 max-w-80 dark:block"
+          priority={true}
           sizes="100vw"
           src={whiteLogo}
         />
         <Image
           alt="logo"
-          priority={true}
           className="h-auto w-[35vw] min-w-36 max-w-80 dark:hidden "
+          priority={true}
           sizes="100vw"
           src={blackLogo}
         />
@@ -38,34 +38,42 @@ export default function Header() {
         gap-2
         min-[461px]:max-[600px]:gap-4
         min-[601px]:gap-6
-      ">
-        <div className="
+      "
+      >
+        <div
+          className="
           flex
-          flex-col-reverse min-[501px]:flex-row
-          items-center
-          gap-2 min-[501px]:max-[600px]:gap-4 min-[601px]:gap-6
-        ">
-          <div className="flex items-center space-x-1 min-[461px]:space-x-2 max-[501px]:hidden">
-            <RxSun className="
+          flex-col-reverse items-center
+          gap-2
+          min-[501px]:flex-row min-[501px]:max-[600px]:gap-4 min-[601px]:gap-6
+        "
+        >
+          <div className="flex items-center space-x-1 max-[501px]:hidden min-[461px]:space-x-2">
+            <RxSun
+              className="
               size-3
               min-[461px]:max-[600px]:size-3.5
               min-[601px]:size-4
-            "/>
+            "
+            />
             <Switch
-              id="airplane-mode"
               checked={theme === 'dark'}
+              className="
+              h-4 w-8 min-[461px]:max-[600px]:h-5
+              min-[461px]:max-[600px]:w-10 min-[601px]:h-6 min-[601px]:w-11
+            "
+              id="airplane-mode"
               onCheckedChange={(checked) => {
                 setTheme(checked ? 'dark' : 'light')
               }}
+            />
+            <RxMoon
               className="
-              w-8 min-[461px]:max-[600px]:w-10 min-[601px]:w-11
-              h-4 min-[461px]:max-[600px]:h-5 min-[601px]:h-6
-            "/>
-            <RxMoon className="
               size-3
               min-[461px]:max-[600px]:size-3.5
               min-[601px]:size-4
-            "/>
+            "
+            />
           </div>
           <div
             className="
@@ -85,7 +93,8 @@ export default function Header() {
                   className="
                   size-4 min-[461px]:max-[600px]:size-5
                   min-[601px]:size-7
-                "/>
+                "
+                />
               </a>
             </Button>
             <Separator

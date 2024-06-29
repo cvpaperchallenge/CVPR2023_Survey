@@ -1,48 +1,53 @@
-import { ColumnDef } from "@tanstack/react-table"
-import { LuArrowUpDown } from "react-icons/lu";
-import { Button } from "@/components/ui/button"
-
-import { PaperInfo } from "@/lib/types"
-import { RxFile, RxGlobe } from "react-icons/rx";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
+import { ColumnDef } from '@tanstack/react-table'
 import { useRouter } from 'next/navigation'
+import { LuArrowUpDown } from 'react-icons/lu'
+import { RxFile, RxGlobe } from 'react-icons/rx'
+
+import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+
+import { PaperInfo } from '@/lib/types'
 
 export const columns: ColumnDef<PaperInfo>[] = [
   {
-    accessorKey: "title",
+    accessorKey: 'title',
     header: ({ column }) => {
       return (
         <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Title
-          <LuArrowUpDown className="ml-2 h-4 w-4" />
+          <LuArrowUpDown className="ml-2 size-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
       const router = useRouter()
-      const authors: string[] = row.getValue("authors")
+      const authors: string[] = row.getValue('authors')
       return (
         <div className="flex flex-col justify-start">
-          <a onClick={() => router.push(`/details?id=${row.index}`)} className=" rounded px-2 py-1 cursor-pointer hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground transition-colors">
-            <div className="font-semibold">{row.getValue("title")}</div>
+          <a
+            className=" cursor-pointer rounded px-2 py-1 transition-colors hover:bg-accent hover:text-accent-foreground active:bg-primary active:text-primary-foreground"
+            onClick={() => router.push(`/details?id=${row.index}`)}
+          >
+            <div className="font-semibold">{row.getValue('title')}</div>
           </a>
-          <ScrollArea className="h-10 mt-1">
-            <div className="text-sm text-muted-foreground px-2 pb-2 ">{authors.join(", ")}</div>
+          <ScrollArea className="mt-1 h-10">
+            <div className="px-2 pb-2 text-sm text-muted-foreground ">
+              {authors.join(', ')}
+            </div>
           </ScrollArea>
         </div>
       )
-    }
+    },
   },
   {
-    accessorKey: "authors",
-    header: "Authors",
+    accessorKey: 'authors',
+    header: 'Authors',
     cell: ({ row }) => {
-      const authors = row.getValue("authors") as string[]
-      return <div>{authors.join(", ")}</div>
+      const authors = row.getValue('authors')
+      return <div>{authors.join(', ')}</div>
     },
     filterFn: (row, id, filterValue) => {
       // console.log(`Filtering authors with value: ${filterValue}`)
@@ -54,46 +59,48 @@ export const columns: ColumnDef<PaperInfo>[] = [
       //   const authors = row.values[id] as string[]
       //   return authors.some((author) => author.includes(filterValue))
       // })
-    }
+    },
   },
   {
-    accessorKey: "link",
+    accessorKey: 'link',
     header: () => <div className="text-center">Link</div>,
-    cell : ({ row }) => {
+    cell: ({ row }) => {
       return (
         <div className="flex flex-col items-center gap-1.5">
-          <a href={row.original.cvfLink} target="_blank" rel="noreferrer">
+          <a href={row.original.cvfLink} rel="noreferrer" target="_blank">
             <Button
-              variant="outline"
               className="
+              h-6
               gap-1
-              text-[var(--jade-11)]
+              border-[var(--jade-6)]
               bg-[var(--jade-4)]
+              px-2
+              text-xs
+              text-[var(--jade-11)]
               hover:bg-[var(--jade-5)]
               hover:text-[var(--jade-12)]
-              border-[var(--jade-6)]
-              px-2
-              h-6
-              text-xs
-            ">
-              <RxGlobe/> CVF
+            "
+              variant="outline"
+            >
+              <RxGlobe /> CVF
             </Button>
           </a>
-          <a href={row.original.pdfLink} target="_blank" rel="noreferrer">
+          <a href={row.original.pdfLink} rel="noreferrer" target="_blank">
             <Button
-              variant="outline"
               className="
+                h-6
                 gap-1
-                text-[var(--red-11)]
+                border-[var(--red-6)]
                 bg-[var(--red-3)]
+                px-2
+                text-xs
+                text-[var(--red-11)]
                 hover:bg-[var(--red-4)]
                 hover:text-[var(--red-12)]
-                border-[var(--red-6)]
-                px-2
-                h-6
-                text-xs
-            ">
-                <RxFile/> PDF
+            "
+              variant="outline"
+            >
+              <RxFile /> PDF
             </Button>
           </a>
         </div>
@@ -101,14 +108,10 @@ export const columns: ColumnDef<PaperInfo>[] = [
     },
   },
   {
-    accessorKey: "conference",
-    header: "Conference",
+    accessorKey: 'conference',
+    header: 'Conference',
     cell: ({ row }) => {
-      return (
-        <div className="text-center">
-          {row.original.conference}
-        </div>
-      )
+      return <div className="text-center">{row.original.conference}</div>
     },
     filterFn: (row, id, filterValue) => {
       return filterValue.includes(row.getValue(id))
