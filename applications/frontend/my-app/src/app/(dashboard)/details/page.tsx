@@ -44,7 +44,7 @@ export default function DetailedPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   const cachedData = localStorage.getItem('paper')
-  const data: PaperInfo[] = JSON.parse(cachedData as string)
+  const data: PaperInfo[] = JSON.parse(cachedData as string) as PaperInfo[]
 
   useEffect(() => {
     if (!paperId) {
@@ -60,8 +60,9 @@ export default function DetailedPage() {
           setIsLoading(false)
         }
       }
-      fetchPaperDetails()
+      void fetchPaperDetails()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paperId])
 
   if (isLoading || !paperDetails) {

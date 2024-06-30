@@ -46,7 +46,7 @@ export const columns: ColumnDef<PaperInfo>[] = [
     accessorKey: 'authors',
     header: 'Authors',
     cell: ({ row }) => {
-      const authors = row.getValue('authors')
+      const authors: string[] = row.getValue('authors')
       return <div>{authors.join(', ')}</div>
     },
     filterFn: (row, id, filterValue) => {
@@ -54,7 +54,7 @@ export const columns: ColumnDef<PaperInfo>[] = [
       // console.log(rows)
       const authorsArray = row.original.authors
       // Return true if authorsArray contains any author that includes filterValue
-      return authorsArray.some((author) => filterValue.includes(author))
+      return authorsArray.some((author) => (filterValue as string[]).includes(author))
       // return rows.filter((row) => {
       //   const authors = row.values[id] as string[]
       //   return authors.some((author) => author.includes(filterValue))
