@@ -39,30 +39,33 @@ export function DataTableFacetedFilter<TData>({
   columnName,
 }: DataTableFacetedFilterProps<TData>) {
   const column = table.getColumn(columnName)
-  if (!column) return null
+  // if (!column) return null
 
   // Create a map object to store the frecency of each option
-  let optionFrequency: Map<string, number> = new Map()
-  if (columnName === 'authors') {
-    // Iterate over the original map object having the authors array as keys
-    column?.getFacetedUniqueValues().forEach((frequency, authors) => {
-      // Iterate over the authors array
-      authors.forEach((author: string) => {
-        // If the author is already in the map object, increment its frecency
-        if (optionFrequency.has(author)) {
-          optionFrequency.set(author, optionFrequency.get(author)! + frequency)
-        } else {
-          // Otherwise, set the frecency to the frequency
-          optionFrequency.set(author, frequency)
-        }
+  const optionFrequency = useMemo(() => {
+    const frequencyMap: Map<string, number> = new Map()
+    if (columnName === 'authors') {
+      // Iterate over the original map object having the authors array as keys
+      column?.getFacetedUniqueValues().forEach((frequency, authors) => {
+        // Iterate over the authors array
+        (authors as string[]).forEach((author: string) => {
+          // If the author is already in the map object, increment its frecency
+          if (frequencyMap.has(author)) {
+            frequencyMap.set(author, frequencyMap.get(author)! + frequency)
+          } else {
+            // Otherwise, set the frecency to the frequency
+            frequencyMap.set(author, frequency)
+          }
+        })
       })
-    })
-  } else {
-    optionFrequency = column?.getFacetedUniqueValues()
-  }
+      return frequencyMap
+    } else {
+      return column?.getFacetedUniqueValues()
+    }
+  }, [column, columnName])
 
-  const options = useMemo(
-    () => Array.from(optionFrequency.keys()),
+  const options: string[] = useMemo(
+    () => Array.from(optionFrequency?.keys() ?? []) as string[],
     [optionFrequency]
   )
   const selectedValues = new Set<string>(column?.getFilterValue() as string[])
@@ -74,7 +77,7 @@ export function DataTableFacetedFilter<TData>({
   const filteredOptions = useMemo(() => {
     return options
       .sort()
-      .filter((option) =>
+      .filter((option: string) =>
         option.toLowerCase().includes(searchTerm.toLowerCase())
       )
   }, [options, searchTerm])
@@ -101,7 +104,7 @@ export function DataTableFacetedFilter<TData>({
           size="sm"
           variant="outline"
         >
-          {String(column.columnDef.header)}
+          {String(column?.columnDef.header)}
           {selectedValues?.size > 0 && (
             <>
               <Separator className="mx-2 h-4" orientation="vertical" />
@@ -122,8 +125,8 @@ export function DataTableFacetedFilter<TData>({
                 ) : (
                   Array.from(options)
                     .sort()
-                    .filter((option) => selectedValues.has(option))
-                    .map((option) => (
+                    .filter((option: string) => selectedValues.has(option))
+                    .map((option: string) => (
                       <Badge
                         className="rounded-sm bg-[var(--teal-9)] px-1 font-normal"
                         key={option}
@@ -181,7 +184,7 @@ export function DataTableFacetedFilter<TData>({
                     </div>
                     <span>{option}</span>
                     <span className="ml-auto flex size-4 items-center justify-center font-mono text-xs">
-                      {optionFrequency.get(option)}
+                      {optionFrequency?.get(option)}
                     </span>
                   </CommandItem>
                 )
