@@ -109,7 +109,7 @@ export function FeedbackDialog() {
           <Button
             className="hover:bg-[var(--teal-a12)]"
             disabled={isError}
-            onClick={handleSendFeedback}
+            onClick={() => void handleSendFeedback()}
             type="submit"
             variant="default"
           >
