@@ -29,12 +29,18 @@ export default function ListPage() {
 
   const [papers, setPapers] = useState<PaperInfo[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [width, setWidth] = useState(window.innerWidth)
+  const [width, setWidth] = useState(0)
 
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth)
     }
+
+    if (typeof window !== 'undefined') {
+      setWidth(window.innerWidth)
+      window.addEventListener('resize', handleResize)
+    }
+
     const fetchPapers = async () => {
       const fetchedPapers = await loadPaperLists()
       if (!fetchedPapers) {
@@ -46,12 +52,12 @@ export default function ListPage() {
     }
     void fetchPapers()
 
-    window.addEventListener('resize', handleResize)
-
     handleResize()
 
     return () => {
-      window.removeEventListener('resize', handleResize)
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
