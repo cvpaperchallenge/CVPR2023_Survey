@@ -1,7 +1,8 @@
 'use client'
+import { Suspense } from 'react'
+
 import Footer from '@/components/footer'
 import Header from '@/components/header'
-import { Suspense } from 'react'
 
 export default function PaperListLayout({
   children,
