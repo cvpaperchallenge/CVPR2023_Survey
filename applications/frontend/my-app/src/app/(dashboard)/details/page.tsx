@@ -62,7 +62,7 @@ export default function DetailedPage() {
       }
       void fetchPaperDetails()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paperId])
 
   if (isLoading || !paperDetails) {

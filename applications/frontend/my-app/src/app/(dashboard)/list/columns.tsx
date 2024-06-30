@@ -102,7 +102,9 @@ export const columns: ColumnDef<PaperInfo>[] = [
     cell: AuthorsCell,
     filterFn: (row, id, filterValue) => {
       const authorsArray = row.original.authors
-      return authorsArray.some((author) => (filterValue as string[]).includes(author))
+      return authorsArray.some((author) =>
+        (filterValue as string[]).includes(author)
+      )
     },
   },
   {
@@ -115,7 +117,7 @@ export const columns: ColumnDef<PaperInfo>[] = [
     header: 'Conference',
     cell: ConferenceCell,
     filterFn: (row, id, filterValue) => {
-      return filterValue.includes(row.getValue(id))
+      return (filterValue as string[]).includes(row.getValue(id))
     },
   },
 ]

@@ -53,7 +53,7 @@ export default function ListPage() {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const numPagesDisplayed = width > 600 ? 5 : width > 490 ? 3 : 0

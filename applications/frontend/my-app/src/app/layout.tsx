@@ -1,6 +1,5 @@
 'use client'
 import { Inter as FontSans } from 'next/font/google'
-
 import './globals.css'
 import { Toaster } from 'sonner'
 

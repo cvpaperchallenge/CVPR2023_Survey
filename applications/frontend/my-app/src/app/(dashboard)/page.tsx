@@ -48,6 +48,7 @@ const featuredPapers = [
 export default function Home() {
   return (
     <div
+      // eslint-disable-next-line tailwindcss/no-contradicting-classname
       className="
       h-full grow
       bg-gradient-to-br
