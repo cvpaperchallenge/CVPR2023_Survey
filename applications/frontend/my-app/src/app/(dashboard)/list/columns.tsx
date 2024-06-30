@@ -1,3 +1,4 @@
+'use client'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { useRouter } from 'next/navigation'
 import { LuArrowUpDown } from 'react-icons/lu'
