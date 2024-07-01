@@ -15,9 +15,7 @@ export default function PaperListLayout({
         <Header />
       </div>
       <div className="flex w-full grow flex-col">
-        <Suspense>
-          {children}
-        </Suspense>
+        <Suspense>{children}</Suspense>
       </div>
       <div className="h-44 w-full flex-none border-t bg-[var(--teal-4)] dark:bg-card">
         <Footer />

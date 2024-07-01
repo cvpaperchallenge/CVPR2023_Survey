@@ -57,17 +57,17 @@ export default function Home() {
       dark:from-[var(--teal-2)] dark:via-[var(--cyan-3)] dark:to-[var(--teal-5)]
     "
     >
-      <div className="container mx-auto flex flex-col items-center px-4">
+      <div className="mx-auto flex min-w-[320px] max-w-[1200px] flex-col items-center px-4">
         <motion.section
           animate={{ opacity: 1, y: 0 }}
-          className="py-20 text-center"
+          className="pb-10 pt-16 text-center min-[461px]:px-5 min-[461px]:max-[600px]:pb-16 min-[461px]:max-[600px]:pt-20 min-[601px]:py-20"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="mb-4 text-[40px] font-bold leading-[48px] text-foreground shadow-background drop-shadow-md">
+          <h1 className="mb-2 text-2xl font-bold leading-8 text-foreground shadow-background drop-shadow-md min-[461px]:max-[600px]:text-3xl min-[461px]:max-[600px]:leading-10 min-[601px]:mb-4 min-[601px]:text-[40px] min-[601px]:leading-[48px]">
             Explore Cutting-Edge Computer Vision Research
           </h1>
-          <p className="mb-8 text-xl text-card-foreground">
+          <p className="mb-5 text-sm text-card-foreground min-[461px]:max-[600px]:text-base min-[601px]:mb-8 min-[601px]:text-xl">
             Summaries of top papers from CVPR, ICCV, and more
           </p>
           {/* <Input
@@ -90,16 +90,16 @@ export default function Home() {
         >
           {featuredPapers.map((featuredPaper) => (
             <div
-              className="rounded-lg bg-[var(--teal-a4)] p-6 transition-transform hover:scale-105 dark:bg-[var(--teal-a3)]"
+              className="rounded-lg bg-[var(--teal-a4)] p-5 transition-transform hover:scale-105 dark:bg-[var(--teal-a3)] min-[461px]:p-6"
               key={featuredPaper.id}
             >
-              <h3 className="mb-2 text-xl font-semibold text-foreground">
+              <h3 className="mb-2 text-base font-semibold text-foreground min-[461px]:max-[600px]:text-lg min-[601px]:text-xl">
                 {featuredPaper.title}
               </h3>
-              <p className="mb-4 text-sm text-muted-foreground">
+              <p className="mb-3 text-xs text-muted-foreground min-[461px]:mb-4 min-[601px]:text-sm">
                 {featuredPaper.authors}
               </p>
-              <p className="mb-4 text-sm text-foreground">
+              <p className="mb-3 text-xs text-foreground min-[461px]:mb-4 min-[601px]:text-sm">
                 {featuredPaper.conference}
               </p>
               {/* <Button>Read Summary</Button> */}
@@ -109,24 +109,34 @@ export default function Home() {
 
         <motion.section
           animate={{ opacity: 1, y: 0 }}
-          className="w-4/5 py-20 text-center"
+          className="w-4/5 max-w-[730px] pb-16 pt-10 text-center min-[461px]:max-[600px]:pb-20 min-[461px]:max-[600px]:pt-16 min-[601px]:py-20"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <div className="flex flex-row justify-around gap-20">
+          <div className="flex flex-row justify-between gap-4 min-[461px]:max-[600px]:gap-10 min-[601px]:gap-20">
             <div>
-              <h4 className="text-4xl font-bold text-[var(--teal-10)]">
+              <h4 className="text-xl font-bold text-[var(--teal-10)] min-[461px]:max-[600px]:text-2xl min-[601px]:text-4xl">
                 4000+
               </h4>
-              <p className="text-card-foreground">Papers Summarized</p>
+              <p className="text-xs text-card-foreground min-[461px]:max-[600px]:text-sm min-[601px]:text-base">
+                Papers Summarized
+              </p>
             </div>
             <div>
-              <h4 className="text-4xl font-bold text-[var(--teal-10)]">3</h4>
-              <p className="text-card-foreground">Conferences Covered</p>
+              <h4 className="text-xl font-bold text-[var(--teal-10)] min-[461px]:max-[600px]:text-2xl min-[601px]:text-4xl">
+                3
+              </h4>
+              <p className="text-xs text-card-foreground min-[461px]:max-[600px]:text-sm min-[601px]:text-base">
+                Conferences Covered
+              </p>
             </div>
             <div>
-              <h4 className="text-4xl font-bold text-[var(--teal-10)]">20+</h4>
-              <p className="text-card-foreground">Research Areas</p>
+              <h4 className="text-xl font-bold text-[var(--teal-10)] min-[461px]:max-[600px]:text-2xl min-[601px]:text-4xl">
+                20+
+              </h4>
+              <p className="text-xs text-card-foreground min-[461px]:max-[600px]:text-sm min-[601px]:text-base">
+                Research Areas
+              </p>
             </div>
           </div>
         </motion.section>
