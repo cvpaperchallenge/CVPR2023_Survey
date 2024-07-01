@@ -72,10 +72,6 @@ export default function Home() {
           <p className="mb-5 text-sm text-card-foreground min-[461px]:max-[600px]:text-base min-[601px]:mb-8 min-[601px]:text-xl">
             Summaries of top papers from CVPR, ICCV, and more
           </p>
-          {/* <Input
-            className="max-w-xl mx-auto mb-8"
-            placeholder="Search papers by title, author, or conference..."
-          /> */}
           <motion.div whileHover={{ scale: 1.1 }}>
             <Button className="rounded-2xl" size="lg" onClick={() => router.push('/list')}>
               Explore All Papers
@@ -105,7 +101,6 @@ export default function Home() {
               <p className="mb-3 text-xs text-foreground min-[461px]:mb-4 min-[601px]:text-sm">
                 {featuredPaper.conference}
               </p>
-              {/* <Button>Read Summary</Button> */}
             </div>
           ))}
         </motion.section>
