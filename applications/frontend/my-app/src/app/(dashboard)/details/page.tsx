@@ -34,7 +34,7 @@ const loadPaperDetails = async (id: string) => {
   )
 }
 
-export default function DetailedPage() {
+export default function DetailsPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 

@@ -4,7 +4,7 @@ import { Suspense } from 'react'
 import Footer from '@/components/footer'
 import Header from '@/components/header'
 
-export default function PaperListLayout({
+export default function SharedUILayout({
   children,
 }: {
   children: React.ReactNode
