@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { HiCursorClick } from 'react-icons/hi'
 
@@ -46,6 +47,7 @@ const featuredPapers = [
 ]
 
 export default function Home() {
+  const router = useRouter()
   return (
     <div
       // eslint-disable-next-line tailwindcss/no-contradicting-classname
@@ -75,7 +77,7 @@ export default function Home() {
             placeholder="Search papers by title, author, or conference..."
           /> */}
           <motion.div whileHover={{ scale: 1.1 }}>
-            <Button className="rounded-2xl" size="lg">
+            <Button className="rounded-2xl" size="lg" onClick={() => router.push('/list')}>
               Explore All Papers
               <HiCursorClick className="ml-2 size-5" />
             </Button>
@@ -90,7 +92,8 @@ export default function Home() {
         >
           {featuredPapers.map((featuredPaper) => (
             <div
-              className="rounded-lg bg-[var(--teal-a4)] p-5 transition-transform hover:scale-105 dark:bg-[var(--teal-a3)] min-[461px]:p-6"
+              className="rounded-lg cursor-pointer bg-[var(--teal-a4)] p-5 transition-transform hover:scale-105 dark:bg-[var(--teal-a3)] min-[461px]:p-6"
+              onClick={() => router.push(`/details?id=${featuredPaper.id}`)}
               key={featuredPaper.id}
             >
               <h3 className="mb-2 text-base font-semibold text-foreground min-[461px]:max-[600px]:text-lg min-[601px]:text-xl">
