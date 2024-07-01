@@ -1,10 +1,13 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { HiCursorClick } from 'react-icons/hi'
 
 import { Button } from '@/components/ui/button'
+
+import { getPaperList } from '@/lib/fetch'
 
 const featuredPapers = [
   {
@@ -47,6 +50,10 @@ const featuredPapers = [
 ]
 
 export default function Home() {
+  useEffect(() => {
+    void getPaperList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const router = useRouter()
   return (
     <div
@@ -73,7 +80,7 @@ export default function Home() {
             Summaries of top papers from CVPR, ICCV, and more
           </p>
           <motion.div whileHover={{ scale: 1.1 }}>
-            <Button className="rounded-2xl" size="lg" onClick={() => router.push('/list')}>
+            <Button className="rounded-2xl" onClick={() => router.push('/list')} size="lg">
               Explore All Papers
               <HiCursorClick className="ml-2 size-5" />
             </Button>
@@ -88,9 +95,9 @@ export default function Home() {
         >
           {featuredPapers.map((featuredPaper) => (
             <div
-              className="rounded-lg cursor-pointer bg-[var(--teal-a4)] p-5 transition-transform hover:scale-105 dark:bg-[var(--teal-a3)] min-[461px]:p-6"
-              onClick={() => router.push(`/details?id=${featuredPaper.id}`)}
+              className="cursor-pointer rounded-lg bg-[var(--teal-a4)] p-5 transition-transform hover:scale-105 dark:bg-[var(--teal-a3)] min-[461px]:p-6"
               key={featuredPaper.id}
+              onClick={() => router.push(`/details?id=${featuredPaper.id}`)}
             >
               <h3 className="mb-2 text-base font-semibold text-foreground min-[461px]:max-[600px]:text-lg min-[601px]:text-xl">
                 {featuredPaper.title}
