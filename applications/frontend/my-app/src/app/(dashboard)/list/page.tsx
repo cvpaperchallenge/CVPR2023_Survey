@@ -71,11 +71,11 @@ export default function ListPage() {
         <Metadata
           description={"Automated summaries of top conference papers using OpenAI's language model."}
           ogDescription={"Automated summaries of top conference papers using OpenAI's language model."}
-          ogImage={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/icon.png`}
+          ogImage={`${process.env.NEXT_PUBLIC_FRONTEND_HOST_URL}/icon.png`}
           ogSiteName='LLM Survey'
           ogTitle={`Paper List`}
           ogType='article'
-          ogUrl={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/list`}
+          ogUrl={`${process.env.NEXT_PUBLIC_FRONTEND_HOST_URL}/list`}
           title={`Paper List | LLM Survey`}
           twitterCard='summary'
           twitterSite='@CVpaperChalleng'
@@ -98,11 +98,11 @@ export default function ListPage() {
       <Metadata
         description={"Automated summaries of top conference papers using OpenAI's language model."}
         ogDescription={"Automated summaries of top conference papers using OpenAI's language model."}
-        ogImage={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/icon.png`}
+        ogImage={`${process.env.NEXT_PUBLIC_FRONTEND_HOST_URL}/icon.png`}
         ogSiteName='LLM Survey'
         ogTitle={`Paper List`}
         ogType='article'
-        ogUrl={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/list`}
+        ogUrl={`${process.env.NEXT_PUBLIC_FRONTEND_HOST_URL}/list`}
         title={`Paper List | LLM Survey`}
         twitterCard='summary'
         twitterSite='@CVpaperChalleng'

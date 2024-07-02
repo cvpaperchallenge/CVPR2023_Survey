@@ -61,11 +61,11 @@ export default function Home() {
       <Metadata
         description={"Automated summaries of top conference papers using OpenAI's language model."}
         ogDescription={"Automated summaries of top conference papers using OpenAI's language model."}
-        ogImage={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/icon.png`}
+        ogImage={`${process.env.NEXT_PUBLIC_FRONTEND_HOST_URL}/icon.png`}
         ogSiteName='LLM Survey'
         ogTitle={`Home`}
         ogType='website'
-        ogUrl={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/`}
+        ogUrl={`${process.env.NEXT_PUBLIC_FRONTEND_HOST_URL}/`}
         title={`Home | LLM Survey`}
         twitterCard='summary'
         twitterSite='@CVpaperChalleng'
