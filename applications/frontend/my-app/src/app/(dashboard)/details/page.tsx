@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { RxFile, RxGlobe, RxCaretLeft, RxCaretRight } from 'react-icons/rx'
 import { toast } from 'sonner'
 
+import Metadata from '@/components/metadata'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -67,6 +68,10 @@ export default function DetailsPage() {
 
   if (isLoading || !paperDetails) {
     return (
+      <>
+        <Metadata
+          title={"Now Loading... | LLM Survey"}
+        />
       <div className="flex w-screen flex-col items-center gap-12 py-8">
         <div className="flex w-full flex-row justify-start px-10">
           <Skeleton className="h-5 w-full rounded-sm" />
@@ -105,10 +110,15 @@ export default function DetailsPage() {
           <Skeleton className="h-14 w-[40vw] rounded-sm" />
         </div>
       </div>
+      </>
     )
   }
 
   return (
+    <>
+      <Metadata
+        title={`${paperId}. ${paperDetails.paperInfo.title} | LLM Survey`}
+      />
     <div className="flex w-screen flex-col items-center gap-12 py-8">
       <div className="flex w-full flex-row justify-start px-10">
         <Breadcrumb>
@@ -367,5 +377,6 @@ export default function DetailsPage() {
         </PaginationContent>
       </Pagination>
     </div>
+    </>
   )
 }

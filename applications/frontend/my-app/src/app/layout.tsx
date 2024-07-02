@@ -18,11 +18,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <title>CVPR/ICCV 2023 Summary</title>
-      <meta
-        content="Automated summaries of papers accepted at CVPR 2023 and ICCV 2023 using OpenAI's language model."
-        name="description"
-      />
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased',

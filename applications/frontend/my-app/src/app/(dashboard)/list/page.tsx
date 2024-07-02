@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 import { DataTable } from '@/components/data-table'
+import Metadata from '@/components/metadata'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -66,6 +67,19 @@ export default function ListPage() {
 
   if (isLoading || !papers) {
     return (
+      <>
+        <Metadata
+          description={"Automated summaries of top conference papers using OpenAI's language model."}
+          ogDescription={"Automated summaries of top conference papers using OpenAI's language model."}
+          ogImage={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/icon.png`}
+          ogSiteName='LLM Survey'
+          ogTitle={`Paper List`}
+          ogType='article'
+          ogUrl={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/list`}
+          title={`Paper List | LLM Survey`}
+          twitterCard='summary'
+          twitterSite='@CVpaperChalleng'
+        />
       <div className="flex w-screen flex-col items-center gap-12 py-8">
         <div className="flex w-full flex-row justify-start px-10">
           <Skeleton className="h-5 w-full rounded-sm" />
@@ -75,10 +89,24 @@ export default function ListPage() {
           <Skeleton className="h-[1393px] w-full rounded-sm" />
         </div>
       </div>
+      </>
     )
   }
 
   return (
+    <>
+      <Metadata
+        description={"Automated summaries of top conference papers using OpenAI's language model."}
+        ogDescription={"Automated summaries of top conference papers using OpenAI's language model."}
+        ogImage={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/icon.png`}
+        ogSiteName='LLM Survey'
+        ogTitle={`Paper List`}
+        ogType='article'
+        ogUrl={`http://cvpaper-summary-frontend-bucket.s3-website-ap-northeast-1.amazonaws.com/list`}
+        title={`Paper List | LLM Survey`}
+        twitterCard='summary'
+        twitterSite='@CVpaperChalleng'
+      />
     <div className="flex w-screen flex-col items-center gap-12 py-8">
       <div className="flex w-full flex-row justify-start px-10">
         <Breadcrumb>
@@ -100,5 +128,6 @@ export default function ListPage() {
         width={width}
       />
     </div>
+    </>
   )
 }
