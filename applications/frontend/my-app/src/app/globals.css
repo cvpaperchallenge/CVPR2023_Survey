@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@radix-ui/colors/teal";
+@import "@radix-ui/colors/teal-alpha";
+@import "@radix-ui/colors/teal-dark";
+@import "@radix-ui/colors/teal-dark-alpha";
+@import "@radix-ui/colors/lime";
+@import "@radix-ui/colors/lime-dark";
+@import "@radix-ui/colors/jade";
+@import "@radix-ui/colors/jade-alpha";
+@import "@radix-ui/colors/jade-dark";
+@import "@radix-ui/colors/jade-dark-alpha";
+@import "@radix-ui/colors/red";
+@import "@radix-ui/colors/red-dark";
+@import "@radix-ui/colors/olive";
+@import "@radix-ui/colors/olive-dark";
+@import "@radix-ui/colors/olive-alpha";
+@import "@radix-ui/colors/cyan";
+@import "@radix-ui/colors/cyan-dark";
+
+@import "@radix-ui/colors/gray";
+@import "@radix-ui/colors/gray-alpha";
+@import "@radix-ui/colors/black-alpha";
+@import "@radix-ui/colors/white-alpha";
+
+
+@layer base {
+  :root {
+    --background: var(--teal-1);
+    --foreground: var(--teal-11);
+
+    --card: var(--teal-2);
+    --card-foreground: var(--teal-12);
+
+    --popover: var(--teal-2);
+    --popover-foreground: var(--teal-12);
+
+    --primary: var(--teal-10);
+    --primary-foreground: var(--teal-1);
+
+    --secondary: var(--olive-9);
+    --secondary-foreground: var(--gray-1);
+
+    --muted: var(--olive-3);
+    --muted-foreground: var(--olive-10);
+
+    --accent: var(--teal-5);
+    --accent-foreground: var(--olive-12);
+
+    --destructive: var(--red-10);
+    --destructive-foreground: var(--red-3);
+
+    --border: var(--teal-7);
+    --input: var(--teal-6);
+    --ring: var(--teal-8);
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border box-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
