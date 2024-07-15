@@ -12,6 +12,20 @@ services:
     env_file: ../envs.env
     tty: true
     volumes:
-        - ../../applications/backend:/home/challenger/cvpr-iccv-2023-survey
+        - ../../applications/backend:/home/challenger/cvpr-iccv-2023-survey-backend
     ports:
         - 8000:8000
+
+  frontend:
+    build:
+      args:
+        - UID=${HOST_UID-1000}
+        - GID=${HOST_GID-1000}
+      context: ../../
+      dockerfile: environments/Dockerfile.frontend
+    tty: true
+    init: true
+    volumes:
+        - ../../applications/frontend:/home/node/cvpr-iccv-2023-survey-frontend
+    ports:
+        - 3001:3000
