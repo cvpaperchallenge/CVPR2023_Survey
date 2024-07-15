@@ -18,15 +18,14 @@ from langchain_community.document_loaders.text import TextLoader
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-from src.cvf_page_parser import Paper
-from src.mmd_text_parser import parse_mmd_text, structure_mmd_documents
+from src.paper_model import ParsedPaper
 from src.summarizer import OchiaiFormatPaperSummarizer
 
 logger: Final = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Note: list config
-llm_model_name: str = "gpt-3.5-turbo-0125"  # "gpt-4-0125-preview"
+llm_model_name: str = "gpt-4o" # "gpt-3.5-turbo-0125", "gpt-4-0125-preview"
 temperature: float = 0.9
 chunk_size: int = 200
 chunk_overlap: int = 40
@@ -34,7 +33,6 @@ chunk_overlap: int = 40
 
 def generate_summaries_in_ochiai_format(
     paper_root_dir: pathlib.Path,
-    paper_info_path: pathlib.Path,
     prompt_template_dir: pathlib.Path,
     verbose: bool = False,
 ) -> None:
@@ -42,36 +40,19 @@ def generate_summaries_in_ochiai_format(
 
     Args:
         paper_root_dir (pathlib.Path): Path to the directory containing PDF files.
-        paper_info_path (pathlib.Path): Path to the JSON file which contains paper information.
         prompt_template_dir (pathlib.Path): Path to the directory containing prompt templates.
         verbose (bool): Print used prompts, generated summaries, and token usage.
     """
-    # Check JSON file existence.
-    if not paper_info_path.exists():
-        error_message: Final = f"The file `{str(paper_info_path)}` does not exist. \
-            Please run `parse_cvf_page.py` first to generate JSON file."
-        raise FileNotFoundError(error_message)
-
-    # Load JSON and validate by Pydantic model.
-    with paper_info_path.open("r") as f:
-        papers: Final = [Paper.model_validate(p) for p in json.load(f)]
-
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
     # Loop over all papers.
-    pdf_file_paths = sorted(list(paper_root_dir.glob("**/*.pdf")))
-    for _, pdf_file_path in enumerate(pdf_file_paths):
-        directory_path = pdf_file_path.parent
-        stem = pdf_file_path.stem
-        paper_id = int(directory_path.name.split("_")[0])
+    mathpix_file_paths = sorted(list(paper_root_dir.glob("**/*.txt")))
+    for _, mathpix_file_path in enumerate(mathpix_file_paths):
+        logger.info(f"Processing `{str(mathpix_file_path)}`.")
 
-        # Check if PDF file exists or not.
-        pdf_file_path = directory_path / (stem + ".pdf")
-        if not pdf_file_path.exists():
-            raise FileNotFoundError(
-                f"`{str(pdf_file_path)}` does not exist. Please run `download_papers.py` first to download PDF file."
-            )
+        directory_path = mathpix_file_path.parent
+        stem = mathpix_file_path.stem.rsplit("_", 1)[0]
 
         # Check if mathpix file exists or not.
-        mathpix_file_path = directory_path / (stem + "_mathpix.txt")
         if not mathpix_file_path.exists():
             raise FileNotFoundError(
                 f"`{str(mathpix_file_path)}` does not exist. Please run `convert_to_mmd.py` first to get mmd format text file."
@@ -87,21 +68,18 @@ def generate_summaries_in_ochiai_format(
 
         # Parse mmd format text.
         raw_paper = TextLoader(file_path=str(mathpix_file_path)).load()[0]
-        parsed_paper = parse_mmd_text(raw_paper.page_content)
+        parsed_paper: ParsedPaper = ParsedPaper.parse_mmd_text(raw_paper.page_content)
 
         # Convert text into to structured documents
         text_splitter = TokenTextSplitter.from_tiktoken_encoder(
-            model_name=llm_model_name,
+            model_name="gpt-3.5-turbo-0125",
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
         )
-        documents = structure_mmd_documents(
-            parsed_paper,
+        documents = parsed_paper.structure_mmd_documents(
             text_splitter,
-            papers[paper_id].abstract,
         )
 
-        embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
         # Load vector database if it exists.
         if (directory_path / "index").exists() and (
             directory_path / "index_wo_abstract"
@@ -159,18 +137,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "--input-pdf-dir",
+        "--input-mmd-dir",
         "-i",
         type=pathlib.Path,
         required=True,
-        help="Path to the directory containing PDF files.",
-    )
-    parser.add_argument(
-        "--paper-info-path",
-        "-j",
-        type=pathlib.Path,
-        required=True,
-        help="Path to the JSON file which contains paper information.",
+        help="Path to the directory containing Mathpix markdown files.",
     )
     parser.add_argument(
         "--prompt-template-dir",
@@ -188,8 +159,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     generate_summaries_in_ochiai_format(
-        paper_root_dir=args.input_pdf_dir,
-        paper_info_path=args.paper_info_path,
+        paper_root_dir=args.input_mmd_dir,
         prompt_template_dir=args.prompt_template_dir,
         verbose=args.verbose,
     )

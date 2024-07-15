@@ -162,7 +162,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
 
         retriever = self.vectorstore["wo_abstract"].as_retriever(
             serch_type="similarity",
-            search_kwargs={"k": 1},
+            search_kwargs={"k": 2},
         )
 
         selected_documents = []
@@ -282,7 +282,7 @@ class OchiaiFormatPaperSummarizer(BasePaperSummarizer):
         query: str,
         prompt_template_filename: str,
         search_type: str = "similarity",
-        search_kwargs: dict[str, int] = {"k": 5},
+        search_kwargs: dict[str, int] = {"k": 10},
     ) -> str:
         """Process the text generation using the retrieved documents based on the query.
 
